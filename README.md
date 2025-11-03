@@ -1,107 +1,120 @@
 # Portfolio Rebalancer
 
-A full-stack web application (React, Node.js, PostgreSQL) to help investors track their asset allocation and rebalance their portfolio based on target percentages.
+A full-stack web application using React, Node.js, and PostgreSQL to help investors track and rebalance their portfolios.
 
 ## ✨ Features
 
-* User authentication (Login / Register)
-* Full CRUD (Create, Read, Update, Delete) management for portfolio assets
-* Define target allocation percentages for different asset classes
-* Calculate the optimal allocation for new contributions to rebalance the portfolio
-* (Future) Fetches real-time currency conversions (USD/BRL)
-* (Future) Fetches real-time stock/ETF prices
+*   **User Authentication:** Secure login and registration.
+*   **Portfolio Management:** Full CRUD (Create, Read, Update, Delete) for assets.
+*   **Target Allocation:** Define and manage target percentages for asset classes.
+*   **Rebalancing Calculation:** Optimize new contributions to align with targets.
+*   **(Future) Real-time Data:** Currency conversion and stock/ETF price fetching.
 
 ## 🛠️ Tech Stack
 
-* **Frontend:** React, Bootstrap
-* **Backend:** Node.js, Express
-* **Database:** PostgreSQL
+*   **Frontend:** React, Bootstrap
+*   **Backend:** Node.js, Express
+*   **Database:** PostgreSQL
 
 ## 📂 Project Structure
 
-This project uses a **monorepo** structure, with the frontend and backend code in separate folders.
+This project follows a monorepo structure, separating the client and server into their own directories.
 
-/portfolio-rebalancer/ | |-- /client/ <-- React application | |-- /src/ | -- package.json | |-- /server/ <-- Node.js/Express API | |-- /src/ | | |-- /config/ | | |-- /controllers/ | | |-- /middlewares/ | | |-- /models/ | | -- /routes/ | |-- .env | -- package.json | |-- .gitignore -- README.md
-
+```
+/portfolio-rebalancer/
+|-- /client/            <-- React Application
+|   |-- /src/
+|   -- package.json
+|-- /server/            <-- Node.js API
+|   |-- /src/
+|   |   |-- /config/
+|   |   |-- /controllers/
+|   |   |-- /middlewares/
+|   |   |-- /models/
+|   |   -- /routes/
+|   |-- .env
+|   -- package.json
+|-- .gitignore
+|-- LICENSE
+-- README.md
+```
 
 ## 🚀 Getting Started
 
 ### Prerequisites
 
-* [Node.js](https://nodejs.org/) (v18 or later)
-* [PostgreSQL](https://www.postgresql.org/download/) (running on your local machine)
-* [Git](https://git-scm.com/)
+*   [Node.js](https://nodejs.org/) (v18 or later)
+*   [PostgreSQL](https://www.postgresql.org/download/) (running locally)
+*   [Git](https://git-scm.com/)
 
 ### 1. Clone the Repository
 
 ```bash
-git clone [https://github.com/](https://github.com/)[YOUR_USERNAME]/portfolio-rebalancer.git
+git clone https://github.com/YOUR_USERNAME/portfolio-rebalancer.git
 cd portfolio-rebalancer
-2. Backend Setup (Server)
-Navigate to the server directory:
+```
 
-Bash
+### 2. Backend Setup (Server)
 
-cd server
-Install dependencies:
+1.  **Navigate to the server directory:**
+    ```bash
+    cd server
+    ```
 
-Bash
+2.  **Install dependencies:**
+    ```bash
+    npm install
+    ```
 
-npm install
-Create your environment file:
+3.  **Create the environment file:**
+    Create a `.env` file in the `/server` directory and add your database credentials. The server defaults to port `5000` if not specified.
 
-Create a file named .env in the /server directory.
+    ```ini
+    # /server/.env
 
-Note: The .gitignore file is already set up to ignore this.
+    # Server Port (Optional, defaults to 5000)
+    PORT=5001
 
-Ini, TOML
+    # Database Connection
+    DB_USER=postgres
+    DB_PASSWORD=mysecretpassword
+    DB_HOST=localhost
+    DB_PORT=5432
+    DB_NAME=rebalancer
+    ```
 
-# /server/.env
+4.  **Run the server:**
+    ```bash
+    npm start
+    ```
+    The server will start, and you will see a confirmation that the database is connected.
 
-# Server Port
-PORT=5001
+### 3. Frontend Setup (Client)
 
-# Database Connection (Example)
-# DB_USER=postgres
-# DB_PASSWORD=mysecretpassword
-# DB_HOST=localhost
-# DB_PORT=5432
-# DB_NAME=rebalancer
-Run the server:
+1.  **Navigate to the client directory:**
+    ```bash
+    cd ../client
+    ```
 
-Bash
+2.  **Install dependencies:**
+    ```bash
+    npm install
+    ```
 
-npm start
-The server will start on http://localhost:5001.
+3.  **Run the client:**
+    ```bash
+    npm start
+    ```
+    The React development server will start on `http://localhost:3000`.
 
-3. Frontend Setup (Client)
-(Work in progress)
+## 📦 API Endpoints
 
-Navigate to the client directory:
+Currently, there is one endpoint for testing the server connection:
 
-Bash
+*   **`GET /api/test`**
+    *   **Description:** Confirms that the server is running correctly.
+    *   **Response:** `{"message": "Hello from the server! 👋"}`
 
-cd client
-Install dependencies:
+## 📄 License
 
-Bash
-
-npm install
-Run the client:
-
-Bash
-
-npm start
-The React app will start on http://localhost:3000.
-
-📦 API Endpoints
-A preliminary list of the API routes.
-
-Test Route
-GET /api/test
-
-Description: Confirms the server is running.
-
-Response: { "message": "Hello from the server! 👋" }
-
-This README will be updated as the project progresses.
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
