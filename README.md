@@ -4,11 +4,11 @@ A full-stack web application using React, Node.js, and PostgreSQL to help invest
 
 ## ✨ Features
 
-*   **User Authentication:** Secure login and registration.
-*   **Portfolio Management:** Full CRUD (Create, Read, Update, Delete) for assets.
-*   **Target Allocation:** Define and manage target percentages for asset classes.
-*   **Rebalancing Calculation:** Optimize new contributions to align with targets.
-*   **(Future) Real-time Data:** Currency conversion and stock/ETF price fetching.
+*   **User Authentication:** Secure user registration and login.
+*   **Asset Management:** Full CRUD (Create, Read, Update, Delete) functionality for assets.
+*   **Portfolio Tracking:** Monitor asset allocation and performance.
+*   **Target Allocation:** Define and manage target percentages for each asset class.
+*   **Rebalancing Calculation:** Get recommendations on how to allocate new contributions to align with your target portfolio.
 
 ## 🛠️ Tech Stack
 
@@ -109,11 +109,19 @@ cd portfolio-rebalancer
 
 ## 📦 API Endpoints
 
-Currently, there is one endpoint for testing the server connection:
+The following are the main endpoints available:
 
-*   **`GET /api/test`**
-    *   **Description:** Confirms that the server is running correctly.
-    *   **Response:** `{"message": "Hello from the server! 👋"}`
+### Users
+
+*   `POST /api/users/register`: Register a new user.
+*   `POST /api/users/login`: Log in a user.
+
+### Assets
+
+*   `GET /api/assets`: Get all assets for the logged-in user.
+*   `POST /api/assets`: Add a new asset.
+*   `PUT /api/assets/:id`: Update an existing asset.
+*   `DELETE /api/assets/:id`: Delete an asset.
 
 ## 📄 License
 
