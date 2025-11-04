@@ -1,0 +1,24 @@
+# /docker-compose.yml
+
+version: '3.8'
+
+services:
+  # Service name for our database
+  db:
+    image: postgres:latest
+    container_name: rebalancer_db
+    restart: always
+    environment:
+      POSTGRES_USER: docker_username
+      POSTGRES_PASSWORD: docker_password
+      POSTGRES_DB: rebalancer
+    ports:
+      # Maps computer's port 5432 to the container's port 5432
+      - "5432:5432"
+    volumes:
+      # Makes sure data is saved even if you stop the container
+      - db-data:/var/lib/postgresql
+
+volumes:
+  # Creates the "db-data" volume
+  db-data:
