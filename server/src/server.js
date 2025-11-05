@@ -5,6 +5,10 @@ const express = require('express');
 const cors = require('cors');
 const db = require('./config/db');
 
+// --- Import Routes ---
+const authRoutes = require('./routes/authRoutes');
+const assetRoutes = require('./routes/assetRoutes');
+
 // Initialize the Express app
 const app = express();
 
@@ -19,6 +23,10 @@ app.use(express.json());
 app.get('/api/test', (req, res) => {
   res.json({ message: 'Hello from the server! 👋' });
 });
+
+// --- API Routes ---
+app.use('/api/auth', authRoutes);
+app.use('/api/assets', assetRoutes);
 
 // --- Server Startup ---
 const PORT = process.env.PORT || 5000;

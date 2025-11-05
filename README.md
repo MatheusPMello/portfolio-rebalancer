@@ -22,10 +22,16 @@ A backend API using Node.js, Express, and PostgreSQL to help investors track and
 |-- /server/            <-- Node.js API
 |   |-- /src/
 |   |   |-- /config/
+|   |   |-- /config/
 |   |   |-- /controllers/
+|   |   |   |-- authController.js
+|   |   |   -- assetController.js
 |   |   |-- /middlewares/
+|   |   |   -- authMiddleware.js
 |   |   |-- /models/
-|   |   -- /routes/
+|   |   |-- /routes/
+|   |   |   |-- authRoutes.js
+|   |   |   -- assetRoutes.js
 |   |-- .env
 |   -- package.json
 |-- .gitignore
@@ -80,12 +86,12 @@ cd portfolio-rebalancer
     DB_NAME=rebalancer
     ```
 
-4. **Set up the database:**
-   Run the following command to create the necessary tables.
+4.  **Set up the database:**
+    Run the following command to create the necessary tables.
 
-   ```bash
-   npm run db:setup
-   ```
+    ```bash
+    npm run db:setup
+    ```
 
 5.  **Run the server:**
     ```bash
@@ -105,10 +111,10 @@ The following scripts are available in the root directory to help maintain code 
 
 The following are the main endpoints available:
 
-### Users
+### Auth
 
-- `POST /api/users/register`: Register a new user.
-- `POST /api/users/login`: Log in a user.
+- `POST /api/auth/register`: Register a new user.
+- `POST /api/auth/login`: Log in a user.
 
 ### Assets
 
