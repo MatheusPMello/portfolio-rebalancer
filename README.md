@@ -1,6 +1,6 @@
 # Portfolio Rebalancer
 
-A full-stack web application using React, Node.js, and PostgreSQL to help investors track and rebalance their portfolios.
+A backend API using Node.js, Express, and PostgreSQL to help investors track and rebalance their portfolios.
 
 ## ✨ Features
 
@@ -12,19 +12,13 @@ A full-stack web application using React, Node.js, and PostgreSQL to help invest
 
 ## 🛠️ Tech Stack
 
-- **Frontend:** React, Bootstrap
 - **Backend:** Node.js, Express
 - **Database:** PostgreSQL
 
 ## 📂 Project Structure
 
-This project follows a monorepo structure, separating the client and server into their own directories.
-
 ```
 /portfolio-rebalancer/
-|-- /client/            <-- React Application
-|   |-- /src/
-|   -- package.json
 |-- /server/            <-- Node.js API
 |   |-- /src/
 |   |   |-- /config/
@@ -35,6 +29,7 @@ This project follows a monorepo structure, separating the client and server into
 |   |-- .env
 |   -- package.json
 |-- .gitignore
+|-- package.json
 |-- LICENSE
 -- README.md
 ```
@@ -50,11 +45,11 @@ This project follows a monorepo structure, separating the client and server into
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/portfolio-rebalancer.git
+git clone https://github.com/MatheusPMello/portfolio-rebalancer.git
 cd portfolio-rebalancer
 ```
 
-### 2. Backend Setup (Server)
+### 2. Setup
 
 1.  **Navigate to the server directory:**
 
@@ -85,31 +80,26 @@ cd portfolio-rebalancer
     DB_NAME=rebalancer
     ```
 
-4.  **Run the server:**
+4. **Set up the database:**
+   Run the following command to create the necessary tables.
+
+   ```bash
+   npm run db:setup
+   ```
+
+5.  **Run the server:**
     ```bash
     npm start
     ```
     The server will start, and you will see a confirmation that the database is connected.
 
-### 3. Frontend Setup (Client)
+## 📈 Scripts
 
-1.  **Navigate to the client directory:**
+The following scripts are available in the root directory to help maintain code quality:
 
-    ```bash
-    cd ../client
-    ```
-
-2.  **Install dependencies:**
-
-    ```bash
-    npm install
-    ```
-
-3.  **Run the client:**
-    ```bash
-    npm start
-    ```
-    The React development server will start on `http://localhost:3000`.
+- `npm run lint`: Lints the codebase using ESLint.
+- `npm run lint:fix`: Automatically fixes linting errors.
+- `npm run format`: Formats the code using Prettier.
 
 ## 📦 API Endpoints
 
