@@ -56,7 +56,14 @@ const Asset = {
       WHERE id = $5 AND user_id = $6
       RETURNING *;
     `;
-    const values = [name, target_percentage, current_value, currency, assetId, userId];
+    const values = [
+      name,
+      target_percentage,
+      current_value,
+      currency,
+      assetId,
+      userId,
+    ];
 
     try {
       const res = await db.query(query, values);

@@ -14,7 +14,7 @@ services:
       POSTGRES_DB: rebalancer
     ports:
       # Maps computer's port 5432 to the container's port 5432
-      - "5432:5432"
+      - '5432:5432'
     volumes:
       # Makes sure data is saved even if you stop the container
       - db-data:/var/lib/postgresql

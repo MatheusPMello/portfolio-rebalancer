@@ -1,0 +1,29 @@
+{
+  "name": "portfolio-rebalancer",
+  "version": "1.0.0",
+  "description": "A full-stack web application using React, Node.js, and PostgreSQL to help investors track and rebalance their portfolios.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MatheusPMello/portfolio-rebalancer.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MatheusPMello/portfolio-rebalancer/issues"
+  },
+  "homepage": "https://github.com/MatheusPMello/portfolio-rebalancer#readme",
+  "devDependencies": {
+    "eslint": "^9.39.1",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.4",
+    "prettier": "^3.6.2"
+  }
+}
