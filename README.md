@@ -1,6 +1,6 @@
 # Portfolio Rebalancer
 
-A backend API using Node.js, Express, and PostgreSQL to help investors track and rebalance their portfolios.
+A full-stack application with a React frontend and a Node.js backend to help investors track and rebalance their portfolios.
 
 ## ✨ Features
 
@@ -12,29 +12,25 @@ A backend API using Node.js, Express, and PostgreSQL to help investors track and
 
 ## 🛠️ Tech Stack
 
+- **Frontend:** React, Vite, TypeScript, Bootstrap
 - **Backend:** Node.js, Express
 - **Database:** PostgreSQL
+- **Containerization:** Docker
 
 ## 📂 Project Structure
 
 ```
 /portfolio-rebalancer/
+|-- /client/            <-- React Frontend
+|   |-- /src/
+|   |-- package.json
+|   -- vite.config.ts
 |-- /server/            <-- Node.js API
 |   |-- /src/
-|   |   |-- /config/
-|   |   |-- /config/
-|   |   |-- /controllers/
-|   |   |   |-- authController.js
-|   |   |   -- assetController.js
-|   |   |-- /middlewares/
-|   |   |   -- authMiddleware.js
-|   |   |-- /models/
-|   |   |-- /routes/
-|   |   |   |-- authRoutes.js
-|   |   |   -- assetRoutes.js
 |   |-- .env
 |   -- package.json
 |-- .gitignore
+|-- docker-compose.yml
 |-- package.json
 |-- LICENSE
 -- README.md
@@ -45,7 +41,7 @@ A backend API using Node.js, Express, and PostgreSQL to help investors track and
 ### Prerequisites
 
 - [Node.js](https://nodejs.org/) (v18 or later)
-- [PostgreSQL](https://www.postgresql.org/download/) (running locally)
+- [Docker](https://www.docker.com/products/docker-desktop/)
 - [Git](https://git-scm.com/)
 
 ### 1. Clone the Repository
@@ -55,53 +51,72 @@ git clone https://github.com/MatheusPMello/portfolio-rebalancer.git
 cd portfolio-rebalancer
 ```
 
-### 2. Setup
+### 2. Run the Database with Docker
 
-1.  **Navigate to the server directory:**
+This project uses Docker to run a PostgreSQL database in a container. This simplifies setup and ensures a consistent environment.
 
-    ```bash
-    cd server
-    ```
-
-2.  **Install dependencies:**
+1.  **Start the database container:**
 
     ```bash
-    npm install
+    docker-compose up -d
     ```
 
-3.  **Create the environment file:**
-    Create a `.env` file in the `/server` directory and add your database credentials. The server defaults to port `5000` if not specified.
+    This command will start the PostgreSQL container in the background and create a volume to persist your data.
+
+2.  **Database Credentials:**
+    The default credentials are set in `docker-compose.yml`. For the server to connect, your `/server/.env` file should match these values:
 
     ```ini
     # /server/.env
 
-    # Server Port (Optional, defaults to 5000)
-    PORT=5001
-
-    # Database Connection
-    DB_USER=postgres
-    DB_PASSWORD=mysecretpassword
+    DB_USER=docker_username
+    DB_PASSWORD=docker_password
     DB_HOST=localhost
     DB_PORT=5432
     DB_NAME=rebalancer
     ```
 
-4.  **Set up the database:**
-    Run the following command to create the necessary tables.
+### 3. Setup and Run the Backend
+
+1.  **Navigate to the server directory and install dependencies:**
+
+    ```bash
+    cd server
+    npm install
+    ```
+
+2.  **Set up the database tables:**
 
     ```bash
     npm run db:setup
     ```
 
-5.  **Run the server:**
+3.  **Run the server:**
+
     ```bash
     npm start
     ```
-    The server will start, and you will see a confirmation that the database is connected.
+
+### 4. Setup and Run the Frontend
+
+1.  **In a new terminal**, navigate to the client directory and install dependencies:
+
+    ```bash
+    cd client
+    npm install
+    ```
+
+2.  **Run the client:**
+
+    ```bash
+    npm run dev
+    ```
+
+    The React development server will start, and you can access the application in your browser.
 
 ## 📈 Scripts
 
-The following scripts are available in the root directory to help maintain code quality:
+The following scripts are available in their respective `client` and `server` directories to help maintain code quality:
 
 - `npm run lint`: Lints the codebase using ESLint.
 - `npm run lint:fix`: Automatically fixes linting errors.
