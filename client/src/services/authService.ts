@@ -27,10 +27,12 @@ export interface AuthResponse {
  * Registers a new user.
  * @param credentials - An object containing email and password
  */
-const register = async (credentials: AuthCredentials): Promise<AuthResponse> => {
+const register = async (
+  credentials: AuthCredentials,
+): Promise<AuthResponse> => {
   // axios.post automatically converts our object to JSON
   const response = await axios.post(`${API_URL}/register`, credentials);
-  
+
   // The data we want is in response.data
   return response.data;
 };

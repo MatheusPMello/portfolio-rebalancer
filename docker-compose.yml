@@ -1,22 +1,16 @@
-# /docker-compose.yml
-
-version: '3.8'
-
 services:
-  # Service name for our database
   db:
-      image: postgres:16
-      container_name: rebalancer_db
-      restart: always
-      environment:
-        POSTGRES_USER: rebalancer_user   # <-- CHANGED
-        POSTGRES_PASSWORD: rebalancer_pw # <-- CHANGED
-        POSTGRES_DB: rebalancer
-      ports:
-        - '5433:5432'
-      volumes:
-        - db-data:/var/lib/postgresql
+    image: postgres:16
+    container_name: rebalancer_db
+    restart: always
+    environment:
+      POSTGRES_USER: rebalancer_user
+      POSTGRES_PASSWORD: rebalancer_pw
+      POSTGRES_DB: rebalancer
+    ports:
+      - '5433:5432'
+    volumes:
+      - db-data:/var/lib/postgresql/data
 
 volumes:
-  # Creates the "db-data" volume
   db-data:
