@@ -2,17 +2,33 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
+// 1. Import our new auth service
+import authService from '../services/authService';
+
 export function LoginPage() {
-  // Use 'useState' to manage the form's input values
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  
+  // 2. Add state to show error messages to the user
+  const [error, setError] = useState<string | null>(null);
 
-  // This function will run when the form is submitted
-  const handleSubmit = (event: React.FormEvent) => {
-    // Prevent the browser from refreshing the page
+  // 3. Make the handleSubmit function 'async'
+  const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    console.log('Login attempt with:', { email, password });
-    // TODO: Call API service here
+    setError(null); // Clear any old errors
+
+    try {
+      // 4. Call our authService.login function
+      const data = await authService.login({ email, password });
+      
+      console.log('Login Successful!', data);
+      // TODO: Save the token and redirect the user
+      
+    } catch (err: any) {
+      // 5. If the API fails, catch the error and show it
+      console.error('Login failed:', err);
+      setError(err.response?.data?.message || 'Login failed. Please try again.');
+    }
   };
 
   return (
@@ -20,6 +36,10 @@ export function LoginPage() {
       <div className="col-md-6 col-lg-4">
         <h2 className="text-center mb-4">Login</h2>
         <form onSubmit={handleSubmit}>
+          
+          {/* This part shows the error if it exists */}
+          {error && <div className="alert alert-danger">{error}</div>}
+
           <div className="form-floating mb-3">
             <input
               type="email"

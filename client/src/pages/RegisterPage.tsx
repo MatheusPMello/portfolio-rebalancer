@@ -2,14 +2,33 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
+// 1. Import our new auth service
+import authService from '../services/authService';
+
 export function RegisterPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  
+  // 2. Add state to show error messages
+  const [error, setError] = useState<string | null>(null);
 
-  const handleSubmit = (event: React.FormEvent) => {
+  // 3. Make the handleSubmit function 'async'
+  const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    console.log('Register attempt with:', { email, password });
-    // TODO: Call API service here
+    setError(null);
+
+    try {
+      // 4. Call our authService.register function
+      const data = await authService.register({ email, password });
+      
+      console.log('Register Successful!', data);
+      // TODO: Save the token and redirect the user
+      
+    } catch (err: any) {
+      // 5. If the API fails, catch the error and show it
+      console.error('Register failed:', err);
+      setError(err.response?.data?.message || 'Registration failed. Please try again.');
+    }
   };
 
   return (
@@ -17,6 +36,10 @@ export function RegisterPage() {
       <div className="col-md-6 col-lg-4">
         <h2 className="text-center mb-4">Register</h2>
         <form onSubmit={handleSubmit}>
+
+          {/* This part shows the error if it exists */}
+          {error && <div className="alert alert-danger">{error}</div>}
+
           <div className="form-floating mb-3">
             <input
               type="email"
