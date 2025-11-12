@@ -1,3 +1,23 @@
+/**
+ * @file App.css
+ * @description This file contains global styles for the application.
+ * Many of these are default styles from the initial project setup (e.g., Vite/Create React App)
+ * and may not be actively used by the custom components.
+ *
+ * @table-of-contents
+ * 1. Root Container
+ * 2. Logo Styles
+ * 3. Keyframe Animations
+ * 4. Card Styles
+ * 5. Utility Styles
+ */
+
+/* ==========================================================================
+   1. Root Container
+   ========================================================================== */
+/**
+ * Defines the main application container.
+ */
 #root {
   max-width: 1280px;
   margin: 0 auto;
@@ -5,6 +25,12 @@
   text-align: center;
 }
 
+/* ==========================================================================
+   2. Logo Styles
+   ========================================================================== */
+/**
+ * Base styles for the logo, including hover effects.
+ */
 .logo {
   height: 6em;
   padding: 1.5em;
@@ -18,6 +44,12 @@
   filter: drop-shadow(0 0 2em #61dafbaa);
 }
 
+/* ==========================================================================
+   3. Keyframe Animations
+   ========================================================================== */
+/**
+ * Defines a simple logo spinning animation.
+ */
 @keyframes logo-spin {
   from {
     transform: rotate(0deg);
@@ -27,16 +59,29 @@
   }
 }
 
+/**
+ * Applies the spinning animation to the logo if the user has not requested
+ * reduced motion.
+ */
 @media (prefers-reduced-motion: no-preference) {
   a:nth-of-type(2) .logo {
     animation: logo-spin infinite 20s linear;
   }
 }
 
+/* ==========================================================================
+   4. Card Styles
+   ========================================================================== */
+/**
+ * Generic card styling. Note: This might conflict with Bootstrap's .card class.
+ */
 .card {
   padding: 2em;
 }
 
+/* ==========================================================================
+   5. Utility Styles
+   ========================================================================== */
 .read-the-docs {
   color: #888;
 }

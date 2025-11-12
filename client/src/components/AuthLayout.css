@@ -1,0 +1,108 @@
+/**
+ * @file AuthLayout.css
+ * @description Styles for the authentication layout, used for pages like login and registration.
+ * This stylesheet handles the main card layout, including the showcase and form sections.
+ *
+ * @table-of-contents
+ * 1. Layout Container
+ * 2. Main Card
+ * 3. Showcase Section (Right Side)
+ * 4. Form Section (Left Side)
+ * 5. Form Elements
+ * 6. Divider
+ */
+
+/* ==========================================================================
+   1. Layout Container
+   ========================================================================== */
+/**
+ * Centers the login card vertically and horizontally on the page.
+ */
+.login-page-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 85vh; /* Use a significant portion of the viewport height */
+}
+
+/* ==========================================================================
+   2. Main Card
+   ========================================================================== */
+/**
+ * The main card that holds the showcase and form.
+ */
+.login-card {
+  border: none;
+  border-radius: 1.25rem; /* Creates the rounded corners */
+  overflow: hidden; /* Ensures child elements conform to the border-radius */
+  max-width: 1000px;
+  width: 100%;
+}
+
+/* ==========================================================================
+   3. Showcase Section (Right Side)
+   ========================================================================== */
+.login-showcase-container {
+  background-color: #3b3bff;
+  padding: 3rem;
+  color: white;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* ==========================================================================
+   4. Form Section (Left Side)
+   ========================================================================== */
+.login-form-container {
+  padding: 3rem;
+}
+
+/* ==========================================================================
+   5. Form Elements
+   ========================================================================== */
+.login-form-container .form-control {
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  border: 1px solid #ced4da;
+}
+
+.login-form-container .form-label {
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+.login-form-container .btn-primary {
+  background-color: #3b3bff;
+  border-color: #3b3bff;
+  font-weight: 500;
+}
+
+/* ==========================================================================
+   6. Divider
+   ========================================================================== */
+/**
+ * Creates a horizontal line with text in the middle (e.g., "or").
+ */
+.divider-text {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  color: #adb5bd;
+}
+
+.divider-text::before,
+.divider-text::after {
+  content: '';
+  flex: 1;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.divider-text:not(:empty)::before {
+  margin-right: .5em;
+}
+
+.divider-text:not(:empty)::after {
+  margin-left: .5em;
+}

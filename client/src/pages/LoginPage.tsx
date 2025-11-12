@@ -1,74 +1,84 @@
-// /client/src/pages/LoginPage.tsx
+/**
+ * @file LoginPage.tsx
+ * @description This component renders the login page, allowing users to sign in to their account.
+ * It is designed to be rendered within the AuthLayout component.
+ */
+
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import authService from '../services/authService';
 
+/**
+ * Renders the login form and handles the user authentication process.
+ * @returns {JSX.Element} The login page component.
+ */
 export function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-
   const [error, setError] = useState<string | null>(null);
-
   const navigate = useNavigate();
 
+  /**
+   * Handles the form submission for the login attempt.
+   * It prevents the default form submission, calls the auth service, and handles the response.
+   * On success, it stores the token and navigates to the dashboard.
+   * On failure, it displays an error message.
+   * @param {React.FormEvent} event - The form submission event.
+   */
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     setError(null);
-
     try {
       const data = await authService.login({ email, password });
-      console.log('Login Successful!', data);
-
       localStorage.setItem('token', data.token);
-
       navigate('/dashboard');
     } catch (err: any) {
-      console.error('Login failed:', err);
-      setError(
-        err.response?.data?.message || 'Login failed. Please try again.',
-      );
+      setError(err.response?.data?.message || 'Login failed. Please try again.');
     }
   };
-  return (
-    <div className="row justify-content-center">
-      <div className="col-md-14 col-lg-12">
-        <h2 className="text-center mb-4">Login</h2>
-        <form onSubmit={handleSubmit}>
-          {/* This part shows the error if it exists */}
-          {error && <div className="alert alert-danger">{error}</div>}
 
-          <div className="form-floating mb-3">
-            <input
-              type="email"
-              className="form-control"
-              id="email"
-              placeholder="name@example.com"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
-            <label htmlFor="email">Email address</label>
-          </div>
-          <div className="form-floating mb-3">
-            <input
-              type="password"
-              className="form-control"
-              id="password"
-              placeholder="Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-            <label htmlFor="password">Password</label>
-          </div>
-          <button type="submit" className="btn btn-primary w-100 py-2">
-            Login
-          </button>
-        </form>
-        <p className="text-center mt-3">
-          Don't have an account? <Link to="/register">Register here</Link>
+  // 2. Wrap your form in the <AuthLayout> component
+  return (
+    <>
+      {/* This is ALL that's left in this file.
+        Just the unique part: the form.
+      */}
+      <h3 className="fw-bold mb-2">Welcome Back</h3>
+
+      <form onSubmit={handleSubmit}>
+        {error && <div className="alert alert-danger">{error}</div>}
+
+        <div className="mb-3 w-100 text-start">
+          <label htmlFor="email" className="form-label">Email</label>
+          <input
+            type="email"
+            className="form-control"
+            id="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+        </div>
+        <div className="mb-3 w-100 text-start">
+          <label htmlFor="password" className="form-label">Password</label>
+          <input
+            type="password"
+            className="form-control"
+            id="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+        </div>
+
+        <button type="submit" className="btn btn-primary w-100 py-2 fs-5 mt-3">
+          Log In
+        </button>
+        
+        <p className="text-center mt-4">
+          Don't Have An Account? <Link to="/register">Register Now.</Link>
         </p>
-      </div>
-    </div>
+      </form>
+    </>
   );
 }

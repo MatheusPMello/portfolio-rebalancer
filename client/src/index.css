@@ -1,18 +1,44 @@
+/**
+ * @file index.css
+ * @description This file provides the base styles for the entire application.
+ * It includes CSS variables, resets, and default styling for common HTML elements.
+ * It also defines light and dark mode color schemes based on user system preferences.
+ *
+ * @table-of-contents
+ * 1. Root & Dark Theme Defaults
+ * 2. Link Styles
+ * 3. Body Styles
+ * 4. Heading Styles
+ * 5. Button Styles
+ * 6. Light Theme Overrides
+ */
+
+/* ==========================================================================
+   1. Root & Dark Theme Defaults
+   ========================================================================== */
+/**
+ * Defines global CSS variables and default styles for the dark theme.
+ */
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
+  /* Default to dark theme */
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
   background-color: #242424;
 
+  /* Font rendering optimizations */
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* ==========================================================================
+   2. Link Styles
+   ========================================================================== */
 a {
   font-weight: 500;
   color: #646cff;
@@ -22,19 +48,32 @@ a:hover {
   color: #535bf2;
 }
 
+/* ==========================================================================
+   3. Body Styles
+   ========================================================================== */
 body {
   margin: 0;
+  /* Note: These flex properties might be overridden by #root styles */
   display: flex;
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
 }
 
+/* ==========================================================================
+   4. Heading Styles
+   ========================================================================== */
 h1 {
   font-size: 3.2em;
   line-height: 1.1;
 }
 
+/* ==========================================================================
+   5. Button Styles
+   ========================================================================== */
+/**
+ * Default button styling. Note: These may be overridden by Bootstrap styles.
+ */
 button {
   border-radius: 8px;
   border: 1px solid transparent;
@@ -54,6 +93,12 @@ button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
+/* ==========================================================================
+   6. Light Theme Overrides
+   ========================================================================== */
+/**
+ * Overrides the default dark theme variables when the user prefers a light color scheme.
+ */
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;

@@ -1,78 +1,86 @@
-// /client/src/pages/RegisterPage.tsx
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+/**
+ * @file RegisterPage.tsx
+ * @description This component renders the registration page, allowing new users to create an account.
+ * It is designed to be rendered within the AuthLayout component.
+ */
 
-// 1. Import our new auth service
+import { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import authService from '../services/authService';
 
+/**
+ * Renders the registration form and handles the new user creation process.
+ * @returns {JSX.Element} The registration page component.
+ */
 export function RegisterPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-
   const [error, setError] = useState<string | null>(null);
-
   const navigate = useNavigate();
 
+  /**
+   * Handles the form submission for the registration attempt.
+   * It prevents the default form submission, calls the auth service to register the user,
+   * and handles the response. On success, it stores the token and navigates to the dashboard.
+   * On failure, it displays an error message.
+   * @param {React.FormEvent} event - The form submission event.
+   * @description Handles form submission for user registration.
+   */
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     setError(null);
-
     try {
       const data = await authService.register({ email, password });
-
-      console.log('Register Successful!', data);
-
+      
       localStorage.setItem('token', data.token);
-
       navigate('/dashboard');
     } catch (err: any) {
-      console.error('Register failed:', err);
-      setError(
-        err.response?.data?.message || 'Registration failed. Please try again.',
-      );
+      setError(err.response?.data?.message || 'Registration failed. Please try again.');
     }
   };
 
+  // 3. Wrap everything in <AuthLayout>
   return (
-    <div className="row justify-content-center">
-      <div className="col-md-14 col-lg-12">
-        <h2 className="text-center mb-4">Register</h2>
-        <form onSubmit={handleSubmit}>
-          {/* This part shows the error if it exists */}
-          {error && <div className="alert alert-danger">{error}</div>}
+    <>
+      {/* This is the only part that's different from the login page.
+        All the old layout <div>s are gone.
+      */}
+      <h3 className="fw-bold mb-2">Create an Account</h3>
 
-          <div className="form-floating mb-3">
-            <input
-              type="email"
-              className="form-control"
-              id="email"
-              placeholder="name@example.com"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
-            <label htmlFor="email">Email address</label>
-          </div>
-          <div className="form-floating mb-3">
-            <input
-              type="password"
-              className="form-control"
-              id="password"
-              placeholder="Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-            <label htmlFor="password">Password</label>
-          </div>
-          <button type="submit" className="btn btn-primary w-100 py-2">
-            Create Account
-          </button>
-        </form>
-        <p className="text-center mt-3">
-          Already have an account? <Link to="/login">Login here</Link>
+      <form onSubmit={handleSubmit}>
+        {error && <div className="alert alert-danger">{error}</div>}
+
+        <div className="mb-3 text-start">
+          <label htmlFor="email" className="form-label">Email</label>
+          <input
+            type="email"
+            className="form-control"
+            id="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+        </div>
+        <div className="mb-3 text-start">
+          <label htmlFor="password" className="form-label">Password</label>
+          <input
+            type="password"
+            className="form-control"
+            id="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+        </div>
+
+        <button type="submit" className="btn btn-primary w-100 py-2 fs-5 mt-3">
+          Create Account
+        </button>
+        
+        <p className="text-center mt-4">
+          Already Have An Account? <Link to="/login">Log In Now.</Link>
         </p>
-      </div>
-    </div>
+      </form>
+    </>
   );
 }
