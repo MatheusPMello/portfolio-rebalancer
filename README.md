@@ -63,8 +63,14 @@ This project uses Docker to run a PostgreSQL database in a container. This simpl
 
     This command will start the PostgreSQL container in the background and create a volume to persist your data.
 
-2.  **Database Credentials:**
-    The default credentials are set in `docker-compose.yml`. For the server to connect, your `/server/.env` file should match these values:
+2.  **Environment Variables:**
+    In the `/server` directory, you'll find a `.env.example` file. Make a copy of it and rename it to `.env`:
+
+    ```bash
+    cp .env.example .env
+    ```
+
+    Next, open the `.env` file and fill in the required values. The default database credentials are set in `docker-compose.yml`.
 
     ```ini
     # /server/.env
@@ -74,6 +80,9 @@ This project uses Docker to run a PostgreSQL database in a container. This simpl
     DB_HOST=localhost
     DB_PORT=5432
     DB_NAME=rebalancer
+
+    # You also need to add a secure secret for signing JWTs
+    JWT_SECRET=your_super_secret_key_here
     ```
 
 ### 3. Setup and Run the Backend
@@ -137,6 +146,10 @@ The following are the main endpoints available:
 - `POST /api/assets`: Add a new asset.
 - `PUT /api/assets/:id`: Update an existing asset.
 - `DELETE /api/assets/:id`: Delete an asset.
+
+## 🤝 Contributing
+
+Contributions, issues, and feature requests are welcome! Feel free to check the [contributing guide](CONTRIBUTING.md).
 
 ## 📄 License
 
