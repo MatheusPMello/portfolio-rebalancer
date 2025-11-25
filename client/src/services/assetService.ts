@@ -19,19 +19,30 @@ export interface Asset extends NewAsset {
 // --- 2. HELPERS ---
 
 const getAuthConfig = () => {
-    const token = localStorage.getItem('token');
-    return {
-        headers: {
-            Authization: `Bearer ${token}`,
-        },
-    };
+  const token = localStorage.getItem('token');
+  
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  console.log('🛠️ getAuthConfig generated:', config);
+  
+  return config;
 };
 
 // --- 3. ASYNC FUNCTIONS ---
 
 const getAll = async (): Promise<Asset[]> => {
-    const response = await axios.get(API_URL, getAuthConfig());
-    return response.data;
+  console.log('🚀 Calling axios.get...');
+  
+  const config = getAuthConfig();
+  console.log('📦 Config being passed to axios:', config);
+
+  const response = await axios.get(API_URL, config);
+  
+  return response.data;
 };
 
 const create = async (assetData: NewAsset): Promise<Asset> => {

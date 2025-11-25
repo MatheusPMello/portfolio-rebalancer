@@ -37,12 +37,8 @@ export function LoginPage() {
     }
   };
 
-  // 2. Wrap your form in the <AuthLayout> component
   return (
     <>
-      {/* This is ALL that's left in this file.
-        Just the unique part: the form.
-      */}
       <h3 className="fw-bold mb-2">Welcome Back</h3>
 
       <form onSubmit={handleSubmit}>

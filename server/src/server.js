@@ -29,7 +29,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/assets', assetRoutes);
 
 // --- Server Startup ---
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5001;
 
 app.listen(PORT, async () => {
   try {

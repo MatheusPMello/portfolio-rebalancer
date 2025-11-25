@@ -26,20 +26,13 @@ import { DashboardPage } from './pages/DashboardPage';
 function App() {
   return (
     <Routes>
-      {/* Group 1: Auth Routes
-        These routes will render *inside* the <AuthLayout>
-      */}
       <Route element={<AuthLayout />}>
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
       </Route>
 
-      {/* Group 2: Main App Routes
-        These routes will render *inside* the <MainLayout> (with the navbar)
-      */}
       <Route element={<MainLayout />}>
         <Route path="/dashboard" element={<DashboardPage />} />
-        {/* We'll also make the root path redirect to the dashboard */}
         <Route path="/" element={<DashboardPage />} />
       </Route>
     </Routes>

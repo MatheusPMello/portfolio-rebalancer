@@ -39,12 +39,8 @@ export function RegisterPage() {
     }
   };
 
-  // 3. Wrap everything in <AuthLayout>
   return (
     <>
-      {/* This is the only part that's different from the login page.
-        All the old layout <div>s are gone.
-      */}
       <h3 className="fw-bold mb-2">Create an Account</h3>
 
       <form onSubmit={handleSubmit}>

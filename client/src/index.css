@@ -1,113 +1,42 @@
-/**
- * @file index.css
- * @description This file provides the base styles for the entire application.
- * It includes CSS variables, resets, and default styling for common HTML elements.
- * It also defines light and dark mode color schemes based on user system preferences.
- *
- * @table-of-contents
- * 1. Root & Dark Theme Defaults
- * 2. Link Styles
- * 3. Body Styles
- * 4. Heading Styles
- * 5. Button Styles
- * 6. Light Theme Overrides
- */
+/* /client/src/index.css */
 
-/* ==========================================================================
-   1. Root & Dark Theme Defaults
-   ========================================================================== */
-/**
- * Defines global CSS variables and default styles for the dark theme.
- */
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
   line-height: 1.5;
   font-weight: 400;
+}
 
-  /* Default to dark theme */
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-
-  /* Font rendering optimizations */
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
+body {
+  margin: 0;
+  background-color: #ffffff; /* Pure White Background */
+  color: #212529; /* Standard Dark Gray Text */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* ==========================================================================
-   2. Link Styles
-   ========================================================================== */
+/* THE CARD STYLE
+  Since the background is white, we need a stronger shadow 
+  so the user can see where the card ends.
+*/
+.card-custom {
+  background-color: #ffffff;
+  border-radius: 1rem;
+  border: 1px solid #e9ecef; /* Very subtle border */
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06); /* Elegant shadow */
+  padding: 2rem;
+  margin-bottom: 2rem;
+}
+
+/* Link Styles */
 a {
   font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
+  color: #3b3bff;
+  text-decoration: none;
+  transition: color 0.2s;
 }
+
 a:hover {
-  color: #535bf2;
-}
-
-/* ==========================================================================
-   3. Body Styles
-   ========================================================================== */
-body {
-  margin: 0;
-  /* Note: These flex properties might be overridden by #root styles */
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
-}
-
-/* ==========================================================================
-   4. Heading Styles
-   ========================================================================== */
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
-}
-
-/* ==========================================================================
-   5. Button Styles
-   ========================================================================== */
-/**
- * Default button styling. Note: These may be overridden by Bootstrap styles.
- */
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
-}
-
-/* ==========================================================================
-   6. Light Theme Overrides
-   ========================================================================== */
-/**
- * Overrides the default dark theme variables when the user prefers a light color scheme.
- */
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
+  color: #2626b9;
 }

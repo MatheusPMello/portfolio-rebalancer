@@ -19,22 +19,11 @@ export function AuthLayout() {
     <div className="login-page-container">
       <div className="login-card shadow-sm">
         <div className="row g-0">
-          
-          {/* 1. LEFT FORM SIDE */}
           <div className="col-lg-6">
             <div className="login-form-container p-4 p-md-5">
-              
-              {/*
-                This 'children' prop is the magic.
-                It will render WHATEVER we put inside the <AuthLayout> tag.
-                (e.g., the <LoginPage> form, or the <RegisterPage> form)
-              */}
               <Outlet />
-
             </div>
           </div>
-
-          {/* 2. RIGHT IMAGE SIDE */}
           <div className="col-lg-6 d-none d-lg-block">
             <div className="login-showcase-container">
               <h2 className="text-white fw-bold">Effortlessly manage your investments.</h2>
