@@ -1,13 +1,13 @@
 // /server/src/controllers/assetController.js
-const Asset = require('../models/Asset'); // Our Asset model
+const Asset = require('../models/Asset');
+
 
 const assetController = {
   /**
-   * Get all assets for the logged-in user
-   */
+   * Retrieves the active portfolio assets for the authenticated user
+  */
   getAllAssets: async (req, res) => {
     try {
-      // req.user.id is attached by the authMiddleware
       const assets = await Asset.findByUserId(req.user.id);
       res.status(200).json(assets);
     } catch (err) {
@@ -16,14 +16,13 @@ const assetController = {
   },
 
   /**
-   * Create a new asset for the logged-in user
+   * Create a new asset for the authenticated user.
    */
   createAsset: async (req, res) => {
     try {
       const { name, target_percentage, current_value, currency } = req.body;
       const userId = req.user.id;
 
-      // Simple validation
       if (!name || !target_percentage || !current_value || !currency) {
         return res
           .status(400)
@@ -43,15 +42,11 @@ const assetController = {
     }
   },
 
-  /**
-   * Update an asset
-   */
   updateAsset: async (req, res) => {
     try {
-      const { id } = req.params; // Get asset ID from URL (e.g., /api/assets/5)
+      const { id } = req.params;
       const userId = req.user.id;
 
-      // We pass the full req.body as the data to update
       const updatedAsset = await Asset.updateById(id, userId, req.body);
 
       if (!updatedAsset) {
@@ -65,9 +60,6 @@ const assetController = {
     }
   },
 
-  /**
-   * Delete an asset
-   */
   deleteAsset: async (req, res) => {
     try {
       const { id } = req.params;
