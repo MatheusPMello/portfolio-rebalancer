@@ -8,18 +8,16 @@ const db = require('./config/db');
 // --- Import Routes ---
 const authRoutes = require('./routes/authRoutes');
 const assetRoutes = require('./routes/assetRoutes');
+const rebalanceRoutes = require('./routes/rebalanceRoutes')
 
 // Initialize the Express app
 const app = express();
 
 // --- Middlewares ---
-// Enable CORS for all routes
 app.use(cors());
-// Parse JSON request bodies
 app.use(express.json());
 
 // --- Basic Test Route ---
-// A simple route to check if the server is running
 app.get('/api/test', (req, res) => {
   res.json({ message: 'Hello from the server! 👋' });
 });
@@ -27,13 +25,13 @@ app.get('/api/test', (req, res) => {
 // --- API Routes ---
 app.use('/api/auth', authRoutes);
 app.use('/api/assets', assetRoutes);
+app.use('/api/rebalance', rebalanceRoutes);
 
 // --- Server Startup ---
 const PORT = process.env.PORT || 5001;
 
 app.listen(PORT, async () => {
   try {
-    // Test the database connection
     console.log('--- DEBUGGING ENV VARS ---');
     console.log('DB_USER:', process.env.DB_USER);
     console.log('DB_PASSWORD:', process.env.DB_PASSWORD);
