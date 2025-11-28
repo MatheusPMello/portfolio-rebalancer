@@ -2,7 +2,7 @@
 const Asset = require('../models/Asset');
 
 // Hardcoded for now
-const RATE_USD_TO_BRL = 6.00; 
+const RATE_USD_TO_BRL = 6; 
 
 const rebalanceController = {
   calculate: async (req, res) => {
