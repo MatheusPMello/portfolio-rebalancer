@@ -10,6 +10,7 @@ export function DashboardPage() {
   const [error, setError] = useState<string | null>(null);
   const [showAddModal, setShowAddModal] = useState(false);
   const [showRebalanceModal, setShowRebalanceModal] = useState(false);
+  const [editingAsset, setEditingAsset] = useState<Asset | null>(null);
 
   const loadAssets = async () => {
     try {
@@ -44,6 +45,17 @@ export function DashboardPage() {
     }
   };
 
+  const handleEdit = (asset: Asset) => {
+    setEditingAsset(asset);
+    setShowAddModal(true);
+  };
+
+  const handleAddNew = () => {
+    setEditingAsset(null);
+    setShowAddModal(true);
+  };
+
+
   // Calculate Total Portfolio Value ---
   const totalValue = assets.reduce((sum, asset) => sum + Number(asset.current_value), 0);
 
@@ -65,7 +77,7 @@ export function DashboardPage() {
 
           <button 
             className="btn btn-primary px-4 py-2"
-            onClick={() => setShowAddModal(true)}
+            onClick={handleAddNew}
           >
             + Add Asset
           </button>
@@ -120,6 +132,15 @@ export function DashboardPage() {
                     </td>
                     <td className="fw-medium">{formatCurrency(Number(asset.current_value), asset.currency)}</td>
                     <td className="text-end pe-4">
+                      <button 
+                        className="btn btn-sm btn-link text-primary text-decoration-none me-2"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleEdit(asset);
+                        }}
+                      >
+                        Edit
+                      </button>
                       <button className="btn btn-sm btn-link text-danger text-decoration-none" onClick={() => handleDelete(asset.id)}>
                         Remove
                       </button>
@@ -135,7 +156,8 @@ export function DashboardPage() {
       <AddAssetModal 
         show={showAddModal} 
         onClose={() => setShowAddModal(false)} 
-        onAssetAdded={loadAssets} 
+        onAssetSaved={loadAssets} 
+        assetToEdit={editingAsset}
       />
       <RebalanceModal 
         show={showRebalanceModal} 
