@@ -14,12 +14,15 @@ export function MainLayout() {
     <>
       <nav className="navbar navbar-expand-lg navbar-light bg-white border-bottom py-3">
         <div className="container">
-          <Link to="/dashboard" className="navbar-brand fw-bold text-primary fs-4">
+          <Link
+            to="/dashboard"
+            className="navbar-brand fw-bold text-primary fs-4"
+          >
             Portfolio Rebalancer
           </Link>
-          
-          <button 
-            className="btn btn-outline-danger btn-sm px-3" 
+
+          <button
+            className="btn btn-outline-danger btn-sm px-3"
             onClick={handleLogout}
           >
             Logout

@@ -8,7 +8,7 @@ const db = require('./config/db');
 // --- Import Routes ---
 const authRoutes = require('./routes/authRoutes');
 const assetRoutes = require('./routes/assetRoutes');
-const rebalanceRoutes = require('./routes/rebalanceRoutes')
+const rebalanceRoutes = require('./routes/rebalanceRoutes');
 
 // Initialize the Express app
 const app = express();

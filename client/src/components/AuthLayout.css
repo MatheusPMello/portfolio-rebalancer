@@ -100,9 +100,9 @@
 }
 
 .divider-text:not(:empty)::before {
-  margin-right: .5em;
+  margin-right: 0.5em;
 }
 
 .divider-text:not(:empty)::after {
-  margin-left: .5em;
+  margin-left: 0.5em;
 }

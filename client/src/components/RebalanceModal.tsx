@@ -1,6 +1,8 @@
 // /client/src/components/RebalanceModal.tsx
 import React, { useState } from 'react';
-import rebalanceService, { type RebalanceResponse } from '../services/rebalanceService';
+import rebalanceService, {
+  type RebalanceResponse,
+} from '../services/rebalanceService';
 
 interface RebalanceModalProps {
   show: boolean;
@@ -55,15 +57,23 @@ export function RebalanceModal({ show, onClose }: RebalanceModalProps) {
   };
 
   return (
-    <div className="modal d-block" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
+    <div
+      className="modal d-block"
+      style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}
+    >
       <div className="modal-dialog modal-lg">
         <div className="modal-content">
-          
           <div className="modal-header">
             <h5 className="modal-title fw-bold">
-              {step === 'INPUT' ? 'Rebalance Calculator' : 'Smart Allocation Plan'}
+              {step === 'INPUT'
+                ? 'Rebalance Calculator'
+                : 'Smart Allocation Plan'}
             </h5>
-            <button type="button" className="btn-close" onClick={handleReset}></button>
+            <button
+              type="button"
+              className="btn-close"
+              onClick={handleReset}
+            ></button>
           </div>
 
           <div className="modal-body">
@@ -72,7 +82,8 @@ export function RebalanceModal({ show, onClose }: RebalanceModalProps) {
             {step === 'INPUT' && (
               <form onSubmit={handleCalculate}>
                 <p className="text-muted">
-                  Enter the amount you want to invest. We will calculate the perfect distribution to hit your targets.
+                  Enter the amount you want to invest. We will calculate the
+                  perfect distribution to hit your targets.
                 </p>
                 <div className="row mb-3">
                   <div className="col-md-8">
@@ -91,7 +102,9 @@ export function RebalanceModal({ show, onClose }: RebalanceModalProps) {
                     <select
                       className="form-select form-select-lg"
                       value={currency}
-                      onChange={(e) => setCurrency(e.target.value as 'BRL' | 'USD')}
+                      onChange={(e) =>
+                        setCurrency(e.target.value as 'BRL' | 'USD')
+                      }
                     >
                       <option value="BRL">BRL (R$)</option>
                       <option value="USD">USD ($)</option>
@@ -99,7 +112,11 @@ export function RebalanceModal({ show, onClose }: RebalanceModalProps) {
                   </div>
                 </div>
                 <div className="d-flex justify-content-end">
-                  <button type="submit" className="btn btn-primary btn-lg" disabled={loading}>
+                  <button
+                    type="submit"
+                    className="btn btn-primary btn-lg"
+                    disabled={loading}
+                  >
                     {loading ? 'Calculating...' : 'Calculate Plan'}
                   </button>
                 </div>
@@ -111,17 +128,25 @@ export function RebalanceModal({ show, onClose }: RebalanceModalProps) {
                 <div className="alert alert-success d-flex align-items-center">
                   <i className="bi bi-check-circle-fill me-2"></i>
                   <div>
-                    <strong>Plan Ready:</strong> Distribute your 
-                    <strong> {formatMoney(result.contribution, result.mainCurrency)} </strong> 
+                    <strong>Plan Ready:</strong> Distribute your
+                    <strong>
+                      {' '}
+                      {formatMoney(
+                        result.contribution,
+                        result.mainCurrency,
+                      )}{' '}
+                    </strong>
                     as follows:
                   </div>
                 </div>
 
                 {result.suggestions.length === 0 ? (
-                   <div className="text-center py-4">
-                     <h5>Nothing to do! 🎉</h5>
-                     <p className="text-muted">Your portfolio is already perfectly balanced.</p>
-                   </div>
+                  <div className="text-center py-4">
+                    <h5>Nothing to do! 🎉</h5>
+                    <p className="text-muted">
+                      Your portfolio is already perfectly balanced.
+                    </p>
+                  </div>
                 ) : (
                   <div className="table-responsive">
                     <table className="table table-hover align-middle">
@@ -130,7 +155,9 @@ export function RebalanceModal({ show, onClose }: RebalanceModalProps) {
                           <th>Asset to Buy</th>
                           <th>Target %</th>
                           <th>Current %</th>
-                          <th className="text-end text-success">Amount to Buy</th>
+                          <th className="text-end text-success">
+                            Amount to Buy
+                          </th>
                         </tr>
                       </thead>
                       <tbody>
@@ -138,7 +165,9 @@ export function RebalanceModal({ show, onClose }: RebalanceModalProps) {
                           <tr key={item.assetId}>
                             <td className="fw-bold">{item.name}</td>
                             <td>{item.targetPercentage}%</td>
-                            <td className="text-muted">{item.currentPercentage}%</td>
+                            <td className="text-muted">
+                              {item.currentPercentage}%
+                            </td>
                             <td className="text-end fw-bold text-success fs-5">
                               + {formatMoney(item.amountToBuy, item.currency)}
                             </td>
@@ -154,7 +183,10 @@ export function RebalanceModal({ show, onClose }: RebalanceModalProps) {
 
           {step === 'RESULT' && (
             <div className="modal-footer bg-light">
-              <button className="btn btn-outline-secondary" onClick={() => setStep('INPUT')}>
+              <button
+                className="btn btn-outline-secondary"
+                onClick={() => setStep('INPUT')}
+              >
                 Back
               </button>
               <button className="btn btn-success" onClick={handleReset}>
@@ -162,7 +194,6 @@ export function RebalanceModal({ show, onClose }: RebalanceModalProps) {
               </button>
             </div>
           )}
-
         </div>
       </div>
     </div>

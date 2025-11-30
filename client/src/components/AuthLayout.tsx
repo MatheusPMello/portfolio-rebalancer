@@ -26,10 +26,11 @@ export function AuthLayout() {
           </div>
           <div className="col-lg-6 d-none d-lg-block">
             <div className="login-showcase-container">
-              <h2 className="text-white fw-bold">Effortlessly manage your investments.</h2>
+              <h2 className="text-white fw-bold">
+                Effortlessly manage your investments.
+              </h2>
             </div>
           </div>
-
         </div>
       </div>
     </div>

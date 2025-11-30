@@ -55,9 +55,11 @@ export function DashboardPage() {
     setShowAddModal(true);
   };
 
-
   // Calculate Total Portfolio Value ---
-  const totalValue = assets.reduce((sum, asset) => sum + Number(asset.current_value), 0);
+  const totalValue = assets.reduce(
+    (sum, asset) => sum + Number(asset.current_value),
+    0,
+  );
 
   if (loading) return <div className="text-center mt-5">Loading...</div>;
   if (error) return <div className="alert alert-danger">{error}</div>;
@@ -70,15 +72,14 @@ export function DashboardPage() {
           <p className="text-muted">Overview of your asset allocation.</p>
         </div>
         <div className="col-auto">
-          <button className="btn btn-outline-primary px-4 py-2" 
-            onClick={() => setShowRebalanceModal(true)}>
+          <button
+            className="btn btn-outline-primary px-4 py-2"
+            onClick={() => setShowRebalanceModal(true)}
+          >
             <i className="bi bi-calculator me-2"></i>Rebalance
           </button>
 
-          <button 
-            className="btn btn-primary px-4 py-2"
-            onClick={handleAddNew}
-          >
+          <button className="btn btn-primary px-4 py-2" onClick={handleAddNew}>
             + Add Asset
           </button>
         </div>
@@ -87,11 +88,18 @@ export function DashboardPage() {
       <div className="row mb-4">
         <div className="col-md-4">
           <div className="card-custom p-4 d-flex flex-column justify-content-center h-100">
-            <h6 className="text-uppercase text-muted fw-bold" style={{ fontSize: '0.8rem' }}>Total Balance</h6>
+            <h6
+              className="text-uppercase text-muted fw-bold"
+              style={{ fontSize: '0.8rem' }}
+            >
+              Total Balance
+            </h6>
             <h2 className="fw-bold text-primary mb-0">
               {formatCurrency(totalValue, 'BRL')}
             </h2>
-            <small className="text-muted mt-2">{assets.length} Assets tracked</small>
+            <small className="text-muted mt-2">
+              {assets.length} Assets tracked
+            </small>
           </div>
         </div>
       </div>
@@ -99,8 +107,13 @@ export function DashboardPage() {
       {assets.length === 0 ? (
         <div className="card-custom text-center py-5">
           <h4 className="fw-bold text-muted">Your portfolio is empty</h4>
-          <p className="text-muted mb-4">Add assets to see your balance and rebalancing suggestions.</p>
-          <button className="btn btn-outline-primary" onClick={() => setShowAddModal(true)}>
+          <p className="text-muted mb-4">
+            Add assets to see your balance and rebalancing suggestions.
+          </p>
+          <button
+            className="btn btn-outline-primary"
+            onClick={() => setShowAddModal(true)}
+          >
             Add Your First Asset
           </button>
         </div>
@@ -121,18 +134,35 @@ export function DashboardPage() {
                 {assets.map((asset) => (
                   <tr key={asset.id}>
                     <td className="ps-4 py-3 fw-bold">{asset.name}</td>
-                    <td><span className="badge bg-light text-dark border">{asset.currency}</span></td>
+                    <td>
+                      <span className="badge bg-light text-dark border">
+                        {asset.currency}
+                      </span>
+                    </td>
                     <td>
                       <div className="d-flex align-items-center">
-                        <span className="me-2" style={{ width: '40px' }}>{asset.target_percentage}%</span>
-                        <div className="progress flex-grow-1" style={{ height: '6px' }}>
-                          <div className="progress-bar" style={{ width: `${asset.target_percentage}%` }}></div>
+                        <span className="me-2" style={{ width: '40px' }}>
+                          {asset.target_percentage}%
+                        </span>
+                        <div
+                          className="progress flex-grow-1"
+                          style={{ height: '6px' }}
+                        >
+                          <div
+                            className="progress-bar"
+                            style={{ width: `${asset.target_percentage}%` }}
+                          ></div>
                         </div>
                       </div>
                     </td>
-                    <td className="fw-medium">{formatCurrency(Number(asset.current_value), asset.currency)}</td>
+                    <td className="fw-medium">
+                      {formatCurrency(
+                        Number(asset.current_value),
+                        asset.currency,
+                      )}
+                    </td>
                     <td className="text-end pe-4">
-                      <button 
+                      <button
                         className="btn btn-sm btn-link text-primary text-decoration-none me-2"
                         onClick={(e) => {
                           e.stopPropagation();
@@ -141,7 +171,10 @@ export function DashboardPage() {
                       >
                         Edit
                       </button>
-                      <button className="btn btn-sm btn-link text-danger text-decoration-none" onClick={() => handleDelete(asset.id)}>
+                      <button
+                        className="btn btn-sm btn-link text-danger text-decoration-none"
+                        onClick={() => handleDelete(asset.id)}
+                      >
                         Remove
                       </button>
                     </td>
@@ -153,15 +186,15 @@ export function DashboardPage() {
         </div>
       )}
 
-      <AddAssetModal 
-        show={showAddModal} 
-        onClose={() => setShowAddModal(false)} 
-        onAssetSaved={loadAssets} 
+      <AddAssetModal
+        show={showAddModal}
+        onClose={() => setShowAddModal(false)}
+        onAssetSaved={loadAssets}
         assetToEdit={editingAsset}
       />
-      <RebalanceModal 
-        show={showRebalanceModal} 
-        onClose={() => setShowRebalanceModal(false)} 
+      <RebalanceModal
+        show={showRebalanceModal}
+        onClose={() => setShowRebalanceModal(false)}
       />
     </div>
   );

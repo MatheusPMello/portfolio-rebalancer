@@ -1,11 +1,10 @@
 // /server/src/controllers/assetController.js
 const Asset = require('../models/Asset');
 
-
 const assetController = {
   /**
    * Retrieves the active portfolio assets for the authenticated user
-  */
+   */
   getAllAssets: async (req, res) => {
     try {
       const assets = await Asset.findByUserId(req.user.id);

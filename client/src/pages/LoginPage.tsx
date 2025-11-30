@@ -33,7 +33,9 @@ export function LoginPage() {
       localStorage.setItem('token', data.token);
       navigate('/dashboard');
     } catch (err: any) {
-      setError(err.response?.data?.message || 'Login failed. Please try again.');
+      setError(
+        err.response?.data?.message || 'Login failed. Please try again.',
+      );
     }
   };
 
@@ -45,7 +47,9 @@ export function LoginPage() {
         {error && <div className="alert alert-danger">{error}</div>}
 
         <div className="mb-3 w-100 text-start">
-          <label htmlFor="email" className="form-label">Email</label>
+          <label htmlFor="email" className="form-label">
+            Email
+          </label>
           <input
             type="email"
             className="form-control"
@@ -56,7 +60,9 @@ export function LoginPage() {
           />
         </div>
         <div className="mb-3 w-100 text-start">
-          <label htmlFor="password" className="form-label">Password</label>
+          <label htmlFor="password" className="form-label">
+            Password
+          </label>
           <input
             type="password"
             className="form-control"
@@ -70,7 +76,7 @@ export function LoginPage() {
         <button type="submit" className="btn btn-primary w-100 py-2 fs-5 mt-3">
           Log In
         </button>
-        
+
         <p className="text-center mt-4">
           Don't Have An Account? <Link to="/register">Register Now.</Link>
         </p>

@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken');
 function authMiddleware(req, res, next) {
   // --- DEBUG LOGS START ---
   const authHeader = req.header('Authorization');
-  console.log('\n🔍 Bouncer (Middleware) Check:'); 
+  console.log('\n🔍 Bouncer (Middleware) Check:');
   console.log('   1. Header received:', authHeader);
 
   if (!authHeader) {
@@ -15,11 +15,13 @@ function authMiddleware(req, res, next) {
   const tokenParts = authHeader.split(' ');
   if (tokenParts.length !== 2 || tokenParts[0] !== 'Bearer') {
     console.log('   ❌ Result: Header format is wrong.');
-    return res.status(401).json({ message: 'Token is not valid (must be Bearer)' });
+    return res
+      .status(401)
+      .json({ message: 'Token is not valid (must be Bearer)' });
   }
-  
+
   const token = tokenParts[1];
-  console.log('   2. Token extracted:', token.substring(0, 20) + '...'); 
+  console.log('   2. Token extracted:', token.substring(0, 20) + '...');
 
   try {
     // Check if secret exists

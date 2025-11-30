@@ -31,11 +31,13 @@ export function RegisterPage() {
     setError(null);
     try {
       const data = await authService.register({ email, password });
-      
+
       localStorage.setItem('token', data.token);
       navigate('/dashboard');
     } catch (err: any) {
-      setError(err.response?.data?.message || 'Registration failed. Please try again.');
+      setError(
+        err.response?.data?.message || 'Registration failed. Please try again.',
+      );
     }
   };
 
@@ -47,7 +49,9 @@ export function RegisterPage() {
         {error && <div className="alert alert-danger">{error}</div>}
 
         <div className="mb-3 text-start">
-          <label htmlFor="email" className="form-label">Email</label>
+          <label htmlFor="email" className="form-label">
+            Email
+          </label>
           <input
             type="email"
             className="form-control"
@@ -58,7 +62,9 @@ export function RegisterPage() {
           />
         </div>
         <div className="mb-3 text-start">
-          <label htmlFor="password" className="form-label">Password</label>
+          <label htmlFor="password" className="form-label">
+            Password
+          </label>
           <input
             type="password"
             className="form-control"
@@ -72,7 +78,7 @@ export function RegisterPage() {
         <button type="submit" className="btn btn-primary w-100 py-2 fs-5 mt-3">
           Create Account
         </button>
-        
+
         <p className="text-center mt-4">
           Already Have An Account? <Link to="/login">Log In Now.</Link>
         </p>

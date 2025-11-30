@@ -28,11 +28,14 @@ const getAuthConfig = () => {
 };
 
 // 3. The Function
-const calculate = async (amount: number, mainCurrency: 'BRL' | 'USD'): Promise<RebalanceResponse> => {
+const calculate = async (
+  amount: number,
+  mainCurrency: 'BRL' | 'USD',
+): Promise<RebalanceResponse> => {
   const response = await axios.post(
-    API_URL, 
-    { amount, mainCurrency }, 
-    getAuthConfig()
+    API_URL,
+    { amount, mainCurrency },
+    getAuthConfig(),
   );
   return response.data;
 };
