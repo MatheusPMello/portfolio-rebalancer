@@ -30,11 +30,9 @@ const createTablesQuery = `
   );
 `;
 
-// Async function to run the query
 async function setupDatabase() {
   console.log('Setting up database...');
   try {
-    // db.query function from db.js
     await db.query(createTablesQuery);
     console.log('Database tables created successfully!');
   } catch (err) {

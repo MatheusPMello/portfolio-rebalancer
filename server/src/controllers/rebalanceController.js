@@ -43,7 +43,7 @@ const rebalanceController = {
 
         return {
           ...asset,
-          normalizedValue: normalizedValue, // This is the value in the "Main Currency"
+          normalizedValue: normalizedValue,
           targetPercentage: Number(asset.target_percentage),
         };
       });

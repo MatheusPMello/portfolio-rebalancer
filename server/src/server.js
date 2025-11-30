@@ -9,8 +9,6 @@ const db = require('./config/db');
 const authRoutes = require('./routes/authRoutes');
 const assetRoutes = require('./routes/assetRoutes');
 const rebalanceRoutes = require('./routes/rebalanceRoutes');
-
-// Initialize the Express app
 const app = express();
 
 // --- Middlewares ---
