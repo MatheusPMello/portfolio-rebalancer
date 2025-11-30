@@ -2,12 +2,14 @@
 import React, { useEffect, useState } from 'react';
 import assetService, { type Asset } from '../services/assetService';
 import { AddAssetModal } from '../components/AddAssetModal';
+import { RebalanceModal } from '../components/RebalanceModal';
 
 export function DashboardPage() {
   const [assets, setAssets] = useState<Asset[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [showAddModal, setShowAddModal] = useState(false);
+  const [showRebalanceModal, setShowRebalanceModal] = useState(false);
 
   const loadAssets = async () => {
     try {
@@ -56,6 +58,11 @@ export function DashboardPage() {
           <p className="text-muted">Overview of your asset allocation.</p>
         </div>
         <div className="col-auto">
+          <button className="btn btn-outline-primary px-4 py-2" 
+            onClick={() => setShowRebalanceModal(true)}>
+            <i className="bi bi-calculator me-2"></i>Rebalance
+          </button>
+
           <button 
             className="btn btn-primary px-4 py-2"
             onClick={() => setShowAddModal(true)}
@@ -129,6 +136,10 @@ export function DashboardPage() {
         show={showAddModal} 
         onClose={() => setShowAddModal(false)} 
         onAssetAdded={loadAssets} 
+      />
+      <RebalanceModal 
+        show={showRebalanceModal} 
+        onClose={() => setShowRebalanceModal(false)} 
       />
     </div>
   );
