@@ -1,12 +1,11 @@
 // /server/src/controllers/rebalanceController.js
 const Asset = require('../models/Asset');
-
-// Hardcoded for now
-const RATE_USD_TO_BRL = 6;
+const exchangeRateService = require('../services/exchangeRateService');
 
 const rebalanceController = {
   calculate: async (req, res) => {
     try {
+      const currentUsdRate = await exchangeRateService.getUsdToBrlRate();
       const userId = req.user.id;
       const contribution = Number(req.body.amount);
 
@@ -34,11 +33,11 @@ const rebalanceController = {
 
         if (mainCurrency === 'BRL') {
           if (asset.currency === 'USD') {
-            normalizedValue = currentValue * RATE_USD_TO_BRL;
+            normalizedValue = currentValue * currentUsdRate;
           }
         } else if (mainCurrency === 'USD') {
           if (asset.currency === 'BRL') {
-            normalizedValue = currentValue / RATE_USD_TO_BRL;
+            normalizedValue = currentValue / currentUsdRate;
           }
         }
 
@@ -83,9 +82,9 @@ const rebalanceController = {
         let finalAmountNative = amountToBuyNormalized;
 
         if (mainCurrency === 'BRL' && asset.currency === 'USD') {
-          finalAmountNative = amountToBuyNormalized / RATE_USD_TO_BRL;
+          finalAmountNative = amountToBuyNormalized / currentUsdRate;
         } else if (mainCurrency === 'USD' && asset.currency === 'BRL') {
-          finalAmountNative = amountToBuyNormalized * RATE_USD_TO_BRL;
+          finalAmountNative = amountToBuyNormalized * currentUsdRate;
         }
 
         return {
@@ -106,7 +105,7 @@ const rebalanceController = {
       res.status(200).json({
         contribution: contribution,
         mainCurrency: mainCurrency,
-        rateUsed: RATE_USD_TO_BRL,
+        rateUsed: currentUsdRate,
         suggestions: finalSuggestions,
       });
     } catch (err) {
