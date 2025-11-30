@@ -3,7 +3,7 @@ import axios from 'axios';
 
 const API_URL = 'http://localhost:5001/api/rebalance';
 
-// 1. Define the shapes of the data (The Contract)
+// 1. Define the shapes of the data
 export interface RebalanceSuggestion {
   assetId: number;
   name: string;
