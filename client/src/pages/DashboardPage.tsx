@@ -72,16 +72,15 @@ export function DashboardPage() {
 
   return (
     <div className="pb-5">
-      
-      <div className="col-md-4 mb-3 mb-md-0">
-        <div className="card-custom p-3 h-100 border-start border-primary border-4">
-          <small className="text-muted text-uppercase fw-bold">Total Balance</small>
-          <h3 className="fw-bold text-dark mb-0">{formatCurrency(totalValue, 'BRL')}</h3>
-        </div>
-      </div>
       <div className="row mb-4">
         <div className="col-md-4 mb-3 mb-md-0">
           <div className="card-custom p-3 h-100 border-start border-primary border-4">
+            <small className="text-muted text-uppercase fw-bold">Total Balance</small>
+            <h3 className="fw-bold text-dark mb-0">{formatCurrency(totalValue, 'BRL')}</h3>
+          </div>
+        </div>
+        <div className="col-md-4 mb-3 mb-md-0">
+          <div className="card-custom p-3 h-100">
             <small className="text-muted text-uppercase fw-bold">BRL Total</small>
             <h3 className="fw-bold text-dark mb-0">{formatCurrency(totalBRL, 'BRL')}</h3>
           </div>
