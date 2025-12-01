@@ -36,6 +36,11 @@ export function DashboardPage() {
     }).format(value);
   };
 
+  const handleEdit = (asset: Asset) => {
+    setEditingAsset(asset);
+    setShowAddModal(true);
+  };
+
   const handleDelete = async (id: number) => {
     if (!window.confirm('Are you sure you want to delete this asset?')) return;
     try {
@@ -46,61 +51,46 @@ export function DashboardPage() {
     }
   };
 
-  const handleEdit = (asset: Asset) => {
-    setEditingAsset(asset);
-    setShowAddModal(true);
-  };
-
   const handleAddNew = () => {
     setEditingAsset(null);
     setShowAddModal(true);
   };
 
-  // Calculate Total Portfolio Value ---
-  const totalValue = assets.reduce(
-    (sum, asset) => sum + Number(asset.current_value),
-    0,
-  );
+  // Totals Calculation
+  const totalBRL = assets
+    .filter(a => a.currency === 'BRL')
+    .reduce((sum, a) => sum + Number(a.current_value), 0);
+
+  const totalUSD = assets
+    .filter(a => a.currency === 'USD')
+    .reduce((sum, a) => sum + Number(a.current_value), 0);
+
+  const totalValue = totalBRL + (totalUSD * 6.00); // Approximate total for display
 
   if (loading) return <div className="text-center mt-5">Loading...</div>;
-  if (error) return <div className="alert alert-danger">{error}</div>;
+  if (error) return <div className="alert alert-danger m-4">{error}</div>;
 
   return (
-    <div>
-      <div className="row align-items-center mb-4">
-        <div className="col">
-          <h1 className="fw-bold mb-0">My Portfolio</h1>
-          <p className="text-muted">Overview of your asset allocation.</p>
-        </div>
-        <div className="col-auto">
-          <button
-            className="btn btn-outline-primary px-4 py-2"
-            onClick={() => setShowRebalanceModal(true)}
-          >
-            <i className="bi bi-calculator me-2"></i>Rebalance
-          </button>
-
-          <button className="btn btn-primary px-4 py-2" onClick={handleAddNew}>
-            + Add Asset
-          </button>
+    <div className="pb-5">
+      
+      <div className="col-md-4 mb-3 mb-md-0">
+        <div className="card-custom p-3 h-100 border-start border-primary border-4">
+          <small className="text-muted text-uppercase fw-bold">Total Balance</small>
+          <h3 className="fw-bold text-dark mb-0">{formatCurrency(totalValue, 'BRL')}</h3>
         </div>
       </div>
-
       <div className="row mb-4">
-        <div className="col-md-4">
-          <div className="card-custom p-4 d-flex flex-column justify-content-center h-100">
-            <h6
-              className="text-uppercase text-muted fw-bold"
-              style={{ fontSize: '0.8rem' }}
-            >
-              Total Balance
-            </h6>
-            <h2 className="fw-bold text-primary mb-0">
-              {formatCurrency(totalValue, 'BRL')}
-            </h2>
-            <small className="text-muted mt-2">
-              {assets.length} Assets tracked
-            </small>
+        <div className="col-md-4 mb-3 mb-md-0">
+          <div className="card-custom p-3 h-100 border-start border-primary border-4">
+            <small className="text-muted text-uppercase fw-bold">BRL Total</small>
+            <h3 className="fw-bold text-dark mb-0">{formatCurrency(totalBRL, 'BRL')}</h3>
+          </div>
+        </div>
+        
+        <div className="col-md-4 mb-3 mb-md-0">
+           <div className="card-custom p-3 h-100">
+            <small className="text-muted text-uppercase fw-bold">USD Total</small>
+            <h4 className="fw-bold text-dark mb-0">{formatCurrency(totalUSD, 'USD')}</h4>
           </div>
         </div>
       </div>
@@ -109,24 +99,39 @@ export function DashboardPage() {
         <PortfolioCharts assets={assets} />
       )}
 
-      {assets.length === 0 ? (
-        <div className="card-custom text-center py-5">
-          <h4 className="fw-bold text-muted">Your portfolio is empty</h4>
-          <p className="text-muted mb-4">
-            Add assets to see your balance and rebalancing suggestions.
-          </p>
-          <button
-            className="btn btn-outline-primary"
-            onClick={() => setShowAddModal(true)}
-          >
-            Add Your First Asset
-          </button>
+      <div className="card-custom p-0 overflow-hidden">
+        
+
+        <div className="d-flex justify-content-between align-items-center p-4 bg-white border-bottom">
+          <div>
+            <h4 className="fw-bold mb-0">My Assets</h4>
+            <small className="text-muted">Manage your allocation</small>
+          </div>
+          
+          <div className="d-flex gap-2">
+            <button 
+              className="btn btn-outline-primary"
+              onClick={() => setShowRebalanceModal(true)}
+            >
+              Rebalance
+            </button>
+            <button 
+              className="btn btn-primary"
+              onClick={handleAddNew}
+            >
+              + Add Asset
+            </button>
+          </div>
         </div>
-      ) : (
-        <div className="card-custom p-0 overflow-hidden">
+
+        {assets.length === 0 ? (
+           <div className="text-center py-5">
+             <p className="text-muted">No assets found.</p>
+           </div>
+        ) : (
           <div className="table-responsive">
             <table className="table table-hover align-middle mb-0">
-              <thead className="bg-light">
+              <thead className="bg-light text-muted text-uppercase small">
                 <tr>
                   <th className="py-3 ps-4">Asset</th>
                   <th className="py-3">Category</th>
@@ -138,47 +143,27 @@ export function DashboardPage() {
               <tbody>
                 {assets.map((asset) => (
                   <tr key={asset.id}>
-                    <td className="ps-4 py-3 fw-bold">{asset.name}</td>
+                    <td className="ps-4 py-3 fw-bold text-dark">{asset.name}</td>
+                    <td><span className="badge bg-light text-dark border">{asset.currency}</span></td>
                     <td>
-                      <span className="badge bg-light text-dark border">
-                        {asset.currency}
-                      </span>
-                    </td>
-                    <td>
-                      <div className="d-flex align-items-center">
-                        <span className="me-2" style={{ width: '40px' }}>
-                          {asset.target_percentage}%
-                        </span>
-                        <div
-                          className="progress flex-grow-1"
-                          style={{ height: '6px' }}
-                        >
-                          <div
-                            className="progress-bar"
-                            style={{ width: `${asset.target_percentage}%` }}
-                          ></div>
-                        </div>
+                      <div className="d-flex align-items-center" style={{maxWidth: '150px'}}>
+                         <span className="me-2 text-muted small">{asset.target_percentage}%</span>
+                         <div className="progress flex-grow-1" style={{height: '4px'}}>
+                           <div className="progress-bar bg-primary" style={{width: `${asset.target_percentage}%`}}></div>
+                         </div>
                       </div>
                     </td>
-                    <td className="fw-medium">
-                      {formatCurrency(
-                        Number(asset.current_value),
-                        asset.currency,
-                      )}
-                    </td>
+                    <td className="fw-medium">{formatCurrency(Number(asset.current_value), asset.currency)}</td>
                     <td className="text-end pe-4">
-                      <button
+                      <button 
                         className="btn btn-sm btn-link text-primary text-decoration-none me-2"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleEdit(asset);
-                        }}
+                        onClick={(e) => { e.stopPropagation(); handleEdit(asset); }}
                       >
                         Edit
                       </button>
-                      <button
-                        className="btn btn-sm btn-link text-danger text-decoration-none"
-                        onClick={() => handleDelete(asset.id)}
+                      <button 
+                        className="btn btn-sm btn-link text-danger text-decoration-none p-0"
+                        onClick={(e) => { e.stopPropagation(); handleDelete(asset.id); }}
                       >
                         Remove
                       </button>
@@ -188,18 +173,19 @@ export function DashboardPage() {
               </tbody>
             </table>
           </div>
-        </div>
-      )}
+        )}
+      </div>
 
-      <AddAssetModal
-        show={showAddModal}
-        onClose={() => setShowAddModal(false)}
-        onAssetSaved={loadAssets}
+      <AddAssetModal 
+        show={showAddModal} 
+        onClose={() => setShowAddModal(false)} 
+        onAssetSaved={loadAssets} 
         assetToEdit={editingAsset}
       />
-      <RebalanceModal
-        show={showRebalanceModal}
-        onClose={() => setShowRebalanceModal(false)}
+      
+      <RebalanceModal 
+        show={showRebalanceModal} 
+        onClose={() => setShowRebalanceModal(false)} 
       />
     </div>
   );
