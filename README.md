@@ -1,156 +1,183 @@
-# Portfolio Rebalancer
+# 💰 Portfolio Rebalancer
 
-A full-stack application with a React frontend and a Node.js backend to help investors track and rebalance their portfolios.
+A full-stack FinTech application designed to help investors manage multi-currency portfolios (BRL/USD) and calculate optimal asset allocation based on target percentages.
 
 ## ✨ Features
 
-- **User Authentication:** Secure user registration and login.
-- **Asset Management:** Full CRUD (Create, Read, Update, Delete) functionality for assets.
-- **Portfolio Tracking:** Monitor asset allocation and performance.
-- **Target Allocation:** Define and manage target percentages for each asset class.
-- **Rebalancing Calculation:** Get recommendations on how to allocate new contributions to align with your target portfolio.
+* **🔐 Secure Authentication:** JWT-based user registration and login with protected routes.
+* **🌍 Multi-Currency Support:** Seamlessly manage assets in BRL (Reais) and USD (Dollars) in a single dashboard.
+* **🤖 Smart Rebalancing Engine:**
+  * Calculates the optimal distribution for new contributions.
+  * Uses "Buy-Only" logic to avoid tax-inefficient selling.
+  * Automatically converts currencies to normalize math.
+* **📡 Real-Time Data:** Integrates with AwesomeAPI to fetch live USD/BRL exchange rates for accurate valuations.
+* **📊 Visual Analytics:** Interactive Clustered Bar Charts (via Chart.js) to visualize Current vs. Target allocation.
+* **⚡ Modern UI/UX:** Clean, responsive interface built with Bootstrap and custom CSS themes.
+
+---
 
 ## 🛠️ Tech Stack
 
-- **Frontend:** React, Vite, TypeScript, Bootstrap
-- **Backend:** Node.js, Express
-- **Database:** PostgreSQL
-- **Containerization:** Docker
+### Frontend (Client)
+* **Framework:** React 18 (via Vite)
+* **Language:** TypeScript
+* **Styling:** Bootstrap 5 + Custom CSS System
+* **Data Visualization:** Chart.js + React-Chartjs-2
+* **HTTP Client:** Axios
 
-## 📂 Project Structure
+### Backend (Server)
+* **Runtime:** Node.js
+* **Framework:** Express.js
+* **Database:** PostgreSQL
+* **Architecture:** MVC + Services Pattern (Separation of concerns)
+* **Security:** BCrypt (Password Hashing) + JWT (Session Tokens)
 
-```
+### DevOps
+* **Containerization:** Docker & Docker Compose
+
+---
+
+## 📂 Project Architecture
+
+This project follows a Monorepo structure:
+
+```bash
 /portfolio-rebalancer/
-|-- /client/            <-- React Frontend
+|-- /client/                  # React Application
 |   |-- /src/
-|   |-- package.json
-|   -- vite.config.ts
-|-- /server/            <-- Node.js API
+|   |   |-- /components/      # Reusable UI (AuthLayout, MainLayout, Charts)
+|   |   |-- /pages/           # View Logic (Dashboard, Login)
+|   |   |-- /services/        # API integration (assetService, authService)
+|   |-- vite.config.ts
+|
+|-- /server/                  # Node.js API
 |   |-- /src/
+|   |   |-- /config/          # DB Connection
+|   |   |-- /controllers/     # Request Logic
+|   |   |-- /middlewares/     # Auth Guards (The "Bouncer")
+|   |   |-- /models/          # Database Queries (SQL)
+|   |   |-- /routes/          # Endpoint Definitions
+|   |   |-- /services/        # External APIs (Exchange Rate logic)
 |   |-- .env
-|   -- package.json
-|-- .gitignore
-|-- docker-compose.yml
-|-- package.json
-|-- LICENSE
--- README.md
+|
+|-- docker-compose.yml        # Database Container Config
 ```
+
+---
 
 ## 🚀 Getting Started
 
 ### Prerequisites
-
-- [Node.js](https://nodejs.org/) (v18 or later)
-- [Docker](https://www.docker.com/products/docker-desktop/)
-- [Git](https://git-scm.com/)
+* Node.js (v18+)
+* Docker Desktop
+* Git
 
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/MatheusPMello/portfolio-rebalancer.git
+git clone [https://github.com/MatheusPMello/portfolio-rebalancer.git](https://github.com/MatheusPMello/portfolio-rebalancer.git)
 cd portfolio-rebalancer
 ```
 
-### 2. Run the Database with Docker
+### 2. Run the Database (Docker)
 
-This project uses Docker to run a PostgreSQL database in a container. This simplifies setup and ensures a consistent environment.
+Start the PostgreSQL container. This creates a persistent volume for your data.
 
-1.  **Start the database container:**
+```bash
+docker-compose up -d
+```
 
-    ```bash
-    docker-compose up -d
-    ```
+### 3. Backend Setup
 
-    This command will start the PostgreSQL container in the background and create a volume to persist your data.
+Navigate to the server folder:
 
-2.  **Environment Variables:**
-    In the `/server` directory, you'll find a `.env.example` file. Make a copy of it and rename it to `.env`:
+```bash
+cd server
+```
 
-    ```bash
-    cp .env.example .env
-    ```
+Install dependencies:
 
-    Next, open the `.env` file and fill in the required values. The default database credentials are set in `docker-compose.yml`.
+```bash
+npm install
+```
 
-    ```ini
-    # /server/.env
+**Configure Environment Variables:**
+Create a `.env` file in the `/server` root and copy the content below:
 
-    DB_USER=docker_username
-    DB_PASSWORD=docker_password
-    DB_HOST=localhost
-    DB_PORT=5432
-    DB_NAME=rebalancer
+```ini
+# /server/.env
+PORT=5001
 
-    # You also need to add a secure secret for signing JWTs
-    JWT_SECRET=your_super_secret_key_here
-    ```
+# Database (Must match docker-compose.yml)
+DB_USER=rebalancer_user
+DB_PASSWORD=rebalancer_pass
+DB_HOST=localhost
+DB_PORT=5432
+DB_NAME=rebalancer
 
-### 3. Setup and Run the Backend
+# Security
+JWT_SECRET=your_super_secret_key_change_this
+```
 
-1.  **Navigate to the server directory and install dependencies:**
+Initialize the Database Tables:
 
-    ```bash
-    cd server
-    npm install
-    ```
+```bash
+npm run db:setup
+```
 
-2.  **Set up the database tables:**
+Start the Server:
 
-    ```bash
-    npm run db:setup
-    ```
+```bash
+npm start
+```
+*The server should now be running on `http://localhost:5001`*
 
-3.  **Run the server:**
+### 4. Frontend Setup
 
-    ```bash
-    npm start
-    ```
+Open a new terminal and navigate to the client folder:
 
-### 4. Setup and Run the Frontend
+```bash
+cd client
+```
 
-1.  **In a new terminal**, navigate to the client directory and install dependencies:
+Install dependencies:
 
-    ```bash
-    cd client
-    npm install
-    ```
+```bash
+npm install
+```
 
-2.  **Run the client:**
+Start the React App:
 
-    ```bash
-    npm run dev
-    ```
+```bash
+npm run dev
+```
+*Access the app at `http://localhost:5173`*
 
-    The React development server will start, and you can access the application in your browser.
+---
 
-## 📈 Scripts
+## 📦 API Reference
 
-The following scripts are available in their respective `client` and `server` directories to help maintain code quality:
+### 🔐 Auth
+* `POST /api/auth/register` - Create account
+* `POST /api/auth/login` - Authenticate & receive JWT
 
-- `npm run lint`: Lints the codebase using ESLint.
-- `npm run lint:fix`: Automatically fixes linting errors.
-- `npm run format`: Formats the code using Prettier.
+### 💰 Assets
+* `GET /api/assets` - List all user assets
+* `POST /api/assets` - Create new asset
+* `PUT /api/assets/:id` - Update asset details
+* `DELETE /api/assets/:id` - Remove asset
 
-## 📦 API Endpoints
+### ⚖️ Rebalancing
+* `POST /api/rebalance`
+  * **Payload:** `{ "amount": 1000, "mainCurrency": "BRL" }`
+  * **Response:** Returns a smart list of assets to buy, with amounts converted to the asset's native currency.
 
-The following are the main endpoints available:
-
-### Auth
-
-- `POST /api/auth/register`: Register a new user.
-- `POST /api/auth/login`: Log in a user.
-
-### Assets
-
-- `GET /api/assets`: Get all assets for the logged-in user.
-- `POST /api/assets`: Add a new asset.
-- `PUT /api/assets/:id`: Update an existing asset.
-- `DELETE /api/assets/:id`: Delete an asset.
+---
 
 ## 🤝 Contributing
 
-Contributions, issues, and feature requests are welcome! Feel free to check the [contributing guide](CONTRIBUTING.md).
+Contributions are welcome! Please open an issue or submit a Pull Request.
 
 ## 📄 License
 
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License.
