@@ -27,7 +27,7 @@ const getAuthConfig = () => {
     },
   };
 
-  console.log('🛠️ getAuthConfig generated:', config);
+  console.log('getAuthConfig generated:', config);
 
   return config;
 };
@@ -35,10 +35,10 @@ const getAuthConfig = () => {
 // --- 3. ASYNC FUNCTIONS ---
 
 const getAll = async (): Promise<Asset[]> => {
-  console.log('🚀 Calling axios.get...');
+  console.log('Calling axios.get...');
 
   const config = getAuthConfig();
-  console.log('📦 Config being passed to axios:', config);
+  console.log('onfig being passed to axios:', config);
 
   const response = await axios.get(API_URL, config);
 

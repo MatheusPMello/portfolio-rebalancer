@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import assetService, { type Asset } from '../services/assetService';
 import { AddAssetModal } from '../components/AddAssetModal';
 import { RebalanceModal } from '../components/RebalanceModal';
+import { PortfolioCharts } from '../components/PortfolioCharts';
 
 export function DashboardPage() {
   const [assets, setAssets] = useState<Asset[]>([]);
@@ -103,6 +104,10 @@ export function DashboardPage() {
           </div>
         </div>
       </div>
+
+      {assets.length > 0 && (
+        <PortfolioCharts assets={assets} />
+      )}
 
       {assets.length === 0 ? (
         <div className="card-custom text-center py-5">
