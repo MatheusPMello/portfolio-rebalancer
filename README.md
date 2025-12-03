@@ -65,95 +65,44 @@ This project follows a Monorepo structure:
 
 ---
 
-## 🚀 Getting Started
+## 🚀 Getting Started (The Fast Way)
 
 ### Prerequisites
-* Node.js (v18+)
-* Docker Desktop
-* Git
+* [Node.js](https://nodejs.org/) (v18+)
+* [Docker Desktop](https://www.docker.com/products/docker-desktop/) (Must be running)
 
-### 1. Clone the Repository
+### 1. Setup
+
+Clone the repo and run the automated setup script. This will install dependencies for both client/server, start the Docker database, and create the tables.
 
 ```bash
 git clone [https://github.com/MatheusPMello/portfolio-rebalancer.git](https://github.com/MatheusPMello/portfolio-rebalancer.git)
 cd portfolio-rebalancer
+
+# Run the master setup
+npm run setup
 ```
 
-### 2. Run the Database (Docker)
+> **Note:** If the setup fails on the database step, ensure Docker Desktop is running and run `npm run db:init` manually.
 
-Start the PostgreSQL container. This creates a persistent volume for your data.
+### 2. Environment Variables
+
+Create a `.env` file in the `/server` folder using the example provided.
 
 ```bash
-docker-compose up -d
+cp server/.env.example server/.env
 ```
 
-### 3. Backend Setup
+### 3. Run
 
-Navigate to the server folder:
-
-```bash
-cd server
-```
-
-Install dependencies:
-
-```bash
-npm install
-```
-
-**Configure Environment Variables:**
-Create a `.env` file in the `/server` root and copy the content below:
-
-```ini
-# /server/.env
-PORT=5001
-
-# Database (Must match docker-compose.yml)
-DB_USER=rebalancer_user
-DB_PASSWORD=rebalancer_pass
-DB_HOST=localhost
-DB_PORT=5432
-DB_NAME=rebalancer
-
-# Security
-JWT_SECRET=your_super_secret_key_change_this
-```
-
-Initialize the Database Tables:
-
-```bash
-npm run db:setup
-```
-
-Start the Server:
-
-```bash
-npm start
-```
-*The server should now be running on `http://localhost:5001`*
-
-### 4. Frontend Setup
-
-Open a new terminal and navigate to the client folder:
-
-```bash
-cd client
-```
-
-Install dependencies:
-
-```bash
-npm install
-```
-
-Start the React App:
+Start the full stack (Frontend + Backend) with one command:
 
 ```bash
 npm run dev
 ```
-*Access the app at `http://localhost:5173`*
 
----
+Open http://localhost:5173 to view the app.
+
 
 ## 📦 API Reference
 
