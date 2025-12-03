@@ -18,7 +18,7 @@ ChartJS.register(
   BarElement,
   Title,
   Tooltip,
-  Legend
+  Legend,
 );
 
 interface PortfolioChartsProps {
@@ -26,12 +26,11 @@ interface PortfolioChartsProps {
 }
 
 export function PortfolioCharts({ assets }: PortfolioChartsProps) {
-  
   if (assets.length === 0) return null;
 
   // --- 2. CALCULATE ACTUAL PERCENTAGES ---
 
-  const ESTIMATED_USD_RATE = 6; 
+  const ESTIMATED_USD_RATE = 6;
 
   const totalPortfolioValueBrl = assets.reduce((sum, asset) => {
     const val = Number(asset.current_value);
@@ -47,18 +46,18 @@ export function PortfolioCharts({ assets }: PortfolioChartsProps) {
 
   // --- 3. CHART DATA ---
   const data = {
-    labels: assets.map(a => a.name),
+    labels: assets.map((a) => a.name),
     datasets: [
       {
         label: 'Target %',
-        data: assets.map(a => a.target_percentage),
+        data: assets.map((a) => a.target_percentage),
         backgroundColor: 'rgba(59, 59, 255, 0.7)',
         borderColor: 'rgba(59, 59, 255, 1)',
         borderWidth: 1,
       },
       {
         label: 'Actual %',
-        data: assets.map(a => getActualPercentage(a)),
+        data: assets.map((a) => getActualPercentage(a)),
         backgroundColor: 'rgba(220, 53, 69, 0.7)',
         borderColor: 'rgba(220, 53, 69, 1)',
         borderWidth: 1,
@@ -75,22 +74,24 @@ export function PortfolioCharts({ assets }: PortfolioChartsProps) {
       },
       tooltip: {
         callbacks: {
-          label: function(context: any) {
-            return context.dataset.label + ': ' + context.parsed.y.toFixed(2) + '%';
-          }
-        }
-      }
+          label: function (context: any) {
+            return (
+              context.dataset.label + ': ' + context.parsed.y.toFixed(2) + '%'
+            );
+          },
+        },
+      },
     },
     scales: {
       y: {
         beginAtZero: true,
         title: {
           display: true,
-          text: 'Allocation (%)'
+          text: 'Allocation (%)',
         },
         max: 100,
-      }
-    }
+      },
+    },
   };
 
   return (
@@ -99,7 +100,7 @@ export function PortfolioCharts({ assets }: PortfolioChartsProps) {
         <div className="card-custom">
           <h5 className="fw-bold mb-4">Allocation Comparison</h5>
           <div style={{ height: '350px' }}>
-             <Bar data={data} options={options} />
+            <Bar data={data} options={options} />
           </div>
         </div>
       </div>

@@ -4,36 +4,39 @@ A full-stack FinTech application designed to help investors manage multi-currenc
 
 ## ✨ Features
 
-* **🔐 Secure Authentication:** JWT-based user registration and login with protected routes.
-* **🌍 Multi-Currency Support:** Seamlessly manage assets in BRL (Reais) and USD (Dollars) in a single dashboard.
-* **🤖 Smart Rebalancing Engine:**
-  * Calculates the optimal distribution for new contributions.
-  * Uses "Buy-Only" logic to avoid tax-inefficient selling.
-  * Automatically converts currencies to normalize math.
-* **📡 Real-Time Data:** Integrates with AwesomeAPI to fetch live USD/BRL exchange rates for accurate valuations.
-* **📊 Visual Analytics:** Interactive Clustered Bar Charts (via Chart.js) to visualize Current vs. Target allocation.
-* **⚡ Modern UI/UX:** Clean, responsive interface built with Bootstrap and custom CSS themes.
+- **🔐 Secure Authentication:** JWT-based user registration and login with protected routes.
+- **🌍 Multi-Currency Support:** Seamlessly manage assets in BRL (Reais) and USD (Dollars) in a single dashboard.
+- **🤖 Smart Rebalancing Engine:**
+  - Calculates the optimal distribution for new contributions.
+  - Uses "Buy-Only" logic to avoid tax-inefficient selling.
+  - Automatically converts currencies to normalize math.
+- **📡 Real-Time Data:** Integrates with AwesomeAPI to fetch live USD/BRL exchange rates for accurate valuations.
+- **📊 Visual Analytics:** Interactive Clustered Bar Charts (via Chart.js) to visualize Current vs. Target allocation.
+- **⚡ Modern UI/UX:** Clean, responsive interface built with Bootstrap and custom CSS themes.
 
 ---
 
 ## 🛠️ Tech Stack
 
 ### Frontend (Client)
-* **Framework:** React 18 (via Vite)
-* **Language:** TypeScript
-* **Styling:** Bootstrap 5 + Custom CSS System
-* **Data Visualization:** Chart.js + React-Chartjs-2
-* **HTTP Client:** Axios
+
+- **Framework:** React 18 (via Vite)
+- **Language:** TypeScript
+- **Styling:** Bootstrap 5 + Custom CSS System
+- **Data Visualization:** Chart.js + React-Chartjs-2
+- **HTTP Client:** Axios
 
 ### Backend (Server)
-* **Runtime:** Node.js
-* **Framework:** Express.js
-* **Database:** PostgreSQL
-* **Architecture:** MVC + Services Pattern (Separation of concerns)
-* **Security:** BCrypt (Password Hashing) + JWT (Session Tokens)
+
+- **Runtime:** Node.js
+- **Framework:** Express.js
+- **Database:** PostgreSQL
+- **Architecture:** MVC + Services Pattern (Separation of concerns)
+- **Security:** BCrypt (Password Hashing) + JWT (Session Tokens)
 
 ### DevOps
-* **Containerization:** Docker & Docker Compose
+
+- **Containerization:** Docker & Docker Compose
 
 ---
 
@@ -68,8 +71,9 @@ This project follows a Monorepo structure:
 ## 🚀 Getting Started (The Fast Way)
 
 ### Prerequisites
-* [Node.js](https://nodejs.org/) (v18+)
-* [Docker Desktop](https://www.docker.com/products/docker-desktop/) (Must be running)
+
+- [Node.js](https://nodejs.org/) (v18+)
+- [Docker Desktop](https://www.docker.com/products/docker-desktop/) (Must be running)
 
 ### 1. Setup
 
@@ -103,23 +107,25 @@ npm run dev
 
 Open http://localhost:5173 to view the app.
 
-
 ## 📦 API Reference
 
 ### 🔐 Auth
-* `POST /api/auth/register` - Create account
-* `POST /api/auth/login` - Authenticate & receive JWT
+
+- `POST /api/auth/register` - Create account
+- `POST /api/auth/login` - Authenticate & receive JWT
 
 ### 💰 Assets
-* `GET /api/assets` - List all user assets
-* `POST /api/assets` - Create new asset
-* `PUT /api/assets/:id` - Update asset details
-* `DELETE /api/assets/:id` - Remove asset
+
+- `GET /api/assets` - List all user assets
+- `POST /api/assets` - Create new asset
+- `PUT /api/assets/:id` - Update asset details
+- `DELETE /api/assets/:id` - Remove asset
 
 ### ⚖️ Rebalancing
-* `POST /api/rebalance`
-  * **Payload:** `{ "amount": 1000, "mainCurrency": "BRL" }`
-  * **Response:** Returns a smart list of assets to buy, with amounts converted to the asset's native currency.
+
+- `POST /api/rebalance`
+  - **Payload:** `{ "amount": 1000, "mainCurrency": "BRL" }`
+  - **Response:** Returns a smart list of assets to buy, with amounts converted to the asset's native currency.
 
 ---
 

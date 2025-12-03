@@ -12,11 +12,9 @@
     "install:server": "cd server && npm install",
     "install:client": "cd client && npm install",
     "setup": "npm run install:server && npm run install:client && npm run db:init",
-
     "// --- DATABASE ---": "",
     "db:up": "docker compose up -d",
     "db:init": "npm run db:up && node -e \"setTimeout(()=>{}, 10000)\" && cd server && npm run db:setup",
-
     "// --- RUNNING ---": "",
     "server": "cd server && npm start",
     "client": "cd client && npm run dev",
