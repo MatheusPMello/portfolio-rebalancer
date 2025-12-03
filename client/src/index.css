@@ -40,3 +40,47 @@ a {
 a:hover {
   color: #2626b9;
 }
+
+/* --- DRAWER COMPONENT STYLES --- */
+
+/* The dark overlay behind the drawer */
+.drawer-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.4); /* Semi-transparent black */
+  z-index: 1040; /* Just underneath the drawer */
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+}
+
+/* Class added when the drawer is open */
+.drawer-backdrop.show {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* The sliding drawer itself */
+.drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  height: 100vh;
+  width: 450px; /* Fixed width */
+  max-width: 90vw; /* Ensure it fits on small screens */
+  background-color: #fff;
+  box-shadow: -8px 0 32px rgba(0, 0, 0, 0.15); /* Shadow on the left edge */
+  z-index: 1050; /* Highest priority */
+  transform: translateX(100%); /* Start hidden off-screen to the right */
+  transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); /* Smooth ease-out animation */
+  display: flex;
+  flex-direction: column;
+}
+
+/* Slide the drawer in */
+.drawer.show {
+  transform: translateX(0);
+}
