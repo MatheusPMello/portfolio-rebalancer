@@ -7,7 +7,20 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "// --- INSTALLATION ---": "",
+    "install:server": "cd server && npm install",
+    "install:client": "cd client && npm install",
+    "setup": "npm run install:server && npm run install:client && npm run db:init",
+
+    "// --- DATABASE ---": "",
+    "db:up": "docker compose up -d",
+    "db:init": "npm run db:up && node -e \"setTimeout(()=>{}, 10000)\" && cd server && npm run db:setup",
+
+    "// --- RUNNING ---": "",
+    "server": "cd server && npm start",
+    "client": "cd client && npm run dev",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
   },
   "repository": {
     "type": "git",
@@ -21,6 +34,7 @@
   },
   "homepage": "https://github.com/MatheusPMello/portfolio-rebalancer#readme",
   "devDependencies": {
+    "concurrently": "^9.2.1",
     "eslint": "^9.39.1",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.4",
