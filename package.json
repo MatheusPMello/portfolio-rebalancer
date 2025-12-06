@@ -4,7 +4,7 @@
   "description": "A full-stack web application using React, Node.js, and PostgreSQL to help investors track and rebalance their portfolios.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "format": "prettier --write .",
@@ -36,6 +36,7 @@
     "eslint": "^9.39.1",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.4",
+    "jest": "^30.2.0",
     "prettier": "^3.6.2"
   }
 }
