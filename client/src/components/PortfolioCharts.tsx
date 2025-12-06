@@ -1,5 +1,4 @@
 // /client/src/components/PortfolioCharts.tsx
-import React from 'react';
 import {
   Chart as ChartJS,
   CategoryScale,

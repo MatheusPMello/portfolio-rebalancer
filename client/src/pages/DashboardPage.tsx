@@ -1,5 +1,5 @@
 // /client/src/pages/DashboardPage.tsx
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import assetService, { type Asset } from '../services/assetService';
 import { AddAssetModal } from '../components/AddAssetModal';
 // NEW: Import the Drawer instead of the Modal

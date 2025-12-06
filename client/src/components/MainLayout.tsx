@@ -1,5 +1,4 @@
 // /client/src/components/MainLayout.tsx
-import React from 'react';
 import { Link, Outlet, useNavigate } from 'react-router-dom';
 
 export function MainLayout() {

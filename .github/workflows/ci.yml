@@ -25,11 +25,11 @@ jobs:
           cache: 'npm'
           cache-dependency-path: server/package-lock.json
 
-      - name: Install Server Dependencies
-        run: cd server && npm ci
-        
       - name: Install Root Dependencies
         run: npm ci
+        
+      - name: Install Server Dependencies
+        run: cd server && npm ci
 
       - name: Run Unit Tests
         run: npm test
