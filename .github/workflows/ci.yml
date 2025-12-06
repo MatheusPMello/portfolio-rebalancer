@@ -29,7 +29,7 @@ jobs:
         run: cd server && npm ci
 
       - name: Run Unit Tests
-        run: cd server && npm test
+        run: npm test
 
   # --- JOB B: FRONTEND (Client) ---
   build-client:
