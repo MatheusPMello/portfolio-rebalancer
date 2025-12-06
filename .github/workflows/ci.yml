@@ -4,9 +4,9 @@ name: CI Pipeline (Build & Test)
 # It runs on every push to the 'main' branch and every Pull Request.
 on:
   push:
-    branches: [ "main" ]
+    branches: ['main']
   pull_request:
-    branches: [ "main" ]
+    branches: ['main']
 
 # 2. JOBS:
 jobs:
@@ -27,7 +27,7 @@ jobs:
 
       - name: Install Root Dependencies
         run: npm ci
-        
+
       - name: Install Server Dependencies
         run: cd server && npm ci
 
@@ -54,6 +54,6 @@ jobs:
         run: cd client && npm ci
 
       - name: Build React App
-        # This compiles the React app. 
+        # This compiles the React app.
         # If you have TypeScript errors (like passing a string to a number prop), this fails.
         run: cd client && npm run build

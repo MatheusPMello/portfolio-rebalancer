@@ -1,5 +1,7 @@
 # 💰 Portfolio Rebalancer
 
+[![CI Pipeline (Build & Test)](https://github.com/MatheusPMello/portfolio-rebalancer/actions/workflows/ci.yml/badge.svg)](https://github.com/MatheusPMello/portfolio-rebalancer/actions/workflows/ci.yml)
+
 A full-stack FinTech application designed to help investors manage multi-currency portfolios (BRL/USD) and calculate optimal asset allocation based on target percentages.
 
 ## ✨ Features
@@ -38,6 +40,11 @@ A full-stack FinTech application designed to help investors manage multi-currenc
 
 - **Containerization:** Docker & Docker Compose
 
+### Tooling & Code Quality
+
+- **Linting:** ESLint
+- **Code Formatting:** Prettier
+
 ---
 
 ## 📂 Project Architecture
@@ -61,12 +68,25 @@ This project follows a Monorepo structure:
 |   |   |-- /models/          # Database Queries (SQL)
 |   |   |-- /routes/          # Endpoint Definitions
 |   |   |-- /services/        # External APIs (Exchange Rate logic)
-|   |-- .env
+|   |-- .env                  # Environment Variables
 |
 |-- docker-compose.yml        # Database Container Config
 ```
 
 ---
+
+## 🤖 DevOps & CI/CD
+
+This project utilizes **GitHub Actions** to ensure code quality and prevent broken deployments. The pipeline runs automatically on every Pull Request and Push to main.
+
+**Pipeline Steps:**
+
+1.  **Environment Setup:** Installs Node.js v20 (matching production).
+2.  **Dependency Caching:** Uses `npm ci` with caching to speed up builds.
+3.  **Backend Verification:** Runs Unit Tests (Jest) to verify mathematical correctness of the rebalancing engine.
+4.  **Frontend Verification:** Runs TypeScript Build process to catch type errors and broken imports.
+
+[View the Pipeline Configuration (.yml)](./.github/workflows/ci.yml)
 
 ## 🚀 Getting Started (The Fast Way)
 
