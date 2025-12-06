@@ -1,0 +1,56 @@
+name: CI Pipeline (Build & Test)
+
+# 1. TRIGGER:
+# It runs on every push to the 'main' branch and every Pull Request.
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+# 2. JOBS:
+jobs:
+  test-server:
+    name: Server - Unit Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: server/package-lock.json
+
+      - name: Install Server Dependencies
+        run: cd server && npm ci
+
+      - name: Run Unit Tests
+        run: cd server && npm test
+
+  # --- JOB B: FRONTEND (Client) ---
+  build-client:
+    name: Client - Build & Type Check
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: client/package-lock.json
+
+      - name: Install Client Dependencies
+        run: cd client && npm ci
+
+      - name: Build React App
+        # This compiles the React app. 
+        # If you have TypeScript errors (like passing a string to a number prop), this fails.
+        run: cd client && npm run build
