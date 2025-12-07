@@ -4,7 +4,7 @@
 
 A full-stack FinTech application designed to help investors manage multi-currency portfolios (BRL/USD) and calculate optimal asset allocation based on target percentages.
 
-## Live Demo
+## Demo
 
 https://portfolio-rebalancer-eta.vercel.app/
 
