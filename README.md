@@ -4,6 +4,8 @@
 
 A full-stack FinTech application designed to help investors manage multi-currency portfolios (BRL/USD) and calculate optimal asset allocation based on target percentages.
 
+https://portfolio-rebalancer-eta.vercel.app/
+
 ## ✨ Features
 
 - **🔐 Secure Authentication:** JWT-based user registration and login with protected routes.
