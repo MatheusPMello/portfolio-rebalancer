@@ -24,4 +24,21 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    // If the error is 401 (Unauthorized) or 403 (Forbidden)
+    if (
+      error.response &&
+      (error.response.status === 401 || error.response.status === 403)
+    ) {
+      // 1. Clear the bad token
+      localStorage.removeItem('token');
+      // 2. Force redirect to login
+      window.location.href = '/login';
+    }
+    return Promise.reject(error);
+  },
+);
+
 export default api;

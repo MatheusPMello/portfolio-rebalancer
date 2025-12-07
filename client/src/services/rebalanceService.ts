@@ -20,12 +20,15 @@ export interface RebalanceResponse {
 
 // --- Async Functions ---
 
-const calculate = async (amount: number, mainCurrency: 'BRL' | 'USD'): Promise<RebalanceResponse> => {
-  const response = await api.post('/rebalance', { 
-    amount, 
-    mainCurrency 
+const calculate = async (
+  amount: number,
+  mainCurrency: 'BRL' | 'USD',
+): Promise<RebalanceResponse> => {
+  const response = await api.post('/rebalance', {
+    amount,
+    mainCurrency,
   });
-  
+
   return response.data;
 };
 

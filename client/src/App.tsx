@@ -6,6 +6,7 @@
  */
 
 import { Routes, Route } from 'react-router-dom';
+import { ProtectedRoute } from './components/ProtectedRoute';
 import './App.css';
 
 // Layout components provide a consistent frame for different sections of the app.
@@ -32,7 +33,14 @@ function App() {
       </Route>
 
       <Route element={<MainLayout />}>
-        <Route path="/dashboard" element={<DashboardPage />} />
+        <Route
+          path="/"
+          element={
+            <ProtectedRoute>
+              <DashboardPage />
+            </ProtectedRoute>
+          }
+        />
         <Route path="/" element={<DashboardPage />} />
       </Route>
     </Routes>

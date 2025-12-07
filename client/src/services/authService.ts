@@ -25,7 +25,7 @@ export interface AuthResponse {
 
 const register = async (userData: RegisterData): Promise<AuthResponse> => {
   const response = await api.post('/auth/register', userData);
-  
+
   // If successful, save token immediately
   if (response.data.token) {
     localStorage.setItem('token', response.data.token);
@@ -35,7 +35,7 @@ const register = async (userData: RegisterData): Promise<AuthResponse> => {
 
 const login = async (credentials: LoginData): Promise<AuthResponse> => {
   const response = await api.post('/auth/login', credentials);
-  
+
   if (response.data.token) {
     localStorage.setItem('token', response.data.token);
   }
