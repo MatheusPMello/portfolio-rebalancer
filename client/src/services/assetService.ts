@@ -1,9 +1,7 @@
-import axios from 'axios';
-
-const API_URL = 'http://localhost:5001/api/assets';
+// /client/src/services/assetService.ts
+import api from './api';
 
 // --- 1. CONTRACTS ---
-
 export interface NewAsset {
   name: string;
   target_percentage: number;
@@ -16,51 +14,26 @@ export interface Asset extends NewAsset {
   user_id: number;
 }
 
-// --- 2. HELPERS ---
-
-const getAuthConfig = () => {
-  const token = localStorage.getItem('token');
-
-  const config = {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  };
-
-  console.log('getAuthConfig generated:', config);
-
-  return config;
-};
-
-// --- 3. ASYNC FUNCTIONS ---
+// --- 2. ASYNC FUNCTIONS ---
 
 const getAll = async (): Promise<Asset[]> => {
-  console.log('Calling axios.get...');
-
-  const config = getAuthConfig();
-  console.log('onfig being passed to axios:', config);
-
-  const response = await axios.get(API_URL, config);
-
+  // api.get auto-adds the token and uses the base URL
+  const response = await api.get('/assets');
   return response.data;
 };
 
 const create = async (assetData: NewAsset): Promise<Asset> => {
-  const response = await axios.post(API_URL, assetData, getAuthConfig());
+  const response = await api.post('/assets', assetData);
   return response.data;
 };
 
 const update = async (id: number, assetData: NewAsset): Promise<Asset> => {
-  const response = await axios.put(
-    `${API_URL}/${id}`,
-    assetData,
-    getAuthConfig(),
-  );
+  const response = await api.put(`/assets/${id}`, assetData);
   return response.data;
 };
 
 const remove = async (id: number): Promise<void> => {
-  await axios.delete(`${API_URL}/${id}`, getAuthConfig());
+  await api.delete(`/assets/${id}`);
 };
 
 const assetService = {
