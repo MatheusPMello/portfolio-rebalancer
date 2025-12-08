@@ -51,8 +51,8 @@ export function AddAssetModal({
       const assetData: NewAsset = {
         name,
         currency,
-        target_percentage: parseFloat(targetPercentage),
-        current_value: parseFloat(currentValue),
+        target_percentage: Number.parseFloat(targetPercentage),
+        current_value: Number.parseFloat(currentValue),
       };
 
       if (assetToEdit) {
