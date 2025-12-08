@@ -1,86 +1,90 @@
-/**
- * @file LoginPage.tsx
- * @description This component renders the login page, allowing users to sign in to their account.
- * It is designed to be rendered within the AuthLayout component.
- */
-
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import authService from '../services/authService';
 
-/**
- * Renders the login form and handles the user authentication process.
- * @returns {JSX.Element} The login page component.
- */
 export function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+
   const navigate = useNavigate();
 
-  /**
-   * Handles the form submission for the login attempt.
-   * It prevents the default form submission, calls the auth service, and handles the response.
-   * On success, it stores the token and navigates to the dashboard.
-   * On failure, it displays an error message.
-   * @param {React.FormEvent} event - The form submission event.
-   */
-  const handleSubmit = async (event: React.FormEvent) => {
-    event.preventDefault();
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
     setError(null);
+    setIsLoading(true);
+
     try {
-      const data = await authService.login({ email, password });
-      localStorage.setItem('token', data.token);
+      await authService.login({ email, password });
       navigate('/');
     } catch (err: any) {
-      setError(
-        err.response?.data?.message || 'Login failed. Please try again.',
-      );
+      console.error(err);
+      setError('Invalid email or password.');
+    } finally {
+      setIsLoading(false); 
     }
   };
 
   return (
-    <>
-      <h3 className="fw-bold mb-2">Welcome Back</h3>
-
-      <form onSubmit={handleSubmit}>
+    <div className="container d-flex justify-content-center align-items-center vh-100">
+      <div className="card shadow p-4" style={{ width: '400px' }}>
+        <h2 className="text-center mb-4">Login</h2>
+        
         {error && <div className="alert alert-danger">{error}</div>}
+        
+        {isLoading && (
+           <div className="alert alert-info small py-2">
+             <i className="bi bi-info-circle me-2"></i>
+             Waking up the free server... this might take 30s.
+           </div>
+        )}
 
-        <div className="mb-3 w-100 text-start">
-          <label htmlFor="email" className="form-label">
-            Email
-          </label>
-          <input
-            type="email"
-            className="form-control"
-            id="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-        </div>
-        <div className="mb-3 w-100 text-start">
-          <label htmlFor="password" className="form-label">
-            Password
-          </label>
-          <input
-            type="password"
-            className="form-control"
-            id="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </div>
+        <form onSubmit={handleLogin}>
+          <div className="mb-3">
+            <label className="form-label">Email address</label>
+            <input
+              type="email"
+              className="form-control"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              disabled={isLoading} 
+            />
+          </div>
+          
+          <div className="mb-3">
+            <label className="form-label">Password</label>
+            <input
+              type="password"
+              className="form-control"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              disabled={isLoading}
+            />
+          </div>
 
-        <button type="submit" className="btn btn-primary w-100 py-2 fs-5 mt-3">
-          Log In
-        </button>
-
-        <p className="text-center mt-4">
-          Don't Have An Account? <Link to="/register">Register Now.</Link>
+          <button 
+            type="submit" 
+            className="btn btn-primary w-100 py-2"
+            disabled={isLoading}
+          >
+            {isLoading ? (
+              <>
+                <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                Connecting...
+              </>
+            ) : (
+              'Sign In'
+            )}
+          </button>
+        </form>
+        
+        <p className="mt-3 text-center">
+          Don't have an account? <Link to="/register">Register</Link>
         </p>
-      </form>
-    </>
+      </div>
+    </div>
   );
 }
