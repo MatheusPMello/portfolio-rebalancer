@@ -44,8 +44,8 @@ export function PortfolioCharts({ assets }: PortfolioChartsProps) {
     
     return actualPercentage - asset.target_percentage;
   };
-
-  // --- PREPARE CHART DATA ---
+  
+// --- CHART DATA ---
   const driftValues = assets.map(getDriftData);
   
   const data = {
@@ -55,12 +55,12 @@ export function PortfolioCharts({ assets }: PortfolioChartsProps) {
         label: 'Deviation %',
         data: driftValues,
         backgroundColor: driftValues.map((val) => 
-          val < 0 ? 'rgba(220, 53, 69, 0.8)' : 'rgba(25, 135, 84, 0.8)'
+          val < 0 ? '#FF8080' : '#20C997' 
         ),
-        borderColor: driftValues.map((val) => 
-          val < 0 ? 'rgba(220, 53, 69, 1)' : 'rgba(25, 135, 84, 1)'
-        ),
-        borderWidth: 1,
+        borderWidth: 0, 
+        borderRadius: 6,
+        barThickness: 25, 
+        borderSkipped: false, 
       },
     ],
   };
@@ -71,30 +71,46 @@ export function PortfolioCharts({ assets }: PortfolioChartsProps) {
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
-      legend: {
-        display: false,
-      },
+      legend: { display: false },
       tooltip: {
+        backgroundColor: '#1e1e1e',
+        padding: 12,
+        cornerRadius: 8,
         callbacks: {
           label: function (context: any) {
             const val = context.parsed.x;
-            const status = val < 0 ? 'Underweight (Buy)' : 'Overweight';
-            return `${status}: ${val.toFixed(2)}%`;
+            const status = val < 0 ? 'Buy needed' : 'Surplus';
+            return ` ${status}: ${val.toFixed(2)}%`;
           },
         },
       },
     },
     scales: {
       x: {
-        title: {
-          display: true,
-          text: 'Deviation from Target (%)',
-        },
         grid: {
-          color: (context: any) => 
-            context.tick.value === 0 ? '#333' : 'rgba(0,0,0,0.1)',
-          lineWidth: (context: any) => context.tick.value === 0 ? 2 : 1,
+          color: 'rgba(0,0,0,0.05)',
+          borderDash: [5, 5],
+          drawBorder: false,
         },
+        ticks: {
+          color: '#888',
+          callback: function(value: any) {
+            return value + '%';
+          }
+        }
+      },
+      y: {
+        grid: {
+          display: false,
+          drawBorder: false,
+        },
+        ticks: {
+          font: {
+            weight: 'bold' as const,
+            size: 13
+          },
+          color: '#444',
+        }
       },
     },
   };
