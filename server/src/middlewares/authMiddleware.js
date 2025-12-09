@@ -15,9 +15,7 @@ function authMiddleware(req, res, next) {
   const tokenParts = authHeader.split(' ');
   if (tokenParts.length !== 2 || tokenParts[0] !== 'Bearer') {
     console.log('   ❌ Result: Header format is wrong.');
-    return res
-      .status(401)
-      .json({ message: 'Token is not valid (must be Bearer)' });
+    return res.status(401).json({ message: 'Token is not valid (must be Bearer)' });
   }
 
   const token = tokenParts[1];

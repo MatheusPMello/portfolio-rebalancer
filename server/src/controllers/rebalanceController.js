@@ -16,17 +16,13 @@ const rebalanceController = {
 
       // 3. VALIDATE
       if (!contribution || contribution <= 0) {
-        return res
-          .status(400)
-          .json({ message: 'Please provide a valid contribution amount.' });
+        return res.status(400).json({ message: 'Please provide a valid contribution amount.' });
       }
 
       const assets = await Asset.findByUserId(userId);
 
       if (assets.length === 0) {
-        return res
-          .status(400)
-          .json({ message: 'Add assets before rebalancing.' });
+        return res.status(400).json({ message: 'Add assets before rebalancing.' });
       }
 
       // 4. DELEGATE TO SERVICE (The "Brain")

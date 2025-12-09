@@ -23,18 +23,10 @@ const assetController = {
       const userId = req.user.id;
 
       if (!name || !target_percentage || !current_value || !currency) {
-        return res
-          .status(400)
-          .json({ message: 'Please provide all required fields' });
+        return res.status(400).json({ message: 'Please provide all required fields' });
       }
 
-      const newAsset = await Asset.create(
-        userId,
-        name,
-        target_percentage,
-        current_value,
-        currency,
-      );
+      const newAsset = await Asset.create(userId, name, target_percentage, current_value, currency);
       res.status(201).json(newAsset);
     } catch (err) {
       res.status(500).json({ message: 'Server error', error: err.message });
@@ -49,9 +41,7 @@ const assetController = {
       const updatedAsset = await Asset.updateById(id, userId, req.body);
 
       if (!updatedAsset) {
-        return res
-          .status(404)
-          .json({ message: 'Asset not found or user not authorized' });
+        return res.status(404).json({ message: 'Asset not found or user not authorized' });
       }
       res.status(200).json(updatedAsset);
     } catch (err) {
@@ -67,9 +57,7 @@ const assetController = {
       const deletedAsset = await Asset.deleteById(id, userId);
 
       if (!deletedAsset) {
-        return res
-          .status(404)
-          .json({ message: 'Asset not found or user not authorized' });
+        return res.status(404).json({ message: 'Asset not found or user not authorized' });
       }
       res.status(200).json({ message: 'Asset deleted successfully' });
     } catch (err) {

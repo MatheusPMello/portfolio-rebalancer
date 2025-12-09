@@ -34,9 +34,7 @@ export function LoginPage() {
       localStorage.setItem('token', data.token);
       navigate('/');
     } catch (err: any) {
-      setError(
-        err.response?.data?.message || 'Login failed. Please try again.',
-      );
+      setError(err.response?.data?.message || 'Login failed. Please try again.');
     } finally {
       setIsLoading(false);
     }
@@ -51,10 +49,7 @@ export function LoginPage() {
 
         {isLoading && (
           <div className="alert alert-info small py-2 mb-3">
-            <span
-              className="spinner-border spinner-border-sm me-2"
-              aria-hidden="true"
-            ></span>
+            <span className="spinner-border spinner-border-sm me-2" aria-hidden="true"></span>
             <span>Waking up the free server... this might take 30s.</span>
           </div>
         )}
@@ -88,17 +83,10 @@ export function LoginPage() {
           />
         </div>
 
-        <button
-          type="submit"
-          className="btn btn-primary w-100 py-2 fs-5 mt-3"
-          disabled={isLoading}
-        >
+        <button type="submit" className="btn btn-primary w-100 py-2 fs-5 mt-3" disabled={isLoading}>
           {isLoading ? (
             <>
-              <span
-                className="spinner-border spinner-border-sm me-2"
-                aria-hidden="true"
-              ></span>
+              <span className="spinner-border spinner-border-sm me-2" aria-hidden="true"></span>
               <span>Connecting...</span>
             </>
           ) : (

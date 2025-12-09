@@ -4,12 +4,7 @@
  * Calculates the rebalancing plan.
  * Pure logic: Input -> Math -> Output.
  */
-const calculateRebalancePlan = (
-  contribution,
-  assets,
-  usdRate,
-  mainCurrency,
-) => {
+const calculateRebalancePlan = (contribution, assets, usdRate, mainCurrency) => {
   // 1. Normalize all assets to the 'Main Currency'
   const normalizedAssets = assets.map((asset) => {
     const currentValue = Number(asset.current_value);
@@ -30,10 +25,7 @@ const calculateRebalancePlan = (
   });
 
   // 2. Calculate Totals
-  const totalCurrentValue = normalizedAssets.reduce(
-    (sum, a) => sum + a.normalizedValue,
-    0,
-  );
+  const totalCurrentValue = normalizedAssets.reduce((sum, a) => sum + a.normalizedValue, 0);
   const totalFutureValue = totalCurrentValue + contribution;
 
   // 3. Calculate Gaps (How far off are we?)

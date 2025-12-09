@@ -11,14 +11,7 @@ import {
 import { Bar } from 'react-chartjs-2';
 import { type Asset } from '../services/assetService';
 
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend,
-);
+ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 interface PortfolioChartsProps {
   assets: Asset[];
@@ -53,9 +46,7 @@ export function PortfolioCharts({ assets }: PortfolioChartsProps) {
       {
         label: 'Deviation %',
         data: driftValues,
-        backgroundColor: driftValues.map((val) =>
-          val < 0 ? '#FF8080' : '#20C997',
-        ),
+        backgroundColor: driftValues.map((val) => (val < 0 ? '#FF8080' : '#20C997')),
         borderWidth: 0,
         borderRadius: 6,
         barThickness: 25,
@@ -120,10 +111,8 @@ export function PortfolioCharts({ assets }: PortfolioChartsProps) {
         <div className="card shadow-sm p-4">
           <h5 className="fw-bold mb-4">Portfolio Drift</h5>
           <p className="text-muted small mb-3">
-            <span style={{ color: 'rgba(220, 53, 69, 1)', fontWeight: 'bold' }}>
-              Red bars
-            </span>{' '}
-            mean you need to buy.
+            <span style={{ color: 'rgba(220, 53, 69, 1)', fontWeight: 'bold' }}>Red bars</span> mean
+            you need to buy.
             <span
               style={{
                 color: 'rgba(25, 135, 84, 1)',

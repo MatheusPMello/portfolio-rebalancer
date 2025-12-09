@@ -17,10 +17,7 @@ export function MainLayout() {
             Portfolio Rebalancer
           </Link>
 
-          <button
-            className="btn btn-outline-danger btn-sm px-3"
-            onClick={handleLogout}
-          >
+          <button className="btn btn-outline-danger btn-sm px-3" onClick={handleLogout}>
             Logout
           </button>
         </div>

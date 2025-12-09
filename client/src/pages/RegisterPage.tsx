@@ -35,9 +35,7 @@ export function RegisterPage() {
       localStorage.setItem('token', data.token);
       navigate('/dashboard');
     } catch (err: any) {
-      setError(
-        err.response?.data?.message || 'Registration failed. Please try again.',
-      );
+      setError(err.response?.data?.message || 'Registration failed. Please try again.');
     }
   };
 

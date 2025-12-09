@@ -25,9 +25,7 @@ const authController = {
 
       // 1. Validate input
       if (!email || !password) {
-        return res
-          .status(400)
-          .json({ message: 'Please provide email and password' });
+        return res.status(400).json({ message: 'Please provide email and password' });
       }
 
       // 2. Check if user already exists
@@ -68,9 +66,7 @@ const authController = {
 
       // 1. Validate input
       if (!email || !password) {
-        return res
-          .status(400)
-          .json({ message: 'Please provide email and password' });
+        return res.status(400).json({ message: 'Please provide email and password' });
       }
 
       // 2. Find the user by email
@@ -94,9 +90,7 @@ const authController = {
         user: { id: user.id, email: user.email },
       });
     } catch (err) {
-      res
-        .status(500)
-        .json({ message: 'Server error during login', error: err.message });
+      res.status(500).json({ message: 'Server error during login', error: err.message });
     }
   },
 };

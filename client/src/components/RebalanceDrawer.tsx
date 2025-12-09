@@ -1,8 +1,6 @@
 // /client/src/components/RebalanceDrawer.tsx
 import React, { useState, useEffect } from 'react';
-import rebalanceService, {
-  type RebalanceResponse,
-} from '../services/rebalanceService';
+import rebalanceService, { type RebalanceResponse } from '../services/rebalanceService';
 
 interface RebalanceDrawerProps {
   show: boolean;
@@ -63,10 +61,7 @@ export function RebalanceDrawer({ show, onClose }: RebalanceDrawerProps) {
   return (
     <>
       {/* Backdrop - Click to close */}
-      <div
-        className={`drawer-backdrop ${show ? 'show' : ''}`}
-        onClick={onClose}
-      ></div>
+      <div className={`drawer-backdrop ${show ? 'show' : ''}`} onClick={onClose}></div>
 
       {/* The Sliding Drawer */}
       <div className={`drawer ${show ? 'show' : ''}`}>
@@ -75,11 +70,7 @@ export function RebalanceDrawer({ show, onClose }: RebalanceDrawerProps) {
           <h5 className="fw-bold mb-0">
             {step === 'INPUT' ? 'Rebalance Portfolio' : 'Your Action Plan'}
           </h5>
-          <button
-            type="button"
-            className="btn-close"
-            onClick={onClose}
-          ></button>
+          <button type="button" className="btn-close" onClick={onClose}></button>
         </div>
 
         {/* BODY (Scrollable) */}
@@ -90,15 +81,12 @@ export function RebalanceDrawer({ show, onClose }: RebalanceDrawerProps) {
           {step === 'INPUT' && (
             <form onSubmit={handleCalculate}>
               <p className="text-muted mb-4">
-                Enter the amount you wish to invest. We will calculate the
-                optimal assets to buy to bring your portfolio back to its
-                targets.
+                Enter the amount you wish to invest. We will calculate the optimal assets to buy to
+                bring your portfolio back to its targets.
               </p>
 
               <div className="mb-4">
-                <label className="form-label fw-bold">
-                  Contribution Amount
-                </label>
+                <label className="form-label fw-bold">Contribution Amount</label>
                 <div className="input-group input-group-lg shadow-sm">
                   <span className="input-group-text bg-white text-muted">
                     {currency === 'BRL' ? 'R$' : '$'}
@@ -150,30 +138,21 @@ export function RebalanceDrawer({ show, onClose }: RebalanceDrawerProps) {
                 <i className="bi bi-check-circle-fill fs-4 me-3"></i>
                 <div>
                   Plan calculated for an investment of <br />
-                  <strong>
-                    {formatMoney(result.contribution, result.mainCurrency)}
-                  </strong>
-                  .
+                  <strong>{formatMoney(result.contribution, result.mainCurrency)}</strong>.
                 </div>
               </div>
 
               {result.suggestions.length === 0 ? (
                 <div className="text-center py-5 my-auto">
-                  <i
-                    className="bi bi-stars text-warning"
-                    style={{ fontSize: '4rem' }}
-                  ></i>
+                  <i className="bi bi-stars text-warning" style={{ fontSize: '4rem' }}></i>
                   <h4 className="fw-bold mt-3">Perfectly Balanced!</h4>
                   <p className="text-muted">
-                    Your portfolio already matches your targets. No trades are
-                    necessary right now.
+                    Your portfolio already matches your targets. No trades are necessary right now.
                   </p>
                 </div>
               ) : (
                 <>
-                  <h6 className="text-muted text-uppercase fw-bold mb-3">
-                    Recommended Trades
-                  </h6>
+                  <h6 className="text-muted text-uppercase fw-bold mb-3">Recommended Trades</h6>
                   <ul className="list-group shadow-sm rounded-3 overflow-hidden">
                     {result.suggestions.map((item, index) => (
                       <li
@@ -187,8 +166,7 @@ export function RebalanceDrawer({ show, onClose }: RebalanceDrawerProps) {
                               Target: <strong>{item.targetPercentage}%</strong>
                             </span>
                             <span>
-                              Current:{' '}
-                              <strong>{item.currentPercentage}%</strong>
+                              Current: <strong>{item.currentPercentage}%</strong>
                             </span>
                           </div>
                         </div>
