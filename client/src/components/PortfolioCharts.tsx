@@ -34,33 +34,32 @@ export function PortfolioCharts({ assets }: PortfolioChartsProps) {
     return sum + (asset.currency === 'USD' ? val * ESTIMATED_USD_RATE : val);
   }, 0);
 
-
   const getDriftData = (asset: Asset) => {
     if (totalPortfolioValueBrl === 0) return 0;
-    
+
     const val = Number(asset.current_value);
     const valInBrl = asset.currency === 'USD' ? val * ESTIMATED_USD_RATE : val;
     const actualPercentage = (valInBrl / totalPortfolioValueBrl) * 100;
-    
+
     return actualPercentage - asset.target_percentage;
   };
-  
-// --- CHART DATA ---
+
+  // --- CHART DATA ---
   const driftValues = assets.map(getDriftData);
-  
+
   const data = {
     labels: assets.map((a) => a.name),
     datasets: [
       {
         label: 'Deviation %',
         data: driftValues,
-        backgroundColor: driftValues.map((val) => 
-          val < 0 ? '#FF8080' : '#20C997' 
+        backgroundColor: driftValues.map((val) =>
+          val < 0 ? '#FF8080' : '#20C997',
         ),
-        borderWidth: 0, 
+        borderWidth: 0,
         borderRadius: 6,
-        barThickness: 25, 
-        borderSkipped: false, 
+        barThickness: 25,
+        borderSkipped: false,
       },
     ],
   };
@@ -94,10 +93,10 @@ export function PortfolioCharts({ assets }: PortfolioChartsProps) {
         },
         ticks: {
           color: '#888',
-          callback: function(value: any) {
+          callback: function (value: any) {
             return value + '%';
-          }
-        }
+          },
+        },
       },
       y: {
         grid: {
@@ -107,10 +106,10 @@ export function PortfolioCharts({ assets }: PortfolioChartsProps) {
         ticks: {
           font: {
             weight: 'bold' as const,
-            size: 13
+            size: 13,
           },
           color: '#444',
-        }
+        },
       },
     },
   };
@@ -121,8 +120,20 @@ export function PortfolioCharts({ assets }: PortfolioChartsProps) {
         <div className="card shadow-sm p-4">
           <h5 className="fw-bold mb-4">Portfolio Drift</h5>
           <p className="text-muted small mb-3">
-            <span style={{ color: 'rgba(220, 53, 69, 1)', fontWeight: 'bold' }}>Red bars</span> mean you need to buy. 
-            <span style={{ color: 'rgba(25, 135, 84, 1)', fontWeight: 'bold', marginLeft: '8px' }}>Green bars</span> mean you have enough.
+            <span style={{ color: 'rgba(220, 53, 69, 1)', fontWeight: 'bold' }}>
+              Red bars
+            </span>{' '}
+            mean you need to buy.
+            <span
+              style={{
+                color: 'rgba(25, 135, 84, 1)',
+                fontWeight: 'bold',
+                marginLeft: '8px',
+              }}
+            >
+              Green bars
+            </span>{' '}
+            mean you have enough.
           </p>
           <div style={{ height: '350px' }}>
             <Bar data={data} options={options} />
