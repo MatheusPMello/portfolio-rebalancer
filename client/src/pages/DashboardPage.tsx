@@ -44,11 +44,12 @@ export function DashboardPage() {
   };
 
   const handleDelete = async (id: number) => {
-    if (!window.confirm('Are you sure you want to delete this asset?')) return;
+    if (!globalThis.confirm('Are you sure you want to delete this asset?')) return;
     try {
       await assetService.remove(id);
       setAssets(assets.filter((asset) => asset.id !== id));
     } catch (err) {
+      console.error('Failed to delete asset', err);
       alert('Failed to delete asset');
     }
   };
@@ -69,7 +70,7 @@ export function DashboardPage() {
 
   // **NOTE:** In a real app, you'd fetch the live rate here.
   // For this UI demo, we'll use a fixed rate to estimate the total.
-  const ESTIMATED_USD_RATE = 6.0;
+  const ESTIMATED_USD_RATE = 6;
   const estimatedTotalInBRL = totalBRL + totalUSD * ESTIMATED_USD_RATE;
 
   if (loading)
@@ -164,7 +165,7 @@ export function DashboardPage() {
             className="btn btn-outline-primary border-2 fw-bold d-flex align-items-center gap-2"
             onClick={handleAddNew}
           >
-            <i className="bi bi-plus-lg"></i>
+            <i className="bi bi-plus-lg"></i>{''}
             Add Asset
           </button>
         </div>
