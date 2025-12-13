@@ -11,10 +11,10 @@ const exchangeRateService = {
 
       const response = await axios.get('https://economia.awesomeapi.com.br/last/USD-BRL');
 
-      const rate = parseFloat(response.data.USDBRL.bid);
+      const rate = Number.parseFloat(response.data.USDBRL.bid);
 
-      if (isNaN(rate)) {
-        throw new Error('Invalid rate format received');
+      if (Number.isNaN(rate)) {
+        throw new TypeError('Invalid rate format received');
       }
 
       console.log(`Real-time rate received: R$ ${rate}`);
