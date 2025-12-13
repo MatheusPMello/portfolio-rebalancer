@@ -165,7 +165,8 @@ export function DashboardPage() {
             className="btn btn-outline-primary border-2 fw-bold d-flex align-items-center gap-2"
             onClick={handleAddNew}
           >
-            <i className="bi bi-plus-lg"></i>{''}
+            <i className="bi bi-plus-lg"></i>
+            {''}
             Add Asset
           </button>
         </div>
