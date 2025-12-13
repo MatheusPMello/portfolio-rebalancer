@@ -112,11 +112,12 @@ const driftValues = assets.map((asset) =>
           <p className="text-muted small mb-3">
             <span style={{ color: 'rgba(220, 53, 69, 1)', fontWeight: 'bold' }}>Red bars</span> mean
             you need to buy.
+            {' '}
             <span
               style={{
                 color: 'rgba(25, 135, 84, 1)',
                 fontWeight: 'bold',
-                marginLeft: '8px',
+                //marginLeft: '8px',
               }}
             >
               Green bars

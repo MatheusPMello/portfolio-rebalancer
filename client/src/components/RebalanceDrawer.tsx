@@ -202,11 +202,13 @@ export function RebalanceDrawer({ show, onClose }: RebalanceDrawerProps) {
                 <>
                   <span className="spinner-border spinner-border-sm me-2"></span>
                   Calculating...
+                  {' '}
                 </>
               ) : (
                 <>
                   <i className="bi bi-calculator-fill"></i>
                   Calculate Action Plan
+                  {' '}
                 </>
               )}
             </button>
