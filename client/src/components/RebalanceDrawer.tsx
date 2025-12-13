@@ -88,7 +88,7 @@ export function RebalanceDrawer({ show, onClose }: RebalanceDrawerProps) {
               <div className="mb-4">
                 <div className="form-label fw-bold">Contribution Amount</div>
                 <div className="input-group input-group-lg shadow-sm">
-                  <span className="input-group-text bg-white text-muted">
+                  <span className="input-group-text bg-white text-muted justify-content-center" style={{ minWidth: '3.5rem' }}>
                     {currency === 'BRL' ? 'R$' : '$'}
                   </span>
                   <input
