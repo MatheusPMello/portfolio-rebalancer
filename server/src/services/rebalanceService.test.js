@@ -70,4 +70,42 @@ describe('Rebalance Service Logic', () => {
     expect(result[0].amountToBuy).toBe(100);
     expect(result[0].currency).toBe('USD');
   });
+
+// --- SCENARIO 3: The "Future Weight" Logic ---
+  test('should reduce buy amount by current holding value', () => {
+    // ARRANGE
+    const contribution = 10000;
+    const rate = 1;
+    const currency = 'BRL';
+
+    const assets = [
+      {
+        name: 'Apple',
+        current_value: 800,
+        target_percentage: 50,
+        currency: 'BRL'
+      },
+      {
+        name: 'Google',
+        current_value: 200,
+        target_percentage: 50,
+        currency: 'BRL'
+      },
+    ];
+
+    // ACT
+    const result = calculateRebalancePlan(contribution, assets, rate, currency);
+
+    // ASSERT
+    // Total wealth = 11.000. 50% target = 5500.
+    // Apple needs : 5500 - 800 = 4700
+    // Google needs : 5500 - 200 = 5300
+
+    const applePlan = result.find(a => a.name === 'Apple');
+    const googlePlan = result.find(a => a.name === 'Google');
+
+    expect(applePlan.amountToBuy).toBe(4700);
+    expect(googlePlan.amountToBuy).toBe(5300);
+
+  });
 });
