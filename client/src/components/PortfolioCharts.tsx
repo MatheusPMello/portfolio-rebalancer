@@ -10,6 +10,7 @@ import {
 } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
 import { type Asset } from '../services/assetService';
+import { calculateDrift } from '../utils/financialMath';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
@@ -27,18 +28,16 @@ export function PortfolioCharts({ assets }: PortfolioChartsProps) {
     return sum + (asset.currency === 'USD' ? val * ESTIMATED_USD_RATE : val);
   }, 0);
 
-  const getDriftData = (asset: Asset) => {
-    if (totalPortfolioValueBrl === 0) return 0;
-
-    const val = Number(asset.current_value);
-    const valInBrl = asset.currency === 'USD' ? val * ESTIMATED_USD_RATE : val;
-    const actualPercentage = (valInBrl / totalPortfolioValueBrl) * 100;
-
-    return actualPercentage - asset.target_percentage;
-  };
-
   // --- CHART DATA ---
-  const driftValues = assets.map(getDriftData);
+const driftValues = assets.map((asset) => 
+    calculateDrift(
+      Number(asset.current_value),
+      asset.currency,
+      totalPortfolioValueBrl,
+      asset.target_percentage,
+      ESTIMATED_USD_RATE
+    )
+  );
 
   const data = {
     labels: assets.map((a) => a.name),
