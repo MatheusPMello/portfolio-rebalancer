@@ -1,6 +1,5 @@
 // client/src/utils/financialMath.test.ts
 import { calculateDrift } from './financialMath';
-import { describe, it, expect } from 'vitest'; // or 'jest'
 
 describe('calculateDrift', () => {
   const MOCK_RATE = 5; // Easier math for testing

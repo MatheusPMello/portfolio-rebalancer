@@ -32,11 +32,14 @@
   },
   "homepage": "https://github.com/MatheusPMello/portfolio-rebalancer#readme",
   "devDependencies": {
+    "@types/jest": "^30.0.0",
     "concurrently": "^9.2.1",
     "eslint": "^9.39.1",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.4",
     "jest": "^30.2.0",
-    "prettier": "^3.6.2"
+    "prettier": "^3.6.2",
+    "ts-jest": "^29.4.6",
+    "ts-node": "^10.9.2"
   }
 }
