@@ -121,8 +121,10 @@ export function DashboardPage() {
             className="btn btn-primary btn-lg px-5 py-3 shadow-lg d-flex align-items-center gap-3 rounded-pill hover-scale"
             onClick={() => setShowRebalanceDrawer(true)}
             style={{ transition: 'transform 0.2s' }}
-            onMouseOver={(e) => (e.currentTarget.style.transform = 'scale(1.02)')}
+            onMouseOver={(e) => (e.currentTarget.style.transform = 'scale(1.05)')}
+            onFocus={(e) => (e.currentTarget.style.transform = 'scale(1.05)')}
             onMouseOut={(e) => (e.currentTarget.style.transform = 'scale(1)')}
+            onBlur={(e) => (e.currentTarget.style.transform = 'scale(1)')}
           >
             <i className="bi bi-stars fs-3"></i> {/* Changed icon to "stars" for a "magic" feel */}
             <div className="text-start">

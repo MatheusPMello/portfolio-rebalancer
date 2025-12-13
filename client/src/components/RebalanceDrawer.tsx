@@ -61,7 +61,7 @@ export function RebalanceDrawer({ show, onClose }: RebalanceDrawerProps) {
   return (
     <>
       {/* Backdrop - Click to close */}
-      <div className={`drawer-backdrop ${show ? 'show' : ''}`} onClick={onClose}></div>
+      <div className={`drawer-backdrop ${show ? 'show' : ''}`} onClick={onClose} aria-hidden="true"></div>
 
       {/* The Sliding Drawer */}
       <div className={`drawer ${show ? 'show' : ''}`}>
@@ -86,7 +86,7 @@ export function RebalanceDrawer({ show, onClose }: RebalanceDrawerProps) {
               </p>
 
               <div className="mb-4">
-                <label className="form-label fw-bold">Contribution Amount</label>
+                <div className="form-label fw-bold">Contribution Amount</div>
                 <div className="input-group input-group-lg shadow-sm">
                   <span className="input-group-text bg-white text-muted">
                     {currency === 'BRL' ? 'R$' : '$'}
@@ -106,7 +106,7 @@ export function RebalanceDrawer({ show, onClose }: RebalanceDrawerProps) {
               </div>
 
               <div className="mb-4">
-                <label className="form-label fw-bold">Source Currency</label>
+                <div className="form-label fw-bold">Source Currency</div>
                 <div className="d-flex gap-3">
                   <button
                     type="button"
