@@ -1,5 +1,5 @@
 // client/src/utils/financialMath.test.ts
-import { calculateDrift } from './financialMath';
+import { calculateDrift, calculateTotalPortfolio } from './financialMath';
 
 describe('calculateDrift', () => {
   const MOCK_RATE = 5; // Easier math for testing
@@ -24,5 +24,18 @@ describe('calculateDrift', () => {
   it('returns 0 if total portfolio value is 0', () => {
     const result = calculateDrift(100, 'BRL', 0, 20, MOCK_RATE);
     expect(result).toBe(0);
+  });
+
+  test('calculates total correctly with USD conversion', () => {
+   const mockAssets = [
+     { 
+       current_value: '100',
+       currency: 'USD',
+       target_percentage: 10 
+     } as any
+   ];
+
+   const total = calculateTotalPortfolio(mockAssets, 5);
+   expect(total).toBe(500);
   });
 });
