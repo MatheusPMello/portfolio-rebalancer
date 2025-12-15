@@ -53,6 +53,9 @@ jobs:
       - name: Install Client Dependencies
         run: cd client && npm ci
 
+      - name: Run Client Unit Tests
+        run: cd client && npm test
+        
       - name: Build React App
         # This compiles the React app.
         # If you have TypeScript errors (like passing a string to a number prop), this fails.
