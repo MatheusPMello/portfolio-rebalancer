@@ -9,7 +9,7 @@ interface AddAssetModalProps {
   assetToEdit?: Asset | null;
 }
 
-export function AddAssetModal({ show, onClose, onAssetSaved, assetToEdit }: AddAssetModalProps) {
+export function AddAssetModal({ show, onClose, onAssetSaved, assetToEdit }: Readonly<AddAssetModalProps>) {
   const [name, setName] = useState('');
   const [currency, setCurrency] = useState<'USD' | 'BRL'>('BRL');
   const [targetPercentage, setTargetPercentage] = useState('');
