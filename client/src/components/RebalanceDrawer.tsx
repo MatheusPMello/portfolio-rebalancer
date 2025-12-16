@@ -7,7 +7,7 @@ interface RebalanceDrawerProps {
   onClose: () => void;
 }
 
-export function RebalanceDrawer({ show, onClose }: RebalanceDrawerProps) {
+export function RebalanceDrawer({ show, onClose }: Readonly<RebalanceDrawerProps>) {
   // UI State
   const [step, setStep] = useState<'INPUT' | 'RESULT'>('INPUT');
   const [loading, setLoading] = useState(false);

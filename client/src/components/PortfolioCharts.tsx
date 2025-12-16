@@ -18,7 +18,7 @@ interface PortfolioChartsProps {
   assets: Asset[];
 }
 
-export function PortfolioCharts({ assets }: PortfolioChartsProps) {
+export function PortfolioCharts({ assets }: Readonly<PortfolioChartsProps>) {
   if (assets.length === 0) return null;
 
 const ESTIMATED_USD_RATE = 6;
