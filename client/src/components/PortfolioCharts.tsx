@@ -7,6 +7,7 @@ import {
   Title,
   Tooltip,
   Legend,
+  type TooltipItem,
 } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
 import { type Asset } from '../services/assetService';
@@ -63,8 +64,9 @@ export function PortfolioCharts({ assets }: Readonly<PortfolioChartsProps>) {
         padding: 12,
         cornerRadius: 8,
         callbacks: {
-          label: function (context: any) {
+          label: function (context: TooltipItem<'bar'>) {
             const val = context.parsed.x;
+            if (val === null) return 'No Data';
             const status = val < 0 ? 'Buy needed' : 'Surplus';
             return ` ${status}: ${val.toFixed(2)}%`;
           },
@@ -80,7 +82,7 @@ export function PortfolioCharts({ assets }: Readonly<PortfolioChartsProps>) {
         },
         ticks: {
           color: '#888',
-          callback: function (value: any) {
+          callback: function (value: string | number) {
             return value + '%';
           },
         },

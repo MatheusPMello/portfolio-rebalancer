@@ -1,5 +1,6 @@
 // client/src/utils/financialMath.test.ts
 import { calculateDrift, calculateTotalPortfolio } from './financialMath';
+import { type Asset } from '../services/assetService';
 
 describe('calculateDrift', () => {
   const MOCK_RATE = 5; // Easier math for testing
@@ -29,10 +30,10 @@ describe('calculateDrift', () => {
   test('calculates total correctly with USD conversion', () => {
     const mockAssets = [
       {
-        current_value: '100',
+        current_value: 100,
         currency: 'USD',
         target_percentage: 10,
-      } as any,
+      } as Asset,
     ];
 
     const total = calculateTotalPortfolio(mockAssets, 5);
