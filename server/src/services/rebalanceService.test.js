@@ -46,7 +46,7 @@ describe('Rebalance Service Logic', () => {
   test('should handle USD assets correctly', () => {
     // Contribute R$ 600. The dollar is R$ 6.00.
     const contribution = 600;
-    const rate = 6.0;
+    const rate = 6;
     const currency = 'BRL';
 
     const assets = [
