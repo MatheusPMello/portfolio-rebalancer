@@ -1,6 +1,7 @@
 // /client/src/components/RebalanceDrawer.tsx
 import React, { useState, useEffect } from 'react';
 import rebalanceService, { type RebalanceResponse } from '../services/rebalanceService';
+import { getErrorMessage } from '../utils/errorHandler';
 
 interface RebalanceDrawerProps {
   show: boolean;
@@ -50,9 +51,12 @@ export function RebalanceDrawer({ show, onClose }: Readonly<RebalanceDrawerProps
       const data = await rebalanceService.calculate(Number(amount), currency);
       setResult(data);
       setStep('RESULT');
-    } catch (err: any) {
-      console.error(err);
-      setError('Failed to calculate. Please check your portfolio targets.');
+    } catch (err) {
+      const message = getErrorMessage(
+        err,
+        'Failed to calculate. Please check your portfolio targets.',
+      );
+      setError(message);
     } finally {
       setLoading(false);
     }
@@ -61,7 +65,11 @@ export function RebalanceDrawer({ show, onClose }: Readonly<RebalanceDrawerProps
   return (
     <>
       {/* Backdrop - Click to close */}
-      <div className={`drawer-backdrop ${show ? 'show' : ''}`} onClick={onClose} aria-hidden="true"></div>
+      <div
+        className={`drawer-backdrop ${show ? 'show' : ''}`}
+        onClick={onClose}
+        aria-hidden="true"
+      ></div>
 
       {/* The Sliding Drawer */}
       <div className={`drawer ${show ? 'show' : ''}`}>
@@ -88,7 +96,10 @@ export function RebalanceDrawer({ show, onClose }: Readonly<RebalanceDrawerProps
               <div className="mb-4">
                 <div className="form-label fw-bold">Contribution Amount</div>
                 <div className="input-group input-group-lg shadow-sm">
-                  <span className="input-group-text bg-white text-muted justify-content-center" style={{ minWidth: '3.5rem' }}>
+                  <span
+                    className="input-group-text bg-white text-muted justify-content-center"
+                    style={{ minWidth: '3.5rem' }}
+                  >
                     {currency === 'BRL' ? 'R$' : '$'}
                   </span>
                   <input
@@ -201,14 +212,12 @@ export function RebalanceDrawer({ show, onClose }: Readonly<RebalanceDrawerProps
               {loading ? (
                 <>
                   <span className="spinner-border spinner-border-sm me-2"></span>
-                  Calculating...
-                  {' '}
+                  Calculating...{' '}
                 </>
               ) : (
                 <>
                   <i className="bi bi-calculator-fill"></i>
-                  Calculate Action Plan
-                  {' '}
+                  Calculate Action Plan{' '}
                 </>
               )}
             </button>

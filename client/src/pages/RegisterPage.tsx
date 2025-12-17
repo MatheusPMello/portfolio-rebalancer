@@ -7,6 +7,7 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import authService from '../services/authService';
+import { getErrorMessage } from '../utils/errorHandler';
 
 /**
  * Renders the registration form and handles the new user creation process.
@@ -34,8 +35,9 @@ export function RegisterPage() {
 
       localStorage.setItem('token', data.token);
       navigate('/dashboard');
-    } catch (err: any) {
-      setError(err.response?.data?.message || 'Registration failed. Please try again.');
+    } catch (err) {
+      const message = getErrorMessage(err, 'Registration failed. Please try again.');
+      setError(message);
     }
   };
 

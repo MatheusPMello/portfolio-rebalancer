@@ -27,15 +27,15 @@ describe('calculateDrift', () => {
   });
 
   test('calculates total correctly with USD conversion', () => {
-   const mockAssets = [
-     { 
-       current_value: '100',
-       currency: 'USD',
-       target_percentage: 10 
-     } as any
-   ];
+    const mockAssets = [
+      {
+        current_value: '100',
+        currency: 'USD',
+        target_percentage: 10,
+      } as any,
+    ];
 
-   const total = calculateTotalPortfolio(mockAssets, 5);
-   expect(total).toBe(500);
+    const total = calculateTotalPortfolio(mockAssets, 5);
+    expect(total).toBe(500);
   });
 });
