@@ -32,7 +32,7 @@ api.interceptors.response.use(
       // 1. Clear the bad token
       localStorage.removeItem('token');
       // 2. Force redirect to login
-      window.location.href = '/login';
+      globalThis.location.href = '/login';
     }
     return Promise.reject(error);
   },
