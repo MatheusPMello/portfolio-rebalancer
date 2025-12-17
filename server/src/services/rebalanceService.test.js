@@ -71,7 +71,7 @@ describe('Rebalance Service Logic', () => {
     expect(result[0].currency).toBe('USD');
   });
 
-// --- SCENARIO 3: The "Future Weight" Logic ---
+  // --- SCENARIO 3: The "Future Weight" Logic ---
   test('should reduce buy amount by current holding value', () => {
     // ARRANGE
     const contribution = 10000;
@@ -83,13 +83,13 @@ describe('Rebalance Service Logic', () => {
         name: 'Apple',
         current_value: 800,
         target_percentage: 50,
-        currency: 'BRL'
+        currency: 'BRL',
       },
       {
         name: 'Google',
         current_value: 200,
         target_percentage: 50,
-        currency: 'BRL'
+        currency: 'BRL',
       },
     ];
 
@@ -101,11 +101,10 @@ describe('Rebalance Service Logic', () => {
     // Apple needs : 5500 - 800 = 4700
     // Google needs : 5500 - 200 = 5300
 
-    const applePlan = result.find(a => a.name === 'Apple');
-    const googlePlan = result.find(a => a.name === 'Google');
+    const applePlan = result.find((a) => a.name === 'Apple');
+    const googlePlan = result.find((a) => a.name === 'Google');
 
     expect(applePlan.amountToBuy).toBe(4700);
     expect(googlePlan.amountToBuy).toBe(5300);
-
   });
 });

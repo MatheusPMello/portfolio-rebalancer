@@ -1,6 +1,7 @@
 // /client/src/components/AddAssetModal.tsx
 import React, { useState, useEffect } from 'react';
 import assetService, { type NewAsset, type Asset } from '../services/assetService';
+import { getErrorMessage } from '../utils/errorHandler';
 
 interface AddAssetModalProps {
   show: boolean;
@@ -9,7 +10,12 @@ interface AddAssetModalProps {
   assetToEdit?: Asset | null;
 }
 
-export function AddAssetModal({ show, onClose, onAssetSaved, assetToEdit }: Readonly<AddAssetModalProps>) {
+export function AddAssetModal({
+  show,
+  onClose,
+  onAssetSaved,
+  assetToEdit,
+}: Readonly<AddAssetModalProps>) {
   const [name, setName] = useState('');
   const [currency, setCurrency] = useState<'USD' | 'BRL'>('BRL');
   const [targetPercentage, setTargetPercentage] = useState('');
@@ -55,8 +61,9 @@ export function AddAssetModal({ show, onClose, onAssetSaved, assetToEdit }: Read
 
       onAssetSaved();
       onClose();
-    } catch (err: any) {
-      setError(err.response?.data?.message || 'Failed to save asset');
+    } catch (err) {
+      const message = getErrorMessage(err, 'Failed to save asset');
+      setError(message);
     } finally {
       setIsSubmitting(false);
     }

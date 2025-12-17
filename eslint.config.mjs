@@ -1,7 +1,8 @@
 // eslint.config.js
 import globals from 'globals';
 import js from '@eslint/js';
-import configPrettier from 'eslint-config-prettier'; // We import Prettier directly
+import configPrettier from 'eslint-config-prettier';
+import pluginJest from 'eslint-plugin-jest';
 
 export default [
   // 1. Recommended ESLint rules
@@ -9,7 +10,7 @@ export default [
 
   // 2. Specific configuration for the BACK-END
   {
-    files: ['server/**/*.js'],
+    files: ['server/**/*.js', 'jest.config.js'],
     languageOptions: {
       globals: {
         ...globals.node, // Node environment
@@ -29,7 +30,23 @@ export default [
     },
   },
 
-  // 4. Prettier configuration (MUST BE LAST!)
-  // Disables ESLint style rules that conflict with Prettier.
+  // 4. Jest Configuration (Targeting Test Files Only)
+  {
+    files: ['**/*.test.js'],
+    plugins: {
+      jest: pluginJest,
+    },
+    languageOptions: {
+      globals: {
+        ...globals.jest,
+      },
+    },
+    rules: {
+      ...pluginJest.configs['flat/recommended'].rules,
+      // "strict": "off"
+    },
+  },
+
+  // 4. Prettier configuration
   configPrettier,
 ];

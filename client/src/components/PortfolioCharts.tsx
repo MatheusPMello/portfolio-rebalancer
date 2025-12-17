@@ -7,6 +7,7 @@ import {
   Title,
   Tooltip,
   Legend,
+  type TooltipItem,
 } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
 import { type Asset } from '../services/assetService';
@@ -21,19 +22,19 @@ interface PortfolioChartsProps {
 export function PortfolioCharts({ assets }: Readonly<PortfolioChartsProps>) {
   if (assets.length === 0) return null;
 
-const ESTIMATED_USD_RATE = 6;
+  const ESTIMATED_USD_RATE = 6;
 
-const totalPortfolioValue = calculateTotalPortfolio(assets, ESTIMATED_USD_RATE);
+  const totalPortfolioValue = calculateTotalPortfolio(assets, ESTIMATED_USD_RATE);
 
-// --- CHART DATA ---
-const driftValues = assets.map((asset) => 
+  // --- CHART DATA ---
+  const driftValues = assets.map((asset) =>
     calculateDrift(
       Number(asset.current_value),
       asset.currency,
       totalPortfolioValue,
       asset.target_percentage,
-      ESTIMATED_USD_RATE
-    )
+      ESTIMATED_USD_RATE,
+    ),
   );
 
   const data = {
@@ -63,8 +64,9 @@ const driftValues = assets.map((asset) =>
         padding: 12,
         cornerRadius: 8,
         callbacks: {
-          label: function (context: any) {
+          label: function (context: TooltipItem<'bar'>) {
             const val = context.parsed.x;
+            if (val === null) return 'No Data';
             const status = val < 0 ? 'Buy needed' : 'Surplus';
             return ` ${status}: ${val.toFixed(2)}%`;
           },
@@ -80,7 +82,7 @@ const driftValues = assets.map((asset) =>
         },
         ticks: {
           color: '#888',
-          callback: function (value: any) {
+          callback: function (value: string | number) {
             return value + '%';
           },
         },
@@ -108,8 +110,7 @@ const driftValues = assets.map((asset) =>
           <h5 className="fw-bold mb-4">Portfolio Drift</h5>
           <p className="text-muted small mb-3">
             <span style={{ color: 'rgba(220, 53, 69, 1)', fontWeight: 'bold' }}>Red bars</span> mean
-            you need to buy.
-            {' '}
+            you need to buy.{' '}
             <span
               style={{
                 color: 'rgba(25, 135, 84, 1)',

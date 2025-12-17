@@ -7,6 +7,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import authService from '../services/authService';
+import { getErrorMessage } from '../utils/errorHandler';
 
 /**
  * Renders the login form and handles the user authentication process.
@@ -33,8 +34,9 @@ export function LoginPage() {
       const data = await authService.login({ email, password });
       localStorage.setItem('token', data.token);
       navigate('/');
-    } catch (err: any) {
-      setError(err.response?.data?.message || 'Login failed. Please try again.');
+    } catch (err) {
+      const message = getErrorMessage(err, 'Login failed. Please try again.');
+      setError(message);
     } finally {
       setIsLoading(false);
     }
