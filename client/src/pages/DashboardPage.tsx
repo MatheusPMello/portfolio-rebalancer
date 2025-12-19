@@ -76,7 +76,7 @@ export function DashboardPage() {
   if (loading)
     return (
       <div className="text-center mt-5 pt-5">
-        <div className="spinner-border text-primary" role="status"></div>
+        <output className="spinner-border text-primary"></output>
         <p className="mt-2 text-muted">Loading your portfolio...</p>
       </div>
     );
