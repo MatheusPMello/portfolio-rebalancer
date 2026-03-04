@@ -7,7 +7,7 @@ const axios = require('axios');
 const DEFAULTS = {
   apiUrl: 'https://api.frankfurter.app/latest?from=USD&to=BRL',
   fallbackRate: 6,
-  cacheDurationMs: 10 * 60 * 1000, // 10 minutes
+  cacheDurationMs: 60 * 60 * 1000, // 1 hour
   timeoutMs: 5_000,                 // 5 seconds
 };
 
