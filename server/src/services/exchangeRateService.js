@@ -5,9 +5,9 @@ const axios = require('axios');
 // ─── Constants ────────────────────────────────────────────────────────────────
 
 const DEFAULTS = {
-  apiUrl: 'https://economia.awesomeapi.com.br/last/USD-BRL',
+  apiUrl: 'https://api.frankfurter.app/latest?from=USD&to=BRL',
   fallbackRate: 6,
-  cacheDurationMs: 10 * 60 * 1000, // 10 minutes
+  cacheDurationMs: 60 * 60 * 1000, // 1 hour
   timeoutMs: 5_000,                 // 5 seconds
 };
 
@@ -45,7 +45,7 @@ function createExchangeRateService(opts = {}) {
       timeout: config.timeoutMs,
     });
 
-    const rate = Number.parseFloat(response.data?.USDBRL?.bid);
+    const rate = Number.parseFloat(response.data?.rates?.BRL);
 
     if (Number.isNaN(rate) || rate <= 0) {
       throw new TypeError(`Invalid rate value received: ${response.data?.USDBRL?.bid}`);
