@@ -9,6 +9,7 @@ const db = require('./config/db');
 const authRoutes = require('./routes/authRoutes');
 const assetRoutes = require('./routes/assetRoutes');
 const rebalanceRoutes = require('./routes/rebalanceRoutes');
+const currencyRoutes = require('./routes/currencyRoutes');
 const app = express();
 
 // --- Middlewares ---
@@ -24,6 +25,7 @@ app.get('/api/test', (req, res) => {
 app.use('/api/auth', authRoutes);
 app.use('/api/assets', assetRoutes);
 app.use('/api/rebalance', rebalanceRoutes);
+app.use('/api/currency', currencyRoutes);
 
 // --- Server Startup ---
 const PORT = process.env.PORT || 5001;
