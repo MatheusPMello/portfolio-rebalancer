@@ -5,12 +5,13 @@ function authMiddleware(req, res, next) {
   // --- DEBUG LOGS START ---
   const authHeader = req.header('Authorization');
   console.log('\n🔍 Bouncer (Middleware) Check:');
-  console.log('   1. Header received:', authHeader);
 
   if (!authHeader) {
     console.log('   ❌ Result: No header found.');
     return res.status(401).json({ message: 'No token, authorization denied' });
   }
+
+  console.log('   1. Header received');
 
   const tokenParts = authHeader.split(' ');
   if (tokenParts.length !== 2 || tokenParts[0] !== 'Bearer') {
@@ -19,7 +20,7 @@ function authMiddleware(req, res, next) {
   }
 
   const token = tokenParts[1];
-  console.log('   2. Token extracted!');
+  console.log('   2. Token extracted');
 
   try {
     // Check if secret exists
