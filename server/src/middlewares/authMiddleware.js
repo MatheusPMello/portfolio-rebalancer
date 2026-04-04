@@ -19,7 +19,7 @@ function authMiddleware(req, res, next) {
   }
 
   const token = tokenParts[1];
-  console.log('   2. Token extracted:', token.substring(0, 20) + '...');
+  console.log('   2. Token extracted!');
 
   try {
     // Check if secret exists
