@@ -5,7 +5,8 @@
 > A full-stack FinTech application designed to help investors manage multi-currency portfolios (BRL/USD) and calculate
 > optimal asset allocation based on target percentages.
 
-**[🚀 View Live Demo](https://portfolio-rebalancer-eta.vercel.app/)** ---
+**[🚀 View Live Demo](https://portfolio-rebalancer-eta.vercel.app/)**
+---
 
 ## ✨ Features
 
@@ -62,8 +63,6 @@ This project follows a Monorepo structure separating the client and server envir
 |-- docker-compose.yml        # Database Container Config
 ```
 
----
-
 ## 🚀 Getting Started
 
 ### Prerequisites
@@ -71,27 +70,34 @@ This project follows a Monorepo structure separating the client and server envir
 * [Node.js](https://nodejs.org/) (v18+)
 * [Docker Desktop](https://www.docker.com/products/docker-desktop/) (Must be running)
 
-### 1. Setup Environment
+### 1. Clone & Configure Environment
 
-Clone the repository and run the automated setup script. This installs dependencies, starts the Docker database, and
-creates the required tables.
+First, clone the repository and navigate into the project directory:
 
 ```bash
-git clone [https://github.com/MatheusPMello/portfolio-rebalancer.git](https://github.com/MatheusPMello/portfolio-rebalancer.git)
+git clone https://github.com/MatheusPMello/portfolio-rebalancer.git
 cd portfolio-rebalancer
-
-# Run the master setup
-npm run setup
 ```
-> **Note:** If the setup fails on the database step, ensure Docker Desktop is running and run `npm run db:init` manually.
 
-### 2. Configure Environment Variables
-
-Create a `.env` file in the `/server` directory using the provided template.
+Next, create your `.env` file in the `/server` directory. The provided example file is pre-configured with standard
+values that work instantly with the local Docker database.
 
 ```bash
 cp server/.env.example server/.env
 ```
+
+*(You can leave the default values as they are for local development).*
+
+### 2. Setup Environment
+
+Now, run the automated setup script. This installs dependencies, starts the Docker database, and creates the required
+tables using the `.env` file you just created.
+
+```bash
+# Run the master setup
+npm run setup
+```
+> **Note:** If the setup fails on the database step, ensure Docker Desktop is running and run `npm run db:init` manually.
 
 ### 3. Run the Application
 
