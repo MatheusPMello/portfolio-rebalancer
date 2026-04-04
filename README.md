@@ -7,8 +7,8 @@
 ---
 
 Managing a multi-currency investment portfolio is surprisingly painful — spreadsheets break, the math gets messy across
-currencies, and selling assets triggers unnecessary taxes. Portfolio Rebalancer automates the allocation math using a *
-*buy-only strategy**, so you can put new capital to work intelligently without ever needing to sell.
+currencies, and selling assets triggers unnecessary taxes. Portfolio Rebalancer automates the allocation math using a
+**buy-only strategy**, so you can put new capital to work intelligently without ever needing to sell.
 
 ---
 
