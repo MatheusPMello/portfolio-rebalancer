@@ -27,6 +27,80 @@ const User = {
   },
 
   /**
+   * Updates a user's email.
+   * @param {number} id - The user's ID.
+   * @param {string} email - The new email.
+   * @returns {Promise<object>} The updated user object.
+   */
+  updateEmail: async (id, email) => {
+    const query = `
+      UPDATE users
+      SET email = $2
+      WHERE id = $1
+      RETURNING id, email, created_at;
+    `;
+    const values = [id, email];
+
+    try {
+      const res = await db.query(query, values);
+      return res.rows[0];
+    } catch (err) {
+      console.error('Error updating email:', err);
+      throw err;
+    }
+  },
+
+  /**
+   * Updates a user's password.
+   * @param {number} id - The user's ID.
+   * @param {string} passwordHash - The new password hash.
+   * @returns {Promise<object>} The updated user object.
+   */
+  updatePassword: async (id, passwordHash) => {
+    const query = `
+      UPDATE users
+      SET password_hash = $2
+      WHERE id = $1
+      RETURNING id, email, created_at;
+    `;
+    const values = [id, passwordHash];
+
+    try {
+      const res = await db.query(query, values);
+      return res.rows[0];
+    } catch (err) {
+      console.error('Error updating password:', err);
+      throw err;
+    }
+  },
+
+  /**
+   * Deletes a user and all their associated data.
+   * @param {number} id - The user's ID.
+   * @returns {Promise<object>} The deleted user object.
+   */
+  deleteAccount: async (id) => {
+    const deleteAssetsQuery = 'DELETE FROM assets WHERE user_id = $1;';
+    const deleteUserQuery = `
+      DELETE FROM users
+      WHERE id = $1
+      RETURNING id, email, created_at;
+    `;
+    const values = [id];
+
+    try {
+      // Ensure we delete assets first to prevent orphaned records or foreign key constraint errors
+      await db.query(deleteAssetsQuery, values);
+
+      const res = await db.query(deleteUserQuery, values);
+      return res.rows[0];
+    } catch (err) {
+      console.error('Error deleting account:', err);
+      throw err;
+    }
+  },
+
+  /**
    * Finds a user by their email.
    * @param {string} email - The user's email.
    * @returns {Promise<object|null>} The user object or null if not found.
