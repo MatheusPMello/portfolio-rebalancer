@@ -39,7 +39,8 @@ function App() {
             <ProtectedRoute>
               <DashboardPage />
             </ProtectedRoute>
-          } />
+          }
+        />
       </Route>
     </Routes>
   );
