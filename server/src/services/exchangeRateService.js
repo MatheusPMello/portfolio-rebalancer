@@ -8,7 +8,7 @@ const DEFAULTS = {
   apiUrl: 'https://api.frankfurter.app/latest?from=USD&to=BRL',
   fallbackRate: 6,
   cacheDurationMs: 60 * 60 * 1000, // 1 hour
-  timeoutMs: 5_000,                 // 5 seconds
+  timeoutMs: 5_000, // 5 seconds
 };
 
 // ─── Factory ──────────────────────────────────────────────────────────────────
@@ -71,7 +71,9 @@ function createExchangeRateService(opts = {}) {
 
     // 1. Serve from valid cache immediately — no I/O needed
     if (isCacheValid(now)) {
-      logger.info(`[ExchangeRate] Serving from cache (age: ${Math.round((now - lastFetchTime) / 1000)}s): R$ ${cachedRate}`);
+      logger.info(
+        `[ExchangeRate] Serving from cache (age: ${Math.round((now - lastFetchTime) / 1000)}s): R$ ${cachedRate}`,
+      );
       return cachedRate;
     }
 
@@ -98,14 +100,14 @@ function createExchangeRateService(opts = {}) {
         if (cachedRate !== null) {
           const staleAgeMin = Math.round((now - lastFetchTime) / 60_000);
           logger.warn(
-            `[ExchangeRate] API error — using stale cache (${staleAgeMin}m old): R$ ${cachedRate}. Reason: ${err.message}`
+            `[ExchangeRate] API error — using stale cache (${staleAgeMin}m old): R$ ${cachedRate}. Reason: ${err.message}`,
           );
           return cachedRate;
         }
 
         // 4. No cache at all — last resort
         logger.error(
-          `[ExchangeRate] API error and no cache available — using hardcoded fallback R$ ${config.fallbackRate}. Reason: ${err.message}`
+          `[ExchangeRate] API error and no cache available — using hardcoded fallback R$ ${config.fallbackRate}. Reason: ${err.message}`,
         );
         return config.fallbackRate;
       } finally {

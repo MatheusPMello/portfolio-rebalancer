@@ -11,7 +11,7 @@ export const fetchExchangeRate = async (): Promise<number> => {
 
     return rate;
   } catch (error) {
-    console.error("Could not fetch rate, using fallback:", error);
+    console.error('Could not fetch rate, using fallback:', error);
     return 6;
   }
 };

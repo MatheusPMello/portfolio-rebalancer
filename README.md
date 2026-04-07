@@ -13,25 +13,28 @@ currencies, and selling assets triggers unnecessary taxes. Portfolio Rebalancer 
 ---
 
 > ![App Preview](.github/assets/preview.gif)
+
 ---
 
 ## ✨ Features
 
-* **🔐 Secure Authentication:** JWT-based registration and login with protected routes.
-* **🌍 Multi-Currency Support:** Manage BRL and USD assets side-by-side in a single dashboard.
-* **🤖 Smart Rebalancing Engine:** Calculates optimal allocation for new contributions using buy-only logic, with
+- **🔐 Secure Authentication:** JWT-based registration and login with protected routes.
+- **🌍 Multi-Currency Support:** Manage BRL and USD assets side-by-side in a single dashboard.
+- **🤖 Smart Rebalancing Engine:** Calculates optimal allocation for new contributions using buy-only logic, with
   automatic currency normalization.
-* **📡 Real-Time Exchange Rates:** Integrates with AwesomeAPI to fetch live USD/BRL rates for accurate valuations.
-* **📊 Visual Analytics:** Interactive Clustered Bar Charts (Chart.js) comparing Current vs. Target allocation.
+- **📡 Real-Time Exchange Rates:** Integrates with AwesomeAPI to fetch live USD/BRL rates for accurate valuations.
+- **📊 Visual Analytics:** Interactive Clustered Bar Charts (Chart.js) comparing Current vs. Target allocation.
 
 ---
 
 ## 🛠️ Tech Stack
 
 ### Frontend
+
 ![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB) ![TypeScript](https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white) ![Vite](https://img.shields.io/badge/vite-%23646CFF.svg?style=for-the-badge&logo=vite&logoColor=white) ![Bootstrap](https://img.shields.io/badge/bootstrap-%238511FA.svg?style=for-the-badge&logo=bootstrap&logoColor=white)
 
 ### Backend
+
 ![NodeJS](https://img.shields.io/badge/node.js-6DA55F?style=for-the-badge&logo=node.js&logoColor=white) ![Express.js](https://img.shields.io/badge/express.js-%23404d59.svg?style=for-the-badge&logo=express&logoColor=%2361DAFB) ![PostgreSQL](https://img.shields.io/badge/postgresql-%23316192.svg?style=for-the-badge&logo=postgresql&logoColor=white)
 
 ### Infrastructure & DevOps
@@ -68,8 +71,8 @@ Monorepo structure separating client and server environments.
 
 ### Prerequisites
 
-* [Node.js](https://nodejs.org/) v18+
-* [Docker Desktop](https://www.docker.com/products/docker-desktop/) (must be running)
+- [Node.js](https://nodejs.org/) v18+
+- [Docker Desktop](https://www.docker.com/products/docker-desktop/) (must be running)
 
 ### 1. Clone & Configure
 
@@ -106,14 +109,14 @@ Open [http://localhost:5173](http://localhost:5173) in your browser.
 ### Auth
 
 | Method | Endpoint             | Description                |
-|--------|----------------------|----------------------------|
+| ------ | -------------------- | -------------------------- |
 | `POST` | `/api/auth/register` | Create account             |
 | `POST` | `/api/auth/login`    | Authenticate & receive JWT |
 
 ### Assets
 
 | Method   | Endpoint          | Description          |
-|----------|-------------------|----------------------|
+| -------- | ----------------- | -------------------- |
 | `GET`    | `/api/assets`     | List all user assets |
 | `POST`   | `/api/assets`     | Create new asset     |
 | `PUT`    | `/api/assets/:id` | Update asset details |
@@ -122,7 +125,7 @@ Open [http://localhost:5173](http://localhost:5173) in your browser.
 ### Rebalancing
 
 | Method | Endpoint         | Description                  |
-|--------|------------------|------------------------------|
+| ------ | ---------------- | ---------------------------- |
 | `POST` | `/api/rebalance` | Calculate optimal allocation |
 
 **Rebalance payload:**
