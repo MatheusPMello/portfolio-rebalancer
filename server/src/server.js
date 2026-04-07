@@ -10,6 +10,7 @@ const authRoutes = require('./routes/authRoutes');
 const assetRoutes = require('./routes/assetRoutes');
 const rebalanceRoutes = require('./routes/rebalanceRoutes');
 const currencyRoutes = require('./routes/currencyRoutes');
+const userRoutes = require('./routes/userRoutes');
 const app = express();
 
 // --- Middlewares ---
