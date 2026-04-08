@@ -34,7 +34,7 @@ export function RegisterPage() {
       const data = await authService.register({ email, password });
 
       localStorage.setItem('token', data.token);
-      navigate('/DashboardPage');
+      navigate('/dashboard');
     } catch (err) {
       const message = getErrorMessage(err, 'Registration failed. Please try again.');
       setError(message);
