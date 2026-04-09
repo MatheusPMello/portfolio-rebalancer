@@ -1,4 +1,9 @@
-// client/src/components/ProtectedRoute.tsx
+/**
+ * @file ProtectedRoute.tsx
+ * @description This component acts as a wrapper for routes that should only be accessible to authenticated users.
+ * It checks for the presence of a token in localStorage and redirects unauthenticated users to the login page.
+ */
+
 import { Navigate } from 'react-router-dom';
 
 interface ProtectedRouteProps {
