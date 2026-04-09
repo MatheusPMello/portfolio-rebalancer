@@ -34,7 +34,7 @@ function App() {
 
       <Route element={<MainLayout />}>
         <Route
-          path="/dashboard"
+          path="/"
           element={
             <ProtectedRoute>
               <DashboardPage />
