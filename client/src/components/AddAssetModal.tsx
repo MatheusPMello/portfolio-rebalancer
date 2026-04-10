@@ -1,7 +1,7 @@
-// /client/src/components/AddAssetModal.tsx
 import React, { useState, useEffect } from 'react';
 import assetService, { type NewAsset, type Asset } from '../services/assetService';
 import { getErrorMessage } from '../utils/errorHandler';
+import { Modal } from './ModalLayout';
 
 interface AddAssetModalProps {
   show: boolean;
@@ -38,8 +38,6 @@ export function AddAssetModal({
     setError(null);
   }, [show, assetToEdit]);
 
-  if (!show) return null;
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
@@ -70,89 +68,79 @@ export function AddAssetModal({
   };
 
   return (
-    <div className="modal d-block" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
-      <div className="modal-dialog">
-        <div className="modal-content">
-          <div className="modal-header">
-            <h5 className="modal-title">{assetToEdit ? 'Edit Asset' : 'Add New Asset'}</h5>
-            <button type="button" className="btn-close" onClick={onClose}></button>
-          </div>
+    <Modal show={show} onClose={onClose} title={assetToEdit ? 'Edit Asset' : 'Add New Asset'}>
+      {error && <div className="alert alert-danger">{error}</div>}
 
-          <div className="modal-body">
-            {error && <div className="alert alert-danger">{error}</div>}
-
-            <form onSubmit={handleSubmit}>
-              <div className="mb-3">
-                <label htmlFor="assetName" className="form-label">
-                  Asset Name
-                </label>
-                <input
-                  id="assetName"
-                  type="text"
-                  className="form-control"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  required
-                />
-              </div>
-
-              <div className="mb-3">
-                <label htmlFor="currency" className="form-label">
-                  Currency
-                </label>
-                <select
-                  id="currency"
-                  className="form-select"
-                  value={currency}
-                  onChange={(e) => setCurrency(e.target.value as 'USD' | 'BRL')}
-                >
-                  <option value="BRL">BRL (R$)</option>
-                  <option value="USD">USD ($)</option>
-                </select>
-              </div>
-
-              <div className="mb-3">
-                <label htmlFor="targetPercentage" className="form-label">
-                  Target Allocation (%)
-                </label>
-                <input
-                  id="targetPercentage"
-                  type="number"
-                  step="0.01"
-                  className="form-control"
-                  value={targetPercentage}
-                  onChange={(e) => setTargetPercentage(e.target.value)}
-                  required
-                />
-              </div>
-
-              <div className="mb-3">
-                <label htmlFor="currentValue" className="form-label">
-                  Current Value
-                </label>
-                <input
-                  id="currentValue"
-                  type="number"
-                  step="0.01"
-                  className="form-control"
-                  value={currentValue}
-                  onChange={(e) => setCurrentValue(e.target.value)}
-                  required
-                />
-              </div>
-
-              <div className="d-flex justify-content-end gap-2">
-                <button type="button" className="btn btn-secondary" onClick={onClose}>
-                  Cancel
-                </button>
-                <button type="submit" className="btn btn-primary" disabled={isSubmitting}>
-                  {isSubmitting ? 'Saving...' : assetToEdit ? 'Update Asset' : 'Save Asset'}
-                </button>
-              </div>
-            </form>
-          </div>
+      <form onSubmit={handleSubmit}>
+        <div className="mb-3">
+          <label htmlFor="assetName" className="form-label">
+            Asset Name
+          </label>
+          <input
+            id="assetName"
+            type="text"
+            className="form-control"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            required
+          />
         </div>
-      </div>
-    </div>
+
+        <div className="mb-3">
+          <label htmlFor="currency" className="form-label">
+            Currency
+          </label>
+          <select
+            id="currency"
+            className="form-select"
+            value={currency}
+            onChange={(e) => setCurrency(e.target.value as 'USD' | 'BRL')}
+          >
+            <option value="BRL">BRL (R$)</option>
+            <option value="USD">USD ($)</option>
+          </select>
+        </div>
+
+        <div className="mb-3">
+          <label htmlFor="targetPercentage" className="form-label">
+            Target Allocation (%)
+          </label>
+          <input
+            id="targetPercentage"
+            type="number"
+            step="0.01"
+            className="form-control"
+            value={targetPercentage}
+            onChange={(e) => setTargetPercentage(e.target.value)}
+            required
+          />
+        </div>
+
+        <div className="mb-3">
+          <label htmlFor="currentValue" className="form-label">
+            Current Value
+          </label>
+          <input
+            id="currentValue"
+            type="number"
+            step="0.01"
+            className="form-control"
+            value={currentValue}
+            onChange={(e) => setCurrentValue(e.target.value)}
+            required
+          />
+        </div>
+
+        <div className="d-flex justify-content-end gap-2">
+          <button type="button" className="btn btn-secondary" onClick={onClose}>
+            Cancel
+          </button>
+          <button type="submit" className="btn btn-primary" disabled={isSubmitting}>
+            {isSubmitting ? 'Saving...' : assetToEdit ? 'Update Asset' : 'Save Asset'}
+          </button>
+        </div>
+      </form>
+    </Modal>
   );
+
 }
