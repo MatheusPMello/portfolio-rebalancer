@@ -124,7 +124,7 @@ const User = {
    * @returns {Promise<object|null>} The user object or null if not found.
    */
   findById: async (id) => {
-    const query = 'SELECT id, email, created_at FROM users WHERE id = $1;';
+    const query = 'SELECT * FROM users WHERE id = $1;';
     const values = [id];
 
     try {

@@ -8,15 +8,17 @@ const userController = {
   // @access Private
   updateEmail: async (req, res) => {
     try {
-      const email = req.body.email?.toLowerCase().trim();
+      const emailInput = req.body.email;
       const id = req.user.id;
 
       // 1. Validate input
-      if (!email) {
+      if (!emailInput) {
         return res.status(400).json({ message: 'Please provide email' });
       }
 
-      const emailValidator = z.string().toLowerCase().trim().pipe(z.email()).safeParse(email);
+      const emailValidator = z.string().toLowerCase().trim().pipe(z.email()).safeParse(emailInput);
+      const email = emailValidator.data;
+
       if (!emailValidator.success) {
         return res.status(400).json({ message: 'Invalid email format' });
       }
