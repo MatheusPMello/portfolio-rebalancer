@@ -33,7 +33,7 @@ export function LoginPage() {
     try {
       const data = await authService.login({ email, password });
       localStorage.setItem('token', data.token);
-      navigate('/dashboard');
+      navigate('/');
     } catch (err) {
       const message = getErrorMessage(err, 'Login failed. Please try again.');
       setError(message);
