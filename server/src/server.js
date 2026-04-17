@@ -27,6 +27,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/assets', assetRoutes);
 app.use('/api/rebalance', rebalanceRoutes);
 app.use('/api/currency', currencyRoutes);
+app.use('/api/user', userRoutes);
 
 // --- Server Startup ---
 const PORT = process.env.PORT || 5001;

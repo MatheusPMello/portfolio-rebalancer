@@ -142,5 +142,4 @@ export function AddAssetModal({
       </form>
     </Modal>
   );
-
 }
