@@ -19,17 +19,17 @@ export interface UserResponse {
 }
 
 const updateEmail = async (emailData: UpdateEmailData): Promise<UserResponse> => {
-  const response = await api.put('/users/email', emailData);
+  const response = await api.put('/user/email', emailData);
   return response.data;
 };
 
 const updatePassword = async (passwordData: UpdatePasswordData): Promise<UserResponse> => {
-  const response = await api.put('/users/password', passwordData);
+  const response = await api.put('/user/password', passwordData);
   return response.data;
 };
 
 const deleteAccount = async (accountData: DeleteAccountData): Promise<UserResponse> => {
-  const response = await api.delete('/users/account', { data: accountData });
+  const response = await api.delete('/user/account', { data: accountData });
   return response.data;
 };
 
