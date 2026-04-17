@@ -9,7 +9,7 @@ export function MainLayout() {
 
   const handleAccountSettings = () => {
     setShowAccountSettingsModal(true);
-  }
+  };
 
   const handleLogout = () => {
     localStorage.removeItem('token');
@@ -25,7 +25,12 @@ export function MainLayout() {
           </Link>
 
           <div className="d-flex gap-2">
-            <button className="btn btn-outline-secondary btn-sm px-3" onClick={handleAccountSettings}>Account</button>
+            <button
+              className="btn btn-outline-secondary btn-sm px-3"
+              onClick={handleAccountSettings}
+            >
+              Account
+            </button>
             <button className="btn btn-outline-danger btn-sm px-3" onClick={handleLogout}>
               Logout
             </button>
@@ -37,9 +42,9 @@ export function MainLayout() {
         <Outlet />
       </div>
 
-      <AccountSettingsModal 
-        show={showAccountSettingsModal} 
-        onClose={() => setShowAccountSettingsModal(false)} 
+      <AccountSettingsModal
+        show={showAccountSettingsModal}
+        onClose={() => setShowAccountSettingsModal(false)}
       />
     </>
   );
