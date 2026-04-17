@@ -2,7 +2,7 @@ import userService from '../../services/userService';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-export const useDeleteAccount = () => {
+const useDeleteAccount = () => {
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -19,7 +19,7 @@ export const useDeleteAccount = () => {
       setError(null);
 
       await userService.deleteAccount({ password });
-    } catch (err) {
+    } catch {
       setError('Error deleting account. Please try again.');
     } finally {
       setIsLoading(false);
