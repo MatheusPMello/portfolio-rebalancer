@@ -2,18 +2,18 @@
 import { useEffect, useState } from 'react';
 import assetService, { type Asset } from '../services/assetService';
 import { AddAssetModal } from '../components/AddAssetModal';
+// NEW: Import the Drawer instead of the Modal
 import { RebalanceDrawer } from '../components/RebalanceDrawer';
 import { PortfolioCharts } from '../components/PortfolioCharts';
-import { fetchExchangeRate } from '../services/currencyService';
 
 export function DashboardPage() {
   const [assets, setAssets] = useState<Asset[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [showAddModal, setShowAddModal] = useState(false);
+  // Renamed state for clarity
   const [showRebalanceDrawer, setShowRebalanceDrawer] = useState(false);
   const [editingAsset, setEditingAsset] = useState<Asset | null>(null);
-  const [usdRate, setUsdRate] = useState<number>(6);
 
   const loadAssets = async () => {
     try {
@@ -29,7 +29,6 @@ export function DashboardPage() {
 
   useEffect(() => {
     loadAssets();
-    fetchExchangeRate().then(setUsdRate);
   }, []);
 
   const formatCurrency = (value: number, currency: string) => {
@@ -69,7 +68,9 @@ export function DashboardPage() {
     .filter((a) => a.currency === 'USD')
     .reduce((sum, a) => sum + Number(a.current_value), 0);
 
-  const estimatedTotalInBRL = totalBRL + totalUSD * usdRate;
+  // For this UI demo, we'll use a fixed rate to estimate the total.
+  const ESTIMATED_USD_RATE = 6;
+  const estimatedTotalInBRL = totalBRL + totalUSD * ESTIMATED_USD_RATE;
 
   if (loading)
     return (
