@@ -8,6 +8,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import authService from '../services/authService';
 import { getErrorMessage } from '../utils/errorHandler';
+import { ServerWakeupAlert } from '../components/ServerWakeupAlert';
 
 /**
  * Renders the login form and handles the user authentication process.
@@ -49,12 +50,7 @@ export function LoginPage() {
       <form onSubmit={handleSubmit}>
         {error && <div className="alert alert-danger">{error}</div>}
 
-        {isLoading && (
-          <div className="alert alert-info small py-2 mb-3">
-            <span className="spinner-border spinner-border-sm me-2" aria-hidden="true"></span>
-            <span>Waking up the free server... this might take 30s.</span>
-          </div>
-        )}
+        <ServerWakeupAlert isLoading={isLoading} />
 
         <div className="mb-3 w-100 text-start">
           <label htmlFor="email" className="form-label">
