@@ -14,7 +14,7 @@ interface ServerWakeupAlertProps {
  * @param {ServerWakeupAlertProps} props - Component props.
  * @returns {JSX.Element | null} The alert element or null.
  */
-export function ServerWakeupAlert({ isLoading }: ServerWakeupAlertProps) {
+export function ServerWakeupAlert({ isLoading }: Readonly<ServerWakeupAlertProps>) {
   if (!isLoading) return null;
 
   return (

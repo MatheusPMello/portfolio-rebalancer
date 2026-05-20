@@ -136,7 +136,9 @@ export function AddAssetModal({
             Cancel
           </button>
           <button type="submit" className="btn btn-primary" disabled={isSubmitting}>
-            {isSubmitting ? 'Saving...' : assetToEdit ? 'Update Asset' : 'Save Asset'}
+            {isSubmitting
+              ? 'Saving...'
+              : (assetToEdit ? 'Update Asset' : 'Save Asset')}
           </button>
         </div>
       </form>

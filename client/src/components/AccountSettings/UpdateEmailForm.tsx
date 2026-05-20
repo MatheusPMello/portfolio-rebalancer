@@ -60,12 +60,8 @@ export function UpdateEmailForm() {
         <button type="submit" className="btn btn-primary w-100" disabled={isLoading}>
           {isLoading ? (
             <>
-              <span
-                className="spinner-border spinner-border-sm me-2"
-                role="status"
-                aria-hidden="true"
-              ></span>
-              Updating...
+              <output className="spinner-border spinner-border-sm me-2" aria-hidden="true"></output>
+              <span>Updating...</span>
             </>
           ) : (
             'Update Email'
