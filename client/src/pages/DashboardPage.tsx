@@ -226,7 +226,7 @@ export function DashboardPage() {
                       {formatCurrency(Number(asset.current_value), asset.currency)}
                     </td>
                     <td className="text-end pe-4">
-                      <div className="btn-group shadow-sm" role="group">
+                      <div className="btn-group shadow-sm" role="group" aria-label="Asset actions">
                         <button
                           className="btn btn-sm btn-outline-secondary bg-white"
                           title="Edit Asset"

@@ -27,7 +27,7 @@ export function AuthForm({
   onSubmit,
   errorMessagePrefix,
   footer,
-}: AuthFormProps) {
+}: Readonly<AuthFormProps>) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
