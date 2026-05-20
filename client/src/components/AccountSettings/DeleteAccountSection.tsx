@@ -48,9 +48,10 @@ export function DeleteAccountSection() {
       </p>
 
       <div className="mb-3">
-        <label className="form-label small fw-bold">Confirm Password</label>
+        <label htmlFor="delete-account-password" className="form-label small fw-bold">Confirm Password</label>
         <input
           type="password"
+          id="delete-account-password"
           className={`form-control ${error ? 'is-invalid' : ''}`}
           placeholder="Enter your password to confirm"
           value={password}
@@ -63,12 +64,8 @@ export function DeleteAccountSection() {
       <button className="btn btn-danger w-100" onClick={handleDelete} disabled={isLoading}>
         {isLoading ? (
           <>
-            <span
-              className="spinner-border spinner-border-sm me-2"
-              role="status"
-              aria-hidden="true"
-            ></span>
-            Deleting...
+            <output className="spinner-border spinner-border-sm me-2" aria-hidden="true"></output>
+            <span>Deleting...</span>
           </>
         ) : (
           'Permanently Delete Account'
