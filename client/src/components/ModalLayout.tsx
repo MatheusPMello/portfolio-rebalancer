@@ -14,7 +14,7 @@ export function Modal({ show, title, onClose, children, size }: Readonly<ModalPr
 
   return (
     <div className="modal d-block" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
-      <div className={`modal-dialog ${size ? `modal-${size}` : ''}`}>
+      <div className={`modal-dialog ${size ? 'modal-' + size : ''}`}>
         <div className="modal-content">
           <div className="modal-header align-items-center">
             <h5 className="modal-title">{title}</h5>

@@ -18,6 +18,7 @@ export function AccountSettingsModal({ show, onClose }: Readonly<{ show: boolean
       const data = await userService.getProfile();
       setCurrentUserEmail(data.email);
     } catch (err) {
+      console.error('Failed to fetch user profile:', err);
       setProfileError('Failed to load user profile. Please try again.');
     } finally {
       setIsLoadingProfile(false);
@@ -34,6 +35,31 @@ export function AccountSettingsModal({ show, onClose }: Readonly<{ show: boolean
   const handleEmailUpdated = (newEmail: string) => {
     setCurrentUserEmail(newEmail);
   };
+
+  let content;
+  if (isLoadingProfile) {
+    content = (
+      <div className="d-flex justify-content-center align-items-center h-100 py-5">
+        <output className="spinner-border text-primary">
+          <span className="visually-hidden">Loading profile...</span>
+        </output>
+      </div>
+    );
+  } else if (profileError) {
+    content = <div className="alert alert-danger py-2 px-3 small">{profileError}</div>;
+  } else {
+    content = (
+      <div className="h-100">
+        {activeTab === 'profile' && (
+          <UpdateEmailForm currentEmail={currentUserEmail} onSuccess={handleEmailUpdated} />
+        )}
+        {activeTab === 'security' && <UpdatePasswordForm />}
+        {activeTab === 'danger' && (
+          <DeleteAccountSection currentUserEmail={currentUserEmail} />
+        )}
+      </div>
+    );
+  }
 
   return (
     <Modal show={show} onClose={onClose} title="Account Settings" size="lg">
@@ -77,25 +103,7 @@ export function AccountSettingsModal({ show, onClose }: Readonly<{ show: boolean
 
         {/* Content Panel */}
         <div className="flex-grow-1 ps-2" style={{ minWidth: 0 }}>
-          {isLoadingProfile ? (
-            <div className="d-flex justify-content-center align-items-center h-100 py-5">
-              <div className="spinner-border text-primary" role="status">
-                <span className="visually-hidden">Loading profile...</span>
-              </div>
-            </div>
-          ) : profileError ? (
-            <div className="alert alert-danger py-2 px-3 small">{profileError}</div>
-          ) : (
-            <div className="h-100">
-              {activeTab === 'profile' && (
-                <UpdateEmailForm currentEmail={currentUserEmail} onSuccess={handleEmailUpdated} />
-              )}
-              {activeTab === 'security' && <UpdatePasswordForm />}
-              {activeTab === 'danger' && (
-                <DeleteAccountSection currentUserEmail={currentUserEmail} />
-              )}
-            </div>
-          )}
+          {content}
         </div>
       </div>
     </Modal>
