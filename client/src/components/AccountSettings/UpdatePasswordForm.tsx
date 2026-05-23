@@ -10,15 +10,33 @@ export function UpdatePasswordForm() {
   const [error, setError] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
+  const [currentPasswordTouched, setCurrentPasswordTouched] = useState(false);
+  const [newPasswordTouched, setNewPasswordTouched] = useState(false);
+  const [confirmPasswordTouched, setConfirmPasswordTouched] = useState(false);
+
+  // Real-time validations
+  const isCurrentPasswordNotEmpty = currentPassword.trim().length > 0;
+  const isNewPasswordLongEnough = newPassword.length >= 6;
+  const isConfirmPasswordMatching = newPassword === confirmPassword;
+
+  const currentPasswordValidationError = currentPasswordTouched && !isCurrentPasswordNotEmpty
+    ? 'Current password is required.'
+    : null;
+
+  const newPasswordValidationError = newPasswordTouched && newPassword.length > 0 && !isNewPasswordLongEnough
+    ? 'Password must be at least 6 characters.'
+    : null;
+
+  const confirmPasswordValidationError = confirmPasswordTouched && confirmPassword.length > 0 && !isConfirmPasswordMatching
+    ? 'Passwords do not match.'
+    : null;
+
+  const isSubmitDisabled = !isCurrentPasswordNotEmpty || !isNewPasswordLongEnough || !isConfirmPasswordMatching || isLoading;
+
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     setError(null);
     setSuccessMessage(null);
-
-    if (!currentPassword || !newPassword || !confirmPassword) {
-      setError('All fields are required.');
-      return;
-    }
 
     if (newPassword.length < 6) {
       setError('Password must be at least 6 characters.');
@@ -46,6 +64,9 @@ export function UpdatePasswordForm() {
       setCurrentPassword('');
       setNewPassword('');
       setConfirmPassword('');
+      setCurrentPasswordTouched(false);
+      setNewPasswordTouched(false);
+      setConfirmPasswordTouched(false);
     } catch (err) {
       setError(getErrorMessage(err, 'Failed to update password. Please try again.'));
     } finally {
@@ -54,65 +75,97 @@ export function UpdatePasswordForm() {
   };
 
   return (
-    <div className="border rounded p-3">
-      <h3 className="h5 mb-3 text-dark">Update Password</h3>
-      <p className="text-muted small mb-3">
+    <div className="p-1">
+      <h3 className="h5 mb-2 text-dark fw-bold">Update Password</h3>
+      <p className="text-muted small mb-4">
         Change the password associated with your account.
       </p>
 
       {error && <div className="alert alert-danger py-2 px-3 small mb-3">{error}</div>}
       {successMessage && <div className="alert alert-success py-2 px-3 small mb-3">{successMessage}</div>}
 
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} noValidate>
         <div className="mb-3">
-          <label htmlFor="current-password-input" className="form-label small fw-bold">
+          <label htmlFor="current-password-input" className="form-label small fw-bold mb-1">
             Current Password
           </label>
           <input
             type="password"
             id="current-password-input"
-            className="form-control"
-            placeholder="Enter current password"
+            className={`form-control ${currentPasswordValidationError ? 'is-invalid' : ''}`}
             value={currentPassword}
-            onChange={(e) => setCurrentPassword(e.target.value)}
+            onChange={(e) => {
+              setCurrentPassword(e.target.value);
+              setCurrentPasswordTouched(true);
+            }}
+            onBlur={() => setCurrentPasswordTouched(true)}
             disabled={isLoading}
             required
           />
+          {currentPasswordValidationError && (
+            <div className="text-danger small mt-1" style={{ fontSize: '12px' }}>
+              {currentPasswordValidationError}
+            </div>
+          )}
         </div>
 
         <div className="mb-3">
-          <label htmlFor="new-password-input" className="form-label small fw-bold">
+          <label htmlFor="new-password-input" className="form-label small fw-bold mb-1">
             New Password
           </label>
           <input
             type="password"
             id="new-password-input"
-            className={`form-control ${error && newPassword.length < 6 ? 'is-invalid' : ''}`}
-            placeholder="Enter new password (min. 6 chars)"
+            className={`form-control ${newPasswordValidationError ? 'is-invalid' : ''}`}
             value={newPassword}
-            onChange={(e) => setNewPassword(e.target.value)}
+            onChange={(e) => {
+              setNewPassword(e.target.value);
+              setNewPasswordTouched(true);
+            }}
+            onBlur={() => setNewPasswordTouched(true)}
             disabled={isLoading}
             required
           />
+          <div className="text-muted small mt-1" style={{ fontSize: '12px' }}>
+            Minimum of 6 characters
+          </div>
+          {newPasswordValidationError && (
+            <div className="text-danger small mt-1" style={{ fontSize: '12px' }}>
+              {newPasswordValidationError}
+            </div>
+          )}
         </div>
 
-        <div className="mb-3">
-          <label htmlFor="confirm-password-input" className="form-label small fw-bold">
+        <div className="mb-4">
+          <label htmlFor="confirm-password-input" className="form-label small fw-bold mb-1">
             Confirm New Password
           </label>
           <input
             type="password"
             id="confirm-password-input"
-            className={`form-control ${error && newPassword !== confirmPassword ? 'is-invalid' : ''}`}
-            placeholder="Confirm new password"
+            className={`form-control ${confirmPasswordValidationError ? 'is-invalid' : ''}`}
             value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
+            onChange={(e) => {
+              setConfirmPassword(e.target.value);
+              setConfirmPasswordTouched(true);
+            }}
+            onBlur={() => setConfirmPasswordTouched(true)}
             disabled={isLoading}
             required
           />
+          {confirmPasswordValidationError && (
+            <div className="text-danger small mt-1" style={{ fontSize: '12px' }}>
+              {confirmPasswordValidationError}
+            </div>
+          )}
         </div>
 
-        <button type="submit" className="btn btn-primary w-100" disabled={isLoading}>
+        <button 
+          type="submit" 
+          className="btn btn-primary w-100" 
+          disabled={isSubmitDisabled}
+          style={{ minHeight: '44px' }}
+        >
           {isLoading ? (
             <>
               <output className="spinner-border spinner-border-sm me-2" aria-hidden="true"></output>

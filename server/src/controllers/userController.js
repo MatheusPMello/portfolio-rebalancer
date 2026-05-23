@@ -8,12 +8,12 @@ const userController = {
   // @access Private
   updateEmail: async (req, res) => {
     try {
-      const emailInput = req.body.email;
+      const { email: emailInput, currentPassword } = req.body;
       const id = req.user.id;
 
       // 1. Validate input
-      if (!emailInput) {
-        return res.status(400).json({ message: 'Please provide email' });
+      if (!emailInput || !currentPassword) {
+        return res.status(400).json({ message: 'Please provide email and current password' });
       }
 
       const emailValidator = z.string().toLowerCase().trim().pipe(z.email()).safeParse(emailInput);
@@ -26,6 +26,12 @@ const userController = {
       const user = await User.findById(id);
       if (!user) {
         return res.status(404).json({ message: 'User not found' });
+      }
+
+      // Verify current password to prevent account hijacking
+      const isPasswordValid = await bcrypt.compare(currentPassword, user.password_hash);
+      if (!isPasswordValid) {
+        return res.status(401).json({ message: 'Invalid credentials' });
       }
 
       if (user.email === email) {
@@ -114,6 +120,23 @@ const userController = {
     } catch (err) {
       console.error(err);
       res.status(500).json({ message: 'Server error during account deletion' });
+    }
+  },
+
+  // @desc Get user profile details
+  // @route GET /api/users/profile
+  // @access Private
+  getProfile: async (req, res) => {
+    try {
+      const id = req.user.id;
+      const user = await User.findById(id);
+      if (!user) {
+        return res.status(404).json({ message: 'User not found' });
+      }
+      res.status(200).json({ id: user.id, email: user.email });
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ message: 'Server error during profile fetching' });
     }
   },
 };

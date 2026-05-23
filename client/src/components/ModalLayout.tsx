@@ -6,22 +6,24 @@ export interface ModalProps {
   title: string;
   onClose: () => void;
   children: React.ReactNode;
+  size?: 'sm' | 'lg' | 'xl';
 }
 
-export function Modal({ show, title, onClose, children }: Readonly<ModalProps>) {
+export function Modal({ show, title, onClose, children, size }: Readonly<ModalProps>) {
   if (!show) return null;
 
   return (
     <div className="modal d-block" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
-      <div className="modal-dialog">
+      <div className={`modal-dialog ${size ? `modal-${size}` : ''}`}>
         <div className="modal-content">
-          <div className="modal-header">
+          <div className="modal-header align-items-center">
             <h5 className="modal-title">{title}</h5>
             <button
               type="button"
               className="btn-close"
               onClick={onClose}
               aria-label="Close"
+              style={{ minWidth: '44px', minHeight: '44px', padding: '12px' }}
             ></button>
           </div>
           <div className="modal-body">{children}</div>
