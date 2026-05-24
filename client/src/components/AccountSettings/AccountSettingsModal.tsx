@@ -55,7 +55,7 @@ export function AccountSettingsModal({ show, onClose }: Readonly<{ show: boolean
         )}
         {activeTab === 'security' && <UpdatePasswordForm />}
         {activeTab === 'danger' && (
-          <DeleteAccountSection currentUserEmail={currentUserEmail} />
+          <DeleteAccountSection />
         )}
       </div>
     );
