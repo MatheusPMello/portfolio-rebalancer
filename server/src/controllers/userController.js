@@ -31,7 +31,7 @@ const userController = {
       // Verify current password to prevent account hijacking
       const isPasswordValid = await bcrypt.compare(currentPassword, user.password_hash);
       if (!isPasswordValid) {
-        return res.status(401).json({ message: 'Invalid credentials' });
+        return res.status(400).json({ message: 'Invalid credentials' });
       }
 
       if (user.email === email) {
@@ -80,7 +80,7 @@ const userController = {
 
       const isPasswordValid = await bcrypt.compare(currentPassword, user.password_hash);
       if (!isPasswordValid) {
-        return res.status(401).json({ message: 'Invalid credentials' });
+        return res.status(400).json({ message: 'Invalid credentials' });
       }
 
       const passwordHash = await bcrypt.hash(newPassword, 10);
@@ -112,7 +112,7 @@ const userController = {
 
       const isPasswordValid = await bcrypt.compare(password, user.password_hash);
       if (!isPasswordValid) {
-        return res.status(401).json({ message: 'Invalid credentials' });
+        return res.status(400).json({ message: 'Invalid credentials' });
       }
 
       await User.deleteAccount(id);
