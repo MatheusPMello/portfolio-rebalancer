@@ -27,12 +27,22 @@ api.interceptors.request.use((config) => {
 api.interceptors.response.use(
   (response) => response,
   (error) => {
+    const status = error.response?.status;
+    const requestUrl = error.config?.url || '';
+    const currentPath = globalThis.location.pathname || '';
+
     // If the error is 401 (Unauthorized) or 403 (Forbidden)
-    if (error.response && (error.response.status === 401 || error.response.status === 403)) {
-      // 1. Clear the bad token
-      localStorage.removeItem('token');
-      // 2. Force redirect to login
-      globalThis.location.href = '/login';
+    if (status === 401 || status === 403) {
+      const isAuthRequest =
+        requestUrl.includes('/auth/login') || requestUrl.includes('/auth/register');
+      const isAuthPage = currentPath === '/login' || currentPath === '/register';
+
+      // Only clear token and redirect if we're not on auth pages or initiating auth requests.
+      // Form credentials/validation errors are handled via 400 Bad Request and bypass this block.
+      if (!isAuthRequest && !isAuthPage) {
+        localStorage.removeItem('token');
+        globalThis.location.href = '/login';
+      }
     }
     return Promise.reject(error);
   },
