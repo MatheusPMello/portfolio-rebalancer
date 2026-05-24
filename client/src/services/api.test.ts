@@ -20,7 +20,6 @@ describe('api.ts Response Interceptor', () => {
 
   // Helper to extract the response error interceptor handler
   const getRejectedInterceptor = () => {
-    // Axios interceptors are stored in an array of handlers
     const interceptor = api.interceptors.response as unknown as {
       handlers: Array<{
         rejected?: (error: unknown) => Promise<unknown>;
@@ -33,60 +32,71 @@ describe('api.ts Response Interceptor', () => {
     return handler.rejected;
   };
 
-  it('should clear token and redirect to /login for a 401 response on a non-auth page and non-auth request', async () => {
+  // Dry test helper to execute error interception and verify outcomes
+  const verifyInterception = async ({
+    status,
+    url,
+    responseData,
+    shouldClearAndRedirect,
+    expectedRedirectUrl,
+  }: {
+    status: number;
+    url: string;
+    responseData?: unknown;
+    shouldClearAndRedirect: boolean;
+    expectedRedirectUrl: string;
+  }) => {
     const rejectedInterceptor = getRejectedInterceptor();
-
     const error = {
-      response: { status: 401 },
-      config: { url: '/api/dashboard' },
+      response: { status, data: responseData },
+      config: { url },
     };
 
     await expect(rejectedInterceptor(error)).rejects.toEqual(error);
 
-    expect(localStorage.removeItem).toHaveBeenCalledWith('token');
-    expect(globalThis.location.href).toBe('/login');
+    if (shouldClearAndRedirect) {
+      expect(localStorage.removeItem).toHaveBeenCalledWith('token');
+      expect(globalThis.location.href).toBe(expectedRedirectUrl);
+    } else {
+      expect(localStorage.removeItem).not.toHaveBeenCalled();
+      expect(globalThis.location.href).toBe(expectedRedirectUrl);
+    }
+  };
+
+  it('should clear token and redirect to /login for a 401 response on a non-auth page and request', async () => {
+    await verifyInterception({
+      status: 401,
+      url: '/api/dashboard',
+      shouldClearAndRedirect: true,
+      expectedRedirectUrl: '/login',
+    });
   });
 
-  it('should clear token and redirect to /login for a 403 response on a non-auth page and non-auth request', async () => {
-    const rejectedInterceptor = getRejectedInterceptor();
-
-    const error = {
-      response: { status: 403 },
-      config: { url: '/api/settings' },
-    };
-
-    await expect(rejectedInterceptor(error)).rejects.toEqual(error);
-
-    expect(localStorage.removeItem).toHaveBeenCalledWith('token');
-    expect(globalThis.location.href).toBe('/login');
+  it('should clear token and redirect to /login for a 403 response on a non-auth page and request', async () => {
+    await verifyInterception({
+      status: 403,
+      url: '/api/settings',
+      shouldClearAndRedirect: true,
+      expectedRedirectUrl: '/login',
+    });
   });
 
   it('should NOT redirect or clear token for a 401 response on a login request (/auth/login)', async () => {
-    const rejectedInterceptor = getRejectedInterceptor();
-
-    const error = {
-      response: { status: 401 },
-      config: { url: '/auth/login' },
-    };
-
-    await expect(rejectedInterceptor(error)).rejects.toEqual(error);
-
-    expect(localStorage.removeItem).not.toHaveBeenCalled();
-    expect(globalThis.location.href).toBe('http://localhost:3000/dashboard');
+    await verifyInterception({
+      status: 401,
+      url: '/auth/login',
+      shouldClearAndRedirect: false,
+      expectedRedirectUrl: 'http://localhost:3000/dashboard',
+    });
   });
 
   it('should NOT redirect or clear token for a 401 response on a register request (/auth/register)', async () => {
-    const rejectedInterceptor = getRejectedInterceptor();
-
-    const error = {
-      response: { status: 401 },
-      config: { url: '/auth/register' },
-    };
-
-    await expect(rejectedInterceptor(error)).rejects.toEqual(error);
-
-    expect(localStorage.removeItem).not.toHaveBeenCalled();
-    expect(globalThis.location.href).toBe('http://localhost:3000/dashboard');
+    await verifyInterception({
+      status: 401,
+      url: '/auth/register',
+      shouldClearAndRedirect: false,
+      expectedRedirectUrl: 'http://localhost:3000/dashboard',
+    });
   });
 
   it('should NOT redirect or clear token for a 401 response when already on the /login page', async () => {
@@ -96,17 +106,12 @@ describe('api.ts Response Interceptor', () => {
       pathname: '/login',
     });
 
-    const rejectedInterceptor = getRejectedInterceptor();
-
-    const error = {
-      response: { status: 401 },
-      config: { url: '/api/some-endpoint' },
-    };
-
-    await expect(rejectedInterceptor(error)).rejects.toEqual(error);
-
-    expect(localStorage.removeItem).not.toHaveBeenCalled();
-    expect(globalThis.location.href).toBe('http://localhost:3000/login');
+    await verifyInterception({
+      status: 401,
+      url: '/api/some-endpoint',
+      shouldClearAndRedirect: false,
+      expectedRedirectUrl: 'http://localhost:3000/login',
+    });
   });
 
   it('should NOT redirect or clear token for a 401 response when already on the /register page', async () => {
@@ -116,47 +121,30 @@ describe('api.ts Response Interceptor', () => {
       pathname: '/register',
     });
 
-    const rejectedInterceptor = getRejectedInterceptor();
-
-    const error = {
-      response: { status: 401 },
-      config: { url: '/api/some-endpoint' },
-    };
-
-    await expect(rejectedInterceptor(error)).rejects.toEqual(error);
-
-    expect(localStorage.removeItem).not.toHaveBeenCalled();
-    expect(globalThis.location.href).toBe('http://localhost:3000/register');
+    await verifyInterception({
+      status: 401,
+      url: '/api/some-endpoint',
+      shouldClearAndRedirect: false,
+      expectedRedirectUrl: 'http://localhost:3000/register',
+    });
   });
 
   it('should NOT redirect or clear token for other error statuses (e.g., 500)', async () => {
-    const rejectedInterceptor = getRejectedInterceptor();
-
-    const error = {
-      response: { status: 500 },
-      config: { url: '/api/dashboard' },
-    };
-
-    await expect(rejectedInterceptor(error)).rejects.toEqual(error);
-
-    expect(localStorage.removeItem).not.toHaveBeenCalled();
-    expect(globalThis.location.href).toBe('http://localhost:3000/dashboard');
+    await verifyInterception({
+      status: 500,
+      url: '/api/dashboard',
+      shouldClearAndRedirect: false,
+      expectedRedirectUrl: 'http://localhost:3000/dashboard',
+    });
   });
 
   it('should NOT redirect or clear token for a 400 Bad Request response (e.g., wrong password on delete account)', async () => {
-    const rejectedInterceptor = getRejectedInterceptor();
-
-    const error = {
-      response: {
-        status: 400,
-        data: { message: 'Invalid credentials' },
-      },
-      config: { url: '/user/account' },
-    };
-
-    await expect(rejectedInterceptor(error)).rejects.toEqual(error);
-
-    expect(localStorage.removeItem).not.toHaveBeenCalled();
-    expect(globalThis.location.href).toBe('http://localhost:3000/dashboard');
+    await verifyInterception({
+      status: 400,
+      url: '/user/account',
+      responseData: { message: 'Invalid credentials' },
+      shouldClearAndRedirect: false,
+      expectedRedirectUrl: 'http://localhost:3000/dashboard',
+    });
   });
 });
