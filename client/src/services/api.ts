@@ -36,11 +36,10 @@ api.interceptors.response.use(
       const isAuthRequest =
         requestUrl.includes('/auth/login') || requestUrl.includes('/auth/register');
       const isAuthPage = currentPath === '/login' || currentPath === '/register';
-      const isInvalidCredentials = error.response?.data?.message === 'Invalid credentials';
 
-      // Only clear token and redirect if we're not on auth pages, not initiating auth requests,
-      // and not encountering form validation errors (e.g. wrong password during delete account).
-      if (!isAuthRequest && !isAuthPage && !isInvalidCredentials) {
+      // Only clear token and redirect if we're not on auth pages or initiating auth requests.
+      // Form credentials/validation errors are handled via 400 Bad Request and bypass this block.
+      if (!isAuthRequest && !isAuthPage) {
         localStorage.removeItem('token');
         globalThis.location.href = '/login';
       }

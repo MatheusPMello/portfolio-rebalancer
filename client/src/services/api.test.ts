@@ -143,12 +143,12 @@ describe('api.ts Response Interceptor', () => {
     expect(globalThis.location.href).toBe('http://localhost:3000/dashboard');
   });
 
-  it("should NOT redirect or clear token for a 401 response with 'Invalid credentials' message (e.g., wrong password on delete account)", async () => {
+  it('should NOT redirect or clear token for a 400 Bad Request response (e.g., wrong password on delete account)', async () => {
     const rejectedInterceptor = getRejectedInterceptor();
 
     const error = {
       response: {
-        status: 401,
+        status: 400,
         data: { message: 'Invalid credentials' },
       },
       config: { url: '/user/account' },
