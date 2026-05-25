@@ -6,6 +6,13 @@
     'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   line-height: 1.5;
   font-weight: 400;
+
+  /* Custom variables for UI styling */
+  --app-success-color: #10b981; /* Modern Emerald green */
+  --app-success-bg: #ecfdf5; /* Light Emerald tint for background */
+  --app-success-border: #d1fae5; /* Emerald border tint */
+  --app-text-muted-dark: #495057; /* Darker gray for high-contrast labels */
+  --app-text-secondary-dark: #343a40; /* Darker secondary text */
 }
 
 body {
@@ -85,4 +92,59 @@ a:hover {
 /* Slide the drawer in */
 .drawer.show {
   transform: translateX(0);
+}
+
+/* --- THEME OVERRIDES & UTILITIES --- */
+
+
+
+/* Overriding Bootstrap alert-success to match Emerald theme */
+.alert-success {
+  --bs-alert-bg: var(--app-success-bg) !important;
+  --bs-alert-border-color: var(--app-success-border) !important;
+  --bs-alert-color: var(--app-success-color) !important;
+}
+
+/* Overriding Bootstrap text-success to match Emerald theme */
+.text-success {
+  color: var(--app-success-color) !important;
+}
+
+/* Overriding Bootstrap btn-success to match Emerald theme */
+.btn-success {
+  background-color: var(--app-success-color) !important;
+  border-color: var(--app-success-color) !important;
+  color: #ffffff !important;
+}
+
+.btn-success:hover,
+.btn-success:focus,
+.btn-success:active {
+  background-color: #059669 !important; /* Emerald 600 */
+  border-color: #059669 !important;
+  box-shadow: 0 0 0 0.25rem rgba(16, 185, 129, 0.25) !important;
+}
+
+/* High contrast text overrides */
+.text-muted-dark {
+  color: var(--app-text-muted-dark) !important;
+}
+
+.text-secondary-dark {
+  color: var(--app-text-secondary-dark) !important;
+}
+
+/* Standardized Card layout for drawer items */
+.drawer-card {
+  background-color: #ffffff;
+  border: 1px solid #e9ecef;
+  border-radius: 0.75rem !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.drawer-card-summary {
+  background-color: rgba(13, 110, 253, 0.05) !important;
+  border: 1px solid rgba(13, 110, 253, 0.12) !important;
+  border-radius: 0.75rem !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
 }
