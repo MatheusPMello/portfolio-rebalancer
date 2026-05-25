@@ -21,6 +21,19 @@ export function RebalanceDrawer({ show, onClose }: Readonly<RebalanceDrawerProps
   // Data State
   const [result, setResult] = useState<RebalanceResponse | null>(null);
 
+  // Totals calculations
+  const totalBRL = result?.suggestions
+    ? result.suggestions
+        .filter((item) => item.currency === 'BRL')
+        .reduce((sum, item) => sum + item.amountToBuy, 0)
+    : 0;
+
+  const totalUSD = result?.suggestions
+    ? result.suggestions
+        .filter((item) => item.currency === 'USD')
+        .reduce((sum, item) => sum + item.amountToBuy, 0)
+    : 0;
+
   // Reset state automatically whenever the drawer opens
   useEffect(() => {
     if (show) {
@@ -82,7 +95,13 @@ export function RebalanceDrawer({ show, onClose }: Readonly<RebalanceDrawerProps
         </div>
 
         {/* BODY (Scrollable) */}
-        <div className="p-4 flex-grow-1 overflow-auto">
+        <div
+          className={`p-4 flex-grow-1 d-flex flex-column ${
+            step === 'RESULT' && result && result.suggestions.length > 0
+              ? 'overflow-hidden'
+              : 'overflow-auto'
+          }`}
+        >
           {error && <div className="alert alert-danger shadow-sm">{error}</div>}
 
           {/* === STEP 1: INPUT FORM === */}
@@ -144,8 +163,8 @@ export function RebalanceDrawer({ show, onClose }: Readonly<RebalanceDrawerProps
 
           {/* === STEP 2: RESULTS LIST === */}
           {step === 'RESULT' && result && (
-            <div className="h-100 d-flex flex-column">
-              <div className="alert alert-success shadow-sm mb-4 d-flex align-items-center">
+            <div className="flex-grow-1 d-flex flex-column" style={{ minHeight: 0 }}>
+              <div className="alert alert-success shadow-sm mb-3 d-flex align-items-center flex-shrink-0">
                 <i className="bi bi-check-circle-fill fs-4 me-3"></i>
                 <div>
                   Plan calculated for an investment of <br />
@@ -163,38 +182,58 @@ export function RebalanceDrawer({ show, onClose }: Readonly<RebalanceDrawerProps
                 </div>
               ) : (
                 <>
-                  <h6 className="text-muted text-uppercase fw-bold mb-3">Recommended Trades</h6>
-                  <ul className="list-group shadow-sm rounded-3 overflow-hidden">
-                    {result.suggestions.map((item, index) => (
-                      <li
-                        key={item.assetId}
-                        className={`list-group-item p-3 d-flex justify-content-between align-items-center ${index % 2 === 0 ? 'bg-light' : 'bg-white'}`}
-                      >
-                        <div>
-                          <h5 className="fw-bold mb-1">{item.name}</h5>
-                          <div className="small text-muted d-flex gap-3">
-                            <span>
-                              Target: <strong>{item.targetPercentage}%</strong>
-                            </span>
-                            <span>
-                              Current: <strong>{item.currentPercentage}%</strong>
-                            </span>
+                  <div className="overflow-auto flex-shrink-1 mb-3" style={{ minHeight: 0 }}>
+                    <h6 className="text-muted text-uppercase fw-bold mb-3">Recommended Trades</h6>
+                    <ul className="list-group shadow-sm rounded-3 overflow-hidden mb-1">
+                      {result.suggestions.map((item, index) => (
+                        <li
+                          key={item.assetId}
+                          className={`list-group-item p-3 d-flex justify-content-between align-items-center ${index % 2 === 0 ? 'bg-light' : 'bg-white'}`}
+                        >
+                          <div>
+                            <h5 className="fw-bold mb-1">{item.name}</h5>
+                            <div className="small text-muted d-flex gap-3">
+                              <span>
+                                Target: <strong>{item.targetPercentage}%</strong>
+                              </span>
+                              <span>
+                                Current: <strong>{item.currentPercentage}%</strong>
+                              </span>
+                            </div>
                           </div>
-                        </div>
-                        <div className="text-end">
-                          <div className="fs-5 fw-bold text-success text-nowrap">
-                            + {formatMoney(item.amountToBuy, item.currency)}
+                          <div className="text-end">
+                            <div className="fs-5 fw-bold text-success text-nowrap">
+                              + {formatMoney(item.amountToBuy, item.currency)}
+                            </div>
+                            <small
+                              className="text-muted text-uppercase"
+                              style={{ fontSize: '0.7rem' }}
+                            >
+                              to buy
+                            </small>
                           </div>
-                          <small
-                            className="text-muted text-uppercase"
-                            style={{ fontSize: '0.7rem' }}
-                          >
-                            to buy
-                          </small>
-                        </div>
-                      </li>
-                    ))}
-                  </ul>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  {/* Summary Section */}
+                  <div className="p-3 bg-primary-subtle border border-primary-subtle rounded-3 flex-shrink-0 shadow-sm">
+                    <div
+                      className="text-muted text-uppercase fw-bold mb-2"
+                      style={{ fontSize: '0.75rem', letterSpacing: '0.05em' }}
+                    >
+                      Total Allocation
+                    </div>
+                    <div className="d-flex justify-content-between align-items-center mb-1">
+                      <span className="text-secondary small">Real (BRL)</span>
+                      <span className="fw-bold fs-5 text-dark">{formatMoney(totalBRL, 'BRL')}</span>
+                    </div>
+                    <div className="d-flex justify-content-between align-items-center">
+                      <span className="text-secondary small">Dolar (USD)</span>
+                      <span className="fw-bold fs-5 text-dark">{formatMoney(totalUSD, 'USD')}</span>
+                    </div>
+                  </div>
                 </>
               )}
             </div>
