@@ -18,21 +18,21 @@ export function UpdateEmailForm({ currentEmail, onSuccess }: Readonly<UpdateEmai
   const [passwordTouched, setPasswordTouched] = useState(false);
 
   // Real-time validation
-  const isEmailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  const isEmailNotEmpty = email.trim().length > 0;
   const isPasswordNotEmpty = currentPassword.trim().length > 0;
 
-  const emailValidationError = emailTouched && email.length > 0 && !isEmailValid 
-    ? 'Please enter a valid email address.' 
-    : null;
-  const passwordValidationError = passwordTouched && currentPassword.length > 0 && !isPasswordNotEmpty 
-    ? 'Password cannot be empty.' 
-    : null;
+  const emailValidationError =
+    emailTouched && email.length > 0 && !isEmailNotEmpty ? 'Email cannot be empty.' : null;
+  const passwordValidationError =
+    passwordTouched && currentPassword.length > 0 && !isPasswordNotEmpty
+      ? 'Password cannot be empty.'
+      : null;
 
-  const isSubmitDisabled = !isEmailValid || !isPasswordNotEmpty || isLoading;
+  const isSubmitDisabled = !isEmailNotEmpty || !isPasswordNotEmpty || isLoading;
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    if (!isEmailValid || !isPasswordNotEmpty) {
+    if (!isEmailNotEmpty || !isPasswordNotEmpty) {
       return;
     }
 
@@ -41,11 +41,11 @@ export function UpdateEmailForm({ currentEmail, onSuccess }: Readonly<UpdateEmai
       setError(null);
       setSuccessMessage(null);
 
-      const response = await userService.updateEmail({ 
+      const response = await userService.updateEmail({
         email: email.trim(),
-        currentPassword
+        currentPassword,
       });
-      
+
       setSuccessMessage(response.message || 'Email updated successfully.');
       onSuccess(email.trim());
       setEmail('');
@@ -74,7 +74,9 @@ export function UpdateEmailForm({ currentEmail, onSuccess }: Readonly<UpdateEmai
       )}
 
       {error && <div className="alert alert-danger py-2 px-3 small mb-3">{error}</div>}
-      {successMessage && <div className="alert alert-success py-2 px-3 small mb-3">{successMessage}</div>}
+      {successMessage && (
+        <div className="alert alert-success py-2 px-3 small mb-3">{successMessage}</div>
+      )}
 
       <form onSubmit={handleSubmit} noValidate>
         <div className="mb-3">
@@ -125,9 +127,9 @@ export function UpdateEmailForm({ currentEmail, onSuccess }: Readonly<UpdateEmai
           )}
         </div>
 
-        <button 
-          type="submit" 
-          className="btn btn-primary w-100" 
+        <button
+          type="submit"
+          className="btn btn-primary w-100"
           disabled={isSubmitDisabled}
           style={{ minHeight: '44px' }}
         >

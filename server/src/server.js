@@ -14,7 +14,12 @@ const userRoutes = require('./routes/userRoutes');
 const app = express();
 
 // --- Middlewares ---
-app.use(cors());
+const allowedOrigin = process.env.CLIENT_URL || 'http://localhost:5173';
+app.use(
+  cors({
+    origin: allowedOrigin,
+  })
+);
 app.use(express.json());
 
 // --- Basic Test Route ---

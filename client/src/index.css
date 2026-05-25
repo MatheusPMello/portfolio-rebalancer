@@ -6,6 +6,13 @@
     'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   line-height: 1.5;
   font-weight: 400;
+
+  /* Custom variables for UI styling */
+  --app-success-color: #10b981; /* Modern Emerald green */
+  --app-success-bg: #ecfdf5; /* Light Emerald tint for background */
+  --app-success-border: #d1fae5; /* Emerald border tint */
+  --app-text-muted-dark: #495057; /* Darker gray for high-contrast labels */
+  --app-text-secondary-dark: #343a40; /* Darker secondary text */
 }
 
 body {
@@ -89,14 +96,7 @@ a:hover {
 
 /* --- THEME OVERRIDES & UTILITIES --- */
 
-/* Custom variables for UI styling */
-:root {
-  --app-success-color: #10b981; /* Modern Emerald green */
-  --app-success-bg: #ecfdf5; /* Light Emerald tint for background */
-  --app-success-border: #d1fae5; /* Emerald border tint */
-  --app-text-muted-dark: #495057; /* Darker gray for high-contrast labels */
-  --app-text-secondary-dark: #343a40; /* Darker secondary text */
-}
+
 
 /* Overriding Bootstrap alert-success to match Emerald theme */
 .alert-success {

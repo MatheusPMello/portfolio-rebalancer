@@ -67,6 +67,13 @@ export function AddAssetModal({
     }
   };
 
+  let submitButtonText = 'Save Asset';
+  if (isSubmitting) {
+    submitButtonText = 'Saving...';
+  } else if (assetToEdit) {
+    submitButtonText = 'Update Asset';
+  }
+
   return (
     <Modal show={show} onClose={onClose} title={assetToEdit ? 'Edit Asset' : 'Add New Asset'}>
       {error && <div className="alert alert-danger">{error}</div>}
@@ -136,9 +143,7 @@ export function AddAssetModal({
             Cancel
           </button>
           <button type="submit" className="btn btn-primary" disabled={isSubmitting}>
-            {isSubmitting
-              ? 'Saving...'
-              : (assetToEdit ? 'Update Asset' : 'Save Asset')}
+            {submitButtonText}
           </button>
         </div>
       </form>

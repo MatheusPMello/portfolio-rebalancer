@@ -3,38 +3,27 @@ import { useNavigate } from 'react-router-dom';
 import userService from '../../services/userService';
 import { getErrorMessage } from '../../utils/errorHandler';
 
-interface DeleteAccountSectionProps {
-  currentUserEmail: string;
-}
-
-export function DeleteAccountSection({ currentUserEmail }: Readonly<DeleteAccountSectionProps>) {
-  const [typedEmail, setTypedEmail] = useState('');
+export function DeleteAccountSection() {
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const [emailTouched, setEmailTouched] = useState(false);
   const [passwordTouched, setPasswordTouched] = useState(false);
 
   const navigate = useNavigate();
 
   // Real-time validations
-  const isEmailMatching = typedEmail.trim().toLowerCase() === currentUserEmail.trim().toLowerCase();
   const isPasswordNotEmpty = password.length > 0;
-
-  const emailValidationError = emailTouched && typedEmail.length > 0 && !isEmailMatching
-    ? 'Email does not match your currently registered email address.'
-    : null;
 
   const passwordValidationError = passwordTouched && password.length > 0 && !isPasswordNotEmpty
     ? 'Password is required.'
     : null;
 
-  const isSubmitDisabled = !isEmailMatching || !isPasswordNotEmpty || isLoading;
+  const isSubmitDisabled = !isPasswordNotEmpty || isLoading;
 
   const handleDelete = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!isEmailMatching || !isPasswordNotEmpty) return;
+    if (!isPasswordNotEmpty) return;
 
     try {
       setIsLoading(true);
@@ -58,30 +47,6 @@ export function DeleteAccountSection({ currentUserEmail }: Readonly<DeleteAccoun
       {error && <div className="alert alert-danger py-2 px-3 small mb-3">{error}</div>}
 
       <form onSubmit={handleDelete} noValidate>
-        <div className="mb-3">
-          <label htmlFor="delete-account-email" className="form-label small fw-bold mb-1">
-            Confirm Account Email Address
-          </label>
-          <input
-            type="email"
-            id="delete-account-email"
-            className={`form-control ${emailValidationError ? 'is-invalid' : ''}`}
-            value={typedEmail}
-            onChange={(e) => {
-              setTypedEmail(e.target.value);
-              setEmailTouched(true);
-            }}
-            onBlur={() => setEmailTouched(true)}
-            disabled={isLoading}
-            required
-          />
-          {emailValidationError && (
-            <div className="text-danger small mt-1" style={{ fontSize: '12px' }}>
-              {emailValidationError}
-            </div>
-          )}
-        </div>
-
         <div className="mb-4">
           <label htmlFor="delete-account-password" className="form-label small fw-bold mb-1">
             Confirm Password

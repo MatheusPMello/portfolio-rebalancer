@@ -10,5 +10,5 @@ module.exports = {
   },
 
   // 3. Cleanup
-  testPathIgnorePatterns: ['/node_modules/'],
+  testPathIgnorePatterns: ['/node_modules/', '<rootDir>/client/'],
 };

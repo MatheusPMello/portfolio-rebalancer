@@ -1,6 +1,7 @@
 // /client/src/pages/DashboardPage.tsx
 import { useEffect, useState } from 'react';
 import assetService, { type Asset } from '../services/assetService';
+import { fetchExchangeRate } from '../services/currencyService';
 import { AddAssetModal } from '../components/AddAssetModal';
 // NEW: Import the Drawer instead of the Modal
 import { RebalanceDrawer } from '../components/RebalanceDrawer';
@@ -8,6 +9,7 @@ import { PortfolioCharts } from '../components/PortfolioCharts';
 
 export function DashboardPage() {
   const [assets, setAssets] = useState<Asset[]>([]);
+  const [usdRate, setUsdRate] = useState<number>(6);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [showAddModal, setShowAddModal] = useState(false);
@@ -17,8 +19,12 @@ export function DashboardPage() {
 
   const loadAssets = async () => {
     try {
-      const data = await assetService.getAll();
-      setAssets(data);
+      const [assetsData, rate] = await Promise.all([
+        assetService.getAll(),
+        fetchExchangeRate(),
+      ]);
+      setAssets(assetsData);
+      setUsdRate(rate);
     } catch (err) {
       console.error('Failed to load assets', err);
       setError('Failed to load your portfolio.');
@@ -68,9 +74,7 @@ export function DashboardPage() {
     .filter((a) => a.currency === 'USD')
     .reduce((sum, a) => sum + Number(a.current_value), 0);
 
-  // For this UI demo, we'll use a fixed rate to estimate the total.
-  const ESTIMATED_USD_RATE = 6;
-  const estimatedTotalInBRL = totalBRL + totalUSD * ESTIMATED_USD_RATE;
+  const estimatedTotalInBRL = totalBRL + totalUSD * usdRate;
 
   if (loading)
     return (
@@ -139,7 +143,7 @@ export function DashboardPage() {
       {/* ================= MIDDLE SECTION: CHARTS ================= */}
       <div className="mb-5">
         {assets.length > 0 ? (
-          <PortfolioCharts assets={assets} />
+          <PortfolioCharts assets={assets} usdRate={usdRate} />
         ) : (
           <div className="alert alert-info shadow-sm p-4 text-center">
             <i className="bi bi-info-circle-fill fs-4 text-info d-block mb-3"></i>
@@ -226,7 +230,7 @@ export function DashboardPage() {
                       {formatCurrency(Number(asset.current_value), asset.currency)}
                     </td>
                     <td className="text-end pe-4">
-                      <div className="btn-group shadow-sm" role="group" aria-label="Asset actions">
+                      <div className="btn-group shadow-sm">
                         <button
                           className="btn btn-sm btn-outline-secondary bg-white"
                           title="Edit Asset"
