@@ -17,14 +17,13 @@ ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
 
 interface PortfolioChartsProps {
   assets: Asset[];
+  usdRate?: number;
 }
 
-export function PortfolioCharts({ assets }: Readonly<PortfolioChartsProps>) {
+export function PortfolioCharts({ assets, usdRate = 6 }: Readonly<PortfolioChartsProps>) {
   if (assets.length === 0) return null;
 
-  const ESTIMATED_USD_RATE = 6;
-
-  const totalPortfolioValue = calculateTotalPortfolio(assets, ESTIMATED_USD_RATE);
+  const totalPortfolioValue = calculateTotalPortfolio(assets, usdRate);
 
   // --- CHART DATA ---
   const driftValues = assets.map((asset) =>
@@ -33,7 +32,7 @@ export function PortfolioCharts({ assets }: Readonly<PortfolioChartsProps>) {
       asset.currency,
       totalPortfolioValue,
       asset.target_percentage,
-      ESTIMATED_USD_RATE,
+      usdRate,
     ),
   );
 
