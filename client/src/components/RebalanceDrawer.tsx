@@ -168,11 +168,14 @@ export function RebalanceDrawer({ show, onClose }: Readonly<RebalanceDrawerProps
           {/* === STEP 2: RESULTS LIST === */}
           {step === 'RESULT' && result && (
             <div className="flex-grow-1 d-flex flex-column" style={{ minHeight: 0 }}>
-              <div className="alert alert-success shadow-sm mb-3 d-flex align-items-center flex-shrink-0">
-                <i className="bi bi-check-circle-fill fs-4 me-3"></i>
-                <div>
+              <div
+                className="alert alert-success shadow-sm mb-3 d-flex align-items-center flex-shrink-0 py-3 px-4"
+                style={{ borderRadius: '0.75rem' }}
+              >
+                <i className="bi bi-check-circle-fill fs-4 me-3 flex-shrink-0"></i>
+                <div style={{ lineHeight: '1.7' }}>
                   Plan calculated for an investment of <br />
-                  <strong>{formatMoney(result.contribution, result.mainCurrency)}</strong>.
+                  <span className="fs-5 fw-bold">{formatMoney(result.contribution, result.mainCurrency)}</span>
                 </div>
               </div>
 
@@ -187,16 +190,21 @@ export function RebalanceDrawer({ show, onClose }: Readonly<RebalanceDrawerProps
               ) : (
                 <>
                   <div className="overflow-auto flex-shrink-1 mb-3" style={{ minHeight: 0 }}>
-                    <h6 className="text-muted text-uppercase fw-bold mb-3">Recommended Trades</h6>
-                    <ul className="list-group shadow-sm rounded-3 overflow-hidden mb-1">
-                      {result.suggestions.map((item, index) => (
-                        <li
+                    <h6
+                      className="text-muted-dark text-uppercase fw-bold mb-3"
+                      style={{ fontSize: '0.75rem', letterSpacing: '0.05em' }}
+                    >
+                      Recommended Trades
+                    </h6>
+                    <div className="d-flex flex-column gap-2 mb-1">
+                      {result.suggestions.map((item) => (
+                        <div
                           key={item.assetId}
-                          className={`list-group-item p-3 d-flex justify-content-between align-items-center ${index % 2 === 0 ? 'bg-light' : 'bg-white'}`}
+                          className="drawer-card p-3 d-flex justify-content-between align-items-center"
                         >
                           <div>
                             <h5 className="fw-bold mb-1">{item.name}</h5>
-                            <div className="small text-muted d-flex gap-3">
+                            <div className="small text-muted-dark d-flex gap-3">
                               <span>
                                 Target: <strong>{item.targetPercentage}%</strong>
                               </span>
@@ -210,31 +218,31 @@ export function RebalanceDrawer({ show, onClose }: Readonly<RebalanceDrawerProps
                               + {formatMoney(item.amountToBuy, item.currency)}
                             </div>
                             <small
-                              className="text-muted text-uppercase"
-                              style={{ fontSize: '0.7rem' }}
+                              className="text-muted-dark text-uppercase fw-bold"
+                              style={{ fontSize: '0.7rem', letterSpacing: '0.02em' }}
                             >
                               to buy
                             </small>
                           </div>
-                        </li>
+                        </div>
                       ))}
-                    </ul>
+                    </div>
                   </div>
 
                   {/* Summary Section */}
-                  <div className="p-3 bg-primary-subtle border border-primary-subtle rounded-3 flex-shrink-0 shadow-sm">
+                  <div className="p-3 drawer-card-summary flex-shrink-0 shadow-sm">
                     <div
-                      className="text-muted text-uppercase fw-bold mb-2"
+                      className="text-muted-dark text-uppercase fw-bold mb-2"
                       style={{ fontSize: '0.75rem', letterSpacing: '0.05em' }}
                     >
                       Total Allocation
                     </div>
                     <div className="d-flex justify-content-between align-items-center mb-1">
-                      <span className="text-secondary small">Real (BRL)</span>
+                      <span className="text-muted-dark small fw-semibold">Real (BRL)</span>
                       <span className="fw-bold fs-5 text-dark">{formatMoney(totalBRL, 'BRL')}</span>
                     </div>
                     <div className="d-flex justify-content-between align-items-center">
-                      <span className="text-secondary small">Dolar (USD)</span>
+                      <span className="text-muted-dark small fw-semibold">Dolar (USD)</span>
                       <span className="fw-bold fs-5 text-dark">{formatMoney(totalUSD, 'USD')}</span>
                     </div>
                   </div>
