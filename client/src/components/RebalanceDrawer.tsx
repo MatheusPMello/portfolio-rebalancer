@@ -21,18 +21,22 @@ export function RebalanceDrawer({ show, onClose }: Readonly<RebalanceDrawerProps
   // Data State
   const [result, setResult] = useState<RebalanceResponse | null>(null);
 
-  // Totals calculations
-  const totalBRL = result?.suggestions
-    ? result.suggestions
-        .filter((item) => item.currency === 'BRL')
-        .reduce((sum, item) => sum + item.amountToBuy, 0)
-    : 0;
+  // Totals calculations (memoized to prevent recalculating on input keystrokes)
+  const totalBRL = React.useMemo(() => {
+    return result?.suggestions
+      ? result.suggestions
+          .filter((item) => item.currency === 'BRL')
+          .reduce((sum, item) => sum + item.amountToBuy, 0)
+      : 0;
+  }, [result]);
 
-  const totalUSD = result?.suggestions
-    ? result.suggestions
-        .filter((item) => item.currency === 'USD')
-        .reduce((sum, item) => sum + item.amountToBuy, 0)
-    : 0;
+  const totalUSD = React.useMemo(() => {
+    return result?.suggestions
+      ? result.suggestions
+          .filter((item) => item.currency === 'USD')
+          .reduce((sum, item) => sum + item.amountToBuy, 0)
+      : 0;
+  }, [result]);
 
   // Reset state automatically whenever the drawer opens
   useEffect(() => {
