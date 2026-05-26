@@ -128,28 +128,29 @@ export function DashboardPage() {
         {/* RIGHT: Distinct "Hero" Rebalance Button */}
         <div className="mt-3 mt-md-0">
           <button
-            className="btn btn-primary btn-lg px-5 py-3 shadow-sm d-flex align-items-center gap-3 rounded-pill"
+            className="btn btn-primary btn-lg px-5 py-3 shadow-sm d-flex align-items-center gap-3"
             onClick={() => setShowRebalanceDrawer(true)}
             style={{
               transition: 'all 0.2s',
-              backgroundColor: '#3b3bff',
-              borderColor: '#3b3bff',
+              backgroundColor: 'var(--bs-primary)',
+              borderColor: 'var(--bs-primary)',
+              borderRadius: '0.375rem',
             }}
             onMouseOver={(e) => {
-              e.currentTarget.style.backgroundColor = '#2626b9';
-              e.currentTarget.style.borderColor = '#2626b9';
+              e.currentTarget.style.backgroundColor = '#0b5ed7';
+              e.currentTarget.style.borderColor = '#0b5ed7';
             }}
             onFocus={(e) => {
-              e.currentTarget.style.backgroundColor = '#2626b9';
-              e.currentTarget.style.borderColor = '#2626b9';
+              e.currentTarget.style.backgroundColor = '#0b5ed7';
+              e.currentTarget.style.borderColor = '#0b5ed7';
             }}
             onMouseOut={(e) => {
-              e.currentTarget.style.backgroundColor = '#3b3bff';
-              e.currentTarget.style.borderColor = '#3b3bff';
+              e.currentTarget.style.backgroundColor = 'var(--bs-primary)';
+              e.currentTarget.style.borderColor = 'var(--bs-primary)';
             }}
             onBlur={(e) => {
-              e.currentTarget.style.backgroundColor = '#3b3bff';
-              e.currentTarget.style.borderColor = '#3b3bff';
+              e.currentTarget.style.backgroundColor = 'var(--bs-primary)';
+              e.currentTarget.style.borderColor = 'var(--bs-primary)';
             }}
           >
             <i className="bi bi-stars fs-3"></i> {/* Changed icon to "stars" for a "magic" feel */}
