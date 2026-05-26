@@ -6,6 +6,7 @@ import { AddAssetModal } from '../components/AddAssetModal';
 // NEW: Import the Drawer instead of the Modal
 import { RebalanceDrawer } from '../components/RebalanceDrawer';
 import { PortfolioCharts } from '../components/PortfolioCharts';
+import { CurrencyBadge } from '../components/CurrencyBadge';
 
 export function DashboardPage() {
   const [assets, setAssets] = useState<Asset[]>([]);
@@ -104,9 +105,7 @@ export function DashboardPage() {
           {/* Currency Breakdowns using clean badges */}
           <div className="d-flex gap-3">
             <div className="d-flex align-items-center py-1 pe-3 rounded-pill bg-white border shadow-sm">
-              <span className="badge rounded-pill bg-primary-subtle text-primary me-2 fs-6 px-3">
-                BRL
-              </span>
+              <CurrencyBadge currency="BRL" className="me-2 fs-6 px-3" />
               <span className="fw-bold text-dark">
                 {new Intl.NumberFormat('pt-BR', {
                   minimumFractionDigits: 2,
@@ -115,9 +114,7 @@ export function DashboardPage() {
               </span>
             </div>
             <div className="d-flex align-items-center py-1 pe-3 rounded-pill bg-white border shadow-sm">
-              <span className="badge rounded-pill bg-success-subtle text-success me-2 fs-6 px-3">
-                USD
-              </span>
+              <CurrencyBadge currency="USD" className="me-2 fs-6 px-3" />
               <span className="fw-bold text-dark">
                 {new Intl.NumberFormat('en-US', {
                   minimumFractionDigits: 2,
@@ -233,11 +230,7 @@ export function DashboardPage() {
                       <span className="fw-bold text-dark fs-5">{asset.name}</span>
                     </td>
                     <td>
-                      <span
-                        className={`badge rounded-pill border px-3 py-2 ${asset.currency === 'BRL' ? 'bg-primary-subtle text-primary border-primary-subtle' : 'bg-success-subtle text-success border-success-subtle'}`}
-                      >
-                        {asset.currency === 'BRL' ? '🇧🇷 BRL' : '🇺🇸 USD'}
-                      </span>
+                      <CurrencyBadge currency={asset.currency} />
                     </td>
                     <td style={{ minWidth: '220px' }}>
                       {(() => {
