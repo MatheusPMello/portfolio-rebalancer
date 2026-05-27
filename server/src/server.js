@@ -12,6 +12,7 @@ const rebalanceRoutes = require('./routes/rebalanceRoutes');
 const currencyRoutes = require('./routes/currencyRoutes');
 const userRoutes = require('./routes/userRoutes');
 const app = express();
+app.disable('x-powered-by');
 
 // --- Middlewares ---
 const allowedOrigin = process.env.CLIENT_URL || 'http://localhost:5173';

@@ -7,6 +7,7 @@ import { AddAssetModal } from '../components/AddAssetModal';
 import { RebalanceDrawer } from '../components/RebalanceDrawer';
 import { PortfolioCharts } from '../components/PortfolioCharts';
 import { Button } from '../components/Button';
+import { CurrencyBadge } from '../components/CurrencyBadge';
 
 export function DashboardPage() {
   const [assets, setAssets] = useState<Asset[]>([]);
@@ -105,16 +106,22 @@ export function DashboardPage() {
           {/* Currency Breakdowns using clean badges */}
           <div className="d-flex gap-3">
             <div className="d-flex align-items-center py-1 pe-3 rounded-pill bg-white border shadow-sm">
-              <span className="badge rounded-pill bg-primary-subtle text-primary me-2 fs-6 px-3">
-                BRL
+              <CurrencyBadge currency="BRL" className="me-2 fs-6 px-3" />
+              <span className="fw-bold text-dark">
+                {new Intl.NumberFormat('pt-BR', {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                }).format(totalBRL)}
               </span>
-              <span className="fw-bold text-dark">{formatCurrency(totalBRL, 'BRL')}</span>
             </div>
             <div className="d-flex align-items-center py-1 pe-3 rounded-pill bg-white border shadow-sm">
-              <span className="badge rounded-pill bg-success-subtle text-success me-2 fs-6 px-3">
-                USD
+              <CurrencyBadge currency="USD" className="me-2 fs-6 px-3" />
+              <span className="fw-bold text-dark">
+                {new Intl.NumberFormat('en-US', {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                }).format(totalUSD)}
               </span>
-              <span className="fw-bold text-dark">{formatCurrency(totalUSD, 'USD')}</span>
             </div>
           </div>
         </div>
@@ -197,7 +204,7 @@ export function DashboardPage() {
                   <th className="py-3 ps-4">Asset</th>
                   <th className="py-3">Currency</th>
                   <th className="py-3">Target Allocation</th>
-                  <th className="py-3">Current Value</th>
+                  <th className="py-3 text-end">Current Value</th>
                   <th className="text-end py-3 pe-4">Actions</th>
                 </tr>
               </thead>
@@ -208,26 +215,43 @@ export function DashboardPage() {
                       <span className="fw-bold text-dark fs-5">{asset.name}</span>
                     </td>
                     <td>
-                      <span
-                        className={`badge rounded-pill border px-3 py-2 ${asset.currency === 'BRL' ? 'bg-primary-subtle text-primary border-primary-subtle' : 'bg-success-subtle text-success border-success-subtle'}`}
-                      >
-                        {asset.currency === 'BRL' ? '🇧🇷 BRL' : '🇺🇸 USD'}
-                      </span>
+                      <CurrencyBadge currency={asset.currency} />
                     </td>
-                    <td style={{ minWidth: '200px' }}>
-                      <div className="d-flex flex-column">
-                        <div className="d-flex justify-content-between small fw-bold mb-1">
-                          <span>{asset.target_percentage}% Target</span>
-                        </div>
-                        <div className="progress" style={{ height: '8px', borderRadius: '4px' }}>
-                          <div
-                            className="progress-bar bg-primary"
-                            style={{ width: `${asset.target_percentage}%` }}
-                          ></div>
-                        </div>
-                      </div>
+                    <td style={{ minWidth: '220px' }}>
+                      {(() => {
+                        const assetBrlValue = asset.currency === 'USD' ? Number(asset.current_value) * usdRate : Number(asset.current_value);
+                        const currentPercentage = estimatedTotalInBRL > 0 ? (assetBrlValue / estimatedTotalInBRL) * 100 : 0;
+                        return (
+                          <div className="d-flex flex-column">
+                            <div className="d-flex justify-content-between small fw-bold mb-1">
+                              <span>{currentPercentage.toFixed(1)}% Current</span>
+                              <span className="text-muted">{asset.target_percentage}% Target</span>
+                            </div>
+                            <div className="progress position-relative" style={{ height: '12px', borderRadius: '6px', backgroundColor: '#e9ecef', overflow: 'hidden' }}>
+                              {/* Target bar (grey) */}
+                              <div
+                                className="position-absolute top-0 bottom-0 start-0 bg-secondary"
+                                style={{
+                                  width: `${asset.target_percentage}%`,
+                                  zIndex: 1,
+                                  opacity: 0.4,
+                                }}
+                              ></div>
+                              {/* Current progress bar (blue) */}
+                              <div
+                                className="position-absolute top-0 bottom-0 start-0 bg-primary"
+                                style={{
+                                  width: `${currentPercentage}%`,
+                                  zIndex: 2,
+                                  transition: 'width 0.3s ease',
+                                }}
+                              ></div>
+                            </div>
+                          </div>
+                        );
+                      })()}
                     </td>
-                    <td className="fw-bold fs-5 text-dark">
+                    <td className="fw-bold fs-5 text-dark text-end">
                       {formatCurrency(Number(asset.current_value), asset.currency)}
                     </td>
                     <td className="text-end pe-4">
