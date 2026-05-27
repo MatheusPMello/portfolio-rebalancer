@@ -68,7 +68,7 @@ export function UpdateEmailForm({ currentEmail, onSuccess }: Readonly<UpdateEmai
       </p>
 
       {currentEmail && (
-        <div className="mb-4 p-3 bg-light rounded border">
+        <div className="mb-4">
           <span className="text-secondary small d-block mb-1">Current Email Address</span>
           <strong className="text-dark fs-6">{currentEmail}</strong>
         </div>

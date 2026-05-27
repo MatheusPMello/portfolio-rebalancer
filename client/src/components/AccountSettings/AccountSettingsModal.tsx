@@ -63,7 +63,7 @@ export function AccountSettingsModal({ show, onClose }: Readonly<{ show: boolean
 
   return (
     <Modal show={show} onClose={onClose} title="Account Settings" size="lg">
-      <div className="d-flex gap-4" style={{ minHeight: '380px' }}>
+      <div className="d-flex gap-4" style={{ minHeight: '450px', height: '450px' }}>
         {/* Navigation Sidebar */}
         <div 
           className="d-flex flex-column gap-2 border-end pe-3" 
@@ -73,7 +73,7 @@ export function AccountSettingsModal({ show, onClose }: Readonly<{ show: boolean
             type="button"
             onClick={() => setActiveTab('profile')}
             className={`btn text-start w-100 px-3 d-flex align-items-center fw-medium ${
-              activeTab === 'profile' ? 'btn-primary text-white' : 'btn-light text-secondary border'
+              activeTab === 'profile' ? 'btn-custom-solid-primary' : 'btn-light text-secondary border'
             }`}
             style={{ minHeight: '44px', borderRadius: '8px', transition: 'all 0.2s' }}
           >
@@ -83,7 +83,7 @@ export function AccountSettingsModal({ show, onClose }: Readonly<{ show: boolean
             type="button"
             onClick={() => setActiveTab('security')}
             className={`btn text-start w-100 px-3 d-flex align-items-center fw-medium ${
-              activeTab === 'security' ? 'btn-primary text-white' : 'btn-light text-secondary border'
+              activeTab === 'security' ? 'btn-custom-solid-primary' : 'btn-light text-secondary border'
             }`}
             style={{ minHeight: '44px', borderRadius: '8px', transition: 'all 0.2s' }}
           >
@@ -97,12 +97,12 @@ export function AccountSettingsModal({ show, onClose }: Readonly<{ show: boolean
             }`}
             style={{ minHeight: '44px', borderRadius: '8px', transition: 'all 0.2s' }}
           >
-            Account Settings
+            Danger Zone
           </button>
         </div>
 
         {/* Content Panel */}
-        <div className="flex-grow-1 ps-2" style={{ minWidth: 0 }}>
+        <div className="flex-grow-1 ps-2" style={{ minWidth: 0, overflowY: 'auto', height: '100%' }}>
           {content}
         </div>
       </div>
