@@ -13,6 +13,14 @@
   --app-success-border: #d1fae5; /* Emerald border tint */
   --app-text-muted-dark: #495057; /* Darker gray for high-contrast labels */
   --app-text-secondary-dark: #343a40; /* Darker secondary text */
+
+  /* Button Design Tokens */
+  --btn-border-radius: 8px;
+  --btn-font-weight: 500;
+  --btn-primary-color: #0d6efd;
+  --btn-secondary-color: #6c757d;
+  --btn-success-color: var(--app-success-color, #10b981);
+  --btn-danger-color: #dc3545;
 }
 
 body {
@@ -151,16 +159,6 @@ a:hover {
 /* ==========================================================================
    BUTTON DESIGN TOKENS & STYLES (Subtle Tint Interaction System)
    ========================================================================== */
-
-:root {
-  --btn-border-radius: 8px;
-  --btn-font-weight: 500;
-  
-  --btn-primary-color: #0d6efd;
-  --btn-secondary-color: #6c757d;
-  --btn-success-color: var(--app-success-color, #10b981);
-  --btn-danger-color: #dc3545;
-}
 
 /* Base button overrides & transition properties */
 .btn-custom {
