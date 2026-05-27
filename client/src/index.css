@@ -8,6 +8,7 @@
   font-weight: 400;
 
   /* Custom variables for UI styling */
+  --brand-primary: #3b3bff;
   --app-success-color: #10b981; /* Modern Emerald green */
   --app-success-bg: #ecfdf5; /* Light Emerald tint for background */
   --app-success-border: #d1fae5; /* Emerald border tint */
@@ -17,7 +18,7 @@
   /* Button Design Tokens */
   --btn-border-radius: 8px;
   --btn-font-weight: 500;
-  --btn-primary-color: #0d6efd;
+  --btn-primary-color: var(--brand-primary);
   --btn-secondary-color: #6c757d;
   --btn-success-color: var(--app-success-color, #10b981);
   --btn-danger-color: #dc3545;
@@ -47,13 +48,13 @@ body {
 /* Link Styles */
 a {
   font-weight: 500;
-  color: #3b3bff;
+  color: var(--brand-primary);
   text-decoration: none;
   transition: color 0.2s;
 }
 
 a:hover {
-  color: #2626b9;
+  color: color-mix(in srgb, var(--brand-primary) 85%, #000000 15%);
 }
 
 /* --- DRAWER COMPONENT STYLES --- */

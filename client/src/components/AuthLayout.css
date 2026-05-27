@@ -56,7 +56,7 @@
    3. Showcase Section (Right Side)
    ========================================================================== */
 .login-showcase-container {
-  background: linear-gradient(135deg, #3b3bff 0%, #1e1b4b 100%);
+  background: linear-gradient(135deg, var(--brand-primary) 0%, #1e1b4b 100%);
   padding: 3.5rem;
   color: white;
   height: 100%;
@@ -145,6 +145,16 @@
 
 .password-toggle-btn:focus {
   outline: none;
+}
+
+.login-form-container .btn-custom-solid-primary {
+  background-color: var(--brand-primary);
+  border-color: var(--brand-primary);
+}
+
+.login-form-container .btn-custom-solid-primary:hover:not(:disabled) {
+  background-color: color-mix(in srgb, var(--brand-primary) 85%, #000000 15%);
+  border-color: color-mix(in srgb, var(--brand-primary) 85%, #000000 15%);
 }
 
 /* ==========================================================================
