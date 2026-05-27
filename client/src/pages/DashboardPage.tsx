@@ -125,6 +125,13 @@ export function DashboardPage() {
               </span>
             </div>
           </div>
+
+          <div
+            className="text-muted-dark mt-1"
+            style={{ fontSize: '0.75rem', fontStyle: 'italic' }}
+          >
+            1 USD = R$ {usdRate.toFixed(2)}
+          </div>
         </div>
 
         {/* RIGHT: Distinct "Hero" Rebalance Button */}
