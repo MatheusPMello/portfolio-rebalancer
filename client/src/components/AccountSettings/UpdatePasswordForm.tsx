@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import userService from '../../services/userService';
 import { getErrorMessage } from '../../utils/errorHandler';
+import { Button } from '../Button';
 
 export function UpdatePasswordForm() {
   const [currentPassword, setCurrentPassword] = useState('');
@@ -160,9 +161,11 @@ export function UpdatePasswordForm() {
           )}
         </div>
 
-        <button 
+        <Button 
           type="submit" 
-          className="btn btn-primary w-100" 
+          variant="solid"
+          color="primary"
+          className="w-100" 
           disabled={isSubmitDisabled}
           style={{ minHeight: '44px' }}
         >
@@ -174,7 +177,7 @@ export function UpdatePasswordForm() {
           ) : (
             'Update Password'
           )}
-        </button>
+        </Button>
       </form>
     </div>
   );

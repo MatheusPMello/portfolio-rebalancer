@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import userService from '../../services/userService';
 import { getErrorMessage } from '../../utils/errorHandler';
+import { Button } from '../Button';
 
 export function DeleteAccountSection() {
   const [password, setPassword] = useState('');
@@ -71,9 +72,11 @@ export function DeleteAccountSection() {
           )}
         </div>
 
-        <button 
+        <Button 
           type="submit" 
-          className="btn btn-outline-danger w-100" 
+          variant="outline"
+          color="danger"
+          className="w-100" 
           disabled={isSubmitDisabled}
           style={{ minHeight: '44px' }}
         >
@@ -85,7 +88,7 @@ export function DeleteAccountSection() {
           ) : (
             'Permanently Delete Account'
           )}
-        </button>
+        </Button>
       </form>
     </div>
   );

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link, Outlet, useNavigate } from 'react-router-dom';
 import { AccountSettingsModal } from './AccountSettings/AccountSettingsModal';
+import { Button } from './Button';
 
 export function MainLayout() {
   const navigate = useNavigate();
@@ -25,15 +26,24 @@ export function MainLayout() {
           </Link>
 
           <div className="d-flex gap-2">
-            <button
-              className="btn btn-outline-secondary btn-sm px-3"
+            <Button
+              variant="solid"
+              color="secondary"
+              size="sm"
+              className="px-3"
               onClick={handleAccountSettings}
             >
               Account
-            </button>
-            <button className="btn btn-outline-danger btn-sm px-3" onClick={handleLogout}>
+            </Button>
+            <Button
+              variant="outline"
+              color="danger"
+              size="sm"
+              className="px-3"
+              onClick={handleLogout}
+            >
               Logout
-            </button>
+            </Button>
           </div>
         </div>
       </nav>

@@ -13,6 +13,14 @@
   --app-success-border: #d1fae5; /* Emerald border tint */
   --app-text-muted-dark: #495057; /* Darker gray for high-contrast labels */
   --app-text-secondary-dark: #343a40; /* Darker secondary text */
+
+  /* Button Design Tokens */
+  --btn-border-radius: 8px;
+  --btn-font-weight: 500;
+  --btn-primary-color: #0d6efd;
+  --btn-secondary-color: #6c757d;
+  --btn-success-color: var(--app-success-color, #10b981);
+  --btn-danger-color: #dc3545;
 }
 
 body {
@@ -96,8 +104,6 @@ a:hover {
 
 /* --- THEME OVERRIDES & UTILITIES --- */
 
-
-
 /* Overriding Bootstrap alert-success to match Emerald theme */
 .alert-success {
   --bs-alert-bg: var(--app-success-bg) !important;
@@ -120,10 +126,11 @@ a:hover {
 .btn-success:hover,
 .btn-success:focus,
 .btn-success:active {
-  background-color: #059669 !important; /* Emerald 600 */
-  border-color: #059669 !important;
+  background-color: color-mix(in srgb, var(--app-success-color) 85%, #000000 15%) !important;
+  border-color: color-mix(in srgb, var(--app-success-color) 85%, #000000 15%) !important;
   box-shadow: 0 0 0 0.25rem rgba(16, 185, 129, 0.25) !important;
 }
+
 
 /* High contrast text overrides */
 .text-muted-dark {
@@ -148,3 +155,191 @@ a:hover {
   border-radius: 0.75rem !important;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
 }
+
+/* ==========================================================================
+   BUTTON DESIGN TOKENS & STYLES (Subtle Tint Interaction System)
+   ========================================================================== */
+
+/* Base button overrides & transition properties */
+.btn-custom {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: var(--btn-font-weight);
+  line-height: 1.5;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  user-select: none;
+  border: 1px solid transparent;
+  border-radius: var(--btn-border-radius);
+  cursor: pointer;
+  transition: all 0.2s ease-in-out !important;
+  text-decoration: none;
+}
+
+.btn-custom:disabled {
+  cursor: not-allowed;
+  opacity: 0.65;
+}
+
+/* Sizing styles */
+.btn-custom-sm {
+  padding: 0.25rem 0.75rem;
+  font-size: 0.875rem;
+}
+.btn-custom-md {
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+}
+.btn-custom-lg {
+  padding: 0.75rem 1.5rem;
+  font-size: 1.125rem;
+}
+
+/* Variant & Color Mapping */
+
+/* Primary Solid */
+.btn-custom-solid-primary {
+  background-color: var(--btn-primary-color);
+  border-color: var(--btn-primary-color);
+  color: #ffffff;
+}
+.btn-custom-solid-primary:hover:not(:disabled) {
+  background-color: color-mix(in srgb, var(--btn-primary-color) 85%, #000000 15%);
+  border-color: color-mix(in srgb, var(--btn-primary-color) 85%, #000000 15%);
+  color: #ffffff;
+}
+
+/* Secondary Solid */
+.btn-custom-solid-secondary {
+  background-color: var(--btn-secondary-color);
+  border-color: var(--btn-secondary-color);
+  color: #ffffff;
+}
+.btn-custom-solid-secondary:hover:not(:disabled) {
+  background-color: color-mix(in srgb, var(--btn-secondary-color) 85%, #000000 15%);
+  border-color: color-mix(in srgb, var(--btn-secondary-color) 85%, #000000 15%);
+  color: #ffffff;
+}
+
+/* Success Solid */
+.btn-custom-solid-success {
+  background-color: var(--btn-success-color);
+  border-color: var(--btn-success-color);
+  color: #ffffff;
+}
+.btn-custom-solid-success:hover:not(:disabled) {
+  background-color: color-mix(in srgb, var(--btn-success-color) 85%, #000000 15%);
+  border-color: color-mix(in srgb, var(--btn-success-color) 85%, #000000 15%);
+  color: #ffffff;
+}
+
+/* Danger Solid */
+.btn-custom-solid-danger {
+  background-color: var(--btn-danger-color);
+  border-color: var(--btn-danger-color);
+  color: #ffffff;
+}
+.btn-custom-solid-danger:hover:not(:disabled) {
+  background-color: color-mix(in srgb, var(--btn-danger-color) 85%, #000000 15%);
+  border-color: color-mix(in srgb, var(--btn-danger-color) 85%, #000000 15%);
+  color: #ffffff;
+}
+
+/* Primary Outline */
+.btn-custom-outline-primary {
+  background-color: transparent;
+  border-color: var(--btn-primary-color);
+  color: var(--btn-primary-color);
+}
+.btn-custom-outline-primary:hover:not(:disabled) {
+  background-color: color-mix(in srgb, var(--btn-primary-color) 8%, transparent);
+  border-color: var(--btn-primary-color);
+  color: var(--btn-primary-color);
+}
+
+/* Secondary Outline */
+.btn-custom-outline-secondary {
+  background-color: transparent;
+  border-color: #ced4da;
+  color: #495057;
+}
+.btn-custom-outline-secondary:hover:not(:disabled) {
+  background-color: color-mix(in srgb, #495057 8%, transparent);
+  border-color: #ced4da;
+  color: #495057;
+}
+
+/* Success Outline */
+.btn-custom-outline-success {
+  background-color: transparent;
+  border-color: var(--btn-success-color);
+  color: var(--btn-success-color);
+}
+.btn-custom-outline-success:hover:not(:disabled) {
+  background-color: color-mix(in srgb, var(--btn-success-color) 8%, transparent);
+  border-color: var(--btn-success-color);
+  color: var(--btn-success-color);
+}
+
+/* Danger Outline */
+.btn-custom-outline-danger {
+  background-color: transparent;
+  border-color: var(--btn-danger-color);
+  color: var(--btn-danger-color);
+}
+.btn-custom-outline-danger:hover:not(:disabled) {
+  background-color: color-mix(in srgb, var(--btn-danger-color) 8%, transparent);
+  border-color: var(--btn-danger-color);
+  color: var(--btn-danger-color);
+}
+
+/* Text variants */
+.btn-custom-text-primary {
+  background-color: transparent;
+  border-color: transparent;
+  color: var(--btn-primary-color);
+}
+.btn-custom-text-primary:hover:not(:disabled) {
+  background-color: color-mix(in srgb, var(--btn-primary-color) 8%, transparent);
+  color: var(--btn-primary-color);
+}
+
+.btn-custom-text-secondary {
+  background-color: transparent;
+  border-color: transparent;
+  color: var(--btn-secondary-color);
+}
+.btn-custom-text-secondary:hover:not(:disabled) {
+  background-color: color-mix(in srgb, var(--btn-secondary-color) 8%, transparent);
+  color: var(--btn-secondary-color);
+}
+
+/* Button Group Alignment styling */
+.btn-group > .btn-custom:not(:first-child) {
+  border-top-left-radius: 0 !important;
+  border-bottom-left-radius: 0 !important;
+  margin-left: -1px;
+}
+.btn-group > .btn-custom:not(:last-child) {
+  border-top-right-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
+}
+
+/* Add smooth transition and cursor styling to standard close buttons */
+.btn-close {
+  transition: all 0.2s ease-in-out !important;
+  cursor: pointer;
+}
+
+/* Hover Scale animation for prominent UI actions */
+.hover-scale {
+  transition: transform 0.2s ease-in-out, background-color 0.2s, border-color 0.2s, color 0.2s !important;
+}
+.hover-scale:hover,
+.hover-scale:focus {
+  transform: scale(1.05);
+}
+
+

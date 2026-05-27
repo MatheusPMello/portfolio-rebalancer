@@ -6,6 +6,7 @@ import { AddAssetModal } from '../components/AddAssetModal';
 // NEW: Import the Drawer instead of the Modal
 import { RebalanceDrawer } from '../components/RebalanceDrawer';
 import { PortfolioCharts } from '../components/PortfolioCharts';
+import { Button } from '../components/Button';
 import { CurrencyBadge } from '../components/CurrencyBadge';
 
 export function DashboardPage() {
@@ -127,31 +128,13 @@ export function DashboardPage() {
 
         {/* RIGHT: Distinct "Hero" Rebalance Button */}
         <div className="mt-3 mt-md-0">
-          <button
-            className="btn btn-primary btn-lg px-5 py-3 shadow-sm d-flex align-items-center gap-3"
+          <Button
+            variant="solid"
+            color="primary"
+            size="lg"
+            rounded="pill"
+            className="px-5 py-3 shadow-lg d-flex align-items-center gap-3 hover-scale"
             onClick={() => setShowRebalanceDrawer(true)}
-            style={{
-              transition: 'all 0.2s',
-              backgroundColor: 'var(--bs-primary)',
-              borderColor: 'var(--bs-primary)',
-              borderRadius: '0.375rem',
-            }}
-            onMouseOver={(e) => {
-              e.currentTarget.style.backgroundColor = '#0b5ed7';
-              e.currentTarget.style.borderColor = '#0b5ed7';
-            }}
-            onFocus={(e) => {
-              e.currentTarget.style.backgroundColor = '#0b5ed7';
-              e.currentTarget.style.borderColor = '#0b5ed7';
-            }}
-            onMouseOut={(e) => {
-              e.currentTarget.style.backgroundColor = 'var(--bs-primary)';
-              e.currentTarget.style.borderColor = 'var(--bs-primary)';
-            }}
-            onBlur={(e) => {
-              e.currentTarget.style.backgroundColor = 'var(--bs-primary)';
-              e.currentTarget.style.borderColor = 'var(--bs-primary)';
-            }}
           >
             <i className="bi bi-stars fs-3"></i> {/* Changed icon to "stars" for a "magic" feel */}
             <div className="text-start">
@@ -160,7 +143,7 @@ export function DashboardPage() {
                 Calculate your next trades
               </small>
             </div>
-          </button>
+          </Button>
         </div>
       </div>
 
@@ -190,14 +173,15 @@ export function DashboardPage() {
             </p>
           </div>
 
-          <button
-            className="btn btn-outline-primary border-2 fw-bold d-flex align-items-center gap-2"
+          <Button
+            variant="outline"
+            color="primary"
+            className="border-2 fw-bold d-flex align-items-center gap-2"
             onClick={handleAddNew}
           >
             <i className="bi bi-plus-lg"></i>
-            {''}
             Add Asset
-          </button>
+          </Button>
         </div>
 
         {/* Table Content */}
@@ -205,9 +189,9 @@ export function DashboardPage() {
           <div className="text-center py-5 bg-light">
             <i className="bi bi-wallet2 text-muted" style={{ fontSize: '3rem' }}></i>
             <p className="text-muted mt-3 fw-bold">No assets to display.</p>
-            <button className="btn btn-sm btn-primary px-4" onClick={handleAddNew}>
+            <Button variant="solid" color="primary" size="sm" className="px-4" onClick={handleAddNew}>
               Add One Now
-            </button>
+            </Button>
           </div>
         ) : (
           <div className="table-responsive">
@@ -272,8 +256,10 @@ export function DashboardPage() {
                     </td>
                     <td className="text-end pe-4">
                       <div className="btn-group shadow-sm">
-                        <button
-                          className="btn btn-sm btn-outline-secondary bg-white"
+                        <Button
+                          variant="outline"
+                          color="secondary"
+                          size="sm"
                           title="Edit Asset"
                           onClick={(e) => {
                             e.stopPropagation();
@@ -281,9 +267,11 @@ export function DashboardPage() {
                           }}
                         >
                           EDIT
-                        </button>
-                        <button
-                          className="btn btn-sm btn-outline-danger bg-white"
+                        </Button>
+                        <Button
+                          variant="outline"
+                          color="danger"
+                          size="sm"
                           title="Remove Asset"
                           onClick={(e) => {
                             e.stopPropagation();
@@ -291,7 +279,7 @@ export function DashboardPage() {
                           }}
                         >
                           REMOVE
-                        </button>
+                        </Button>
                       </div>
                     </td>
                   </tr>
