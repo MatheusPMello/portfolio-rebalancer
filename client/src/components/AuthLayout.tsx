@@ -31,18 +31,6 @@ export function AuthLayout() {
                 <p className="text-white-50 mb-0">
                   Track, analyze, and rebalance your portfolios to maintain your target asset allocation automatically.
                 </p>
-                <div className="showcase-mockup">
-                  <div className="mockup-header">
-                    <span className="dot dot-red"></span>
-                    <span className="dot dot-yellow"></span>
-                    <span className="dot dot-green"></span>
-                  </div>
-                  <div className="mockup-body text-start">
-                    <div className="placeholder-line short"></div>
-                    <div className="placeholder-line long"></div>
-                    <div className="placeholder-line medium"></div>
-                  </div>
-                </div>
               </div>
             </div>
           </div>

@@ -68,46 +68,8 @@
 .showcase-content {
   max-width: 400px;
   margin: 0 auto;
+  text-align: center;
 }
-
-.showcase-mockup {
-  background: rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: 0.75rem;
-  padding: 1.25rem;
-  margin-top: 2rem;
-  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
-}
-
-.mockup-header {
-  display: flex;
-  gap: 6px;
-  margin-bottom: 1rem;
-}
-
-.mockup-header .dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  display: inline-block;
-}
-
-.mockup-header .dot-red { background-color: #ef4444; }
-.mockup-header .dot-yellow { background-color: #eab308; }
-.mockup-header .dot-green { background-color: #22c55e; }
-
-.placeholder-line {
-  height: 8px;
-  background-color: rgba(255, 255, 255, 0.15);
-  border-radius: 4px;
-  margin-bottom: 0.75rem;
-}
-
-.placeholder-line.short { width: 40%; }
-.placeholder-line.long { width: 85%; }
-.placeholder-line.medium { width: 60%; }
 
 /* ==========================================================================
    4. Form Section (Left Side)
