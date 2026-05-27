@@ -29,7 +29,8 @@ export function AuthLayout() {
               <div className="showcase-content">
                 <h2 className="text-white fw-bold mb-3">Effortlessly manage your investments.</h2>
                 <p className="text-white-50 mb-0">
-                  Track, analyze, and rebalance your portfolios to maintain your target asset allocation automatically.
+                  Track, analyze, and rebalance your portfolios to maintain your target asset
+                  allocation automatically.
                 </p>
               </div>
             </div>

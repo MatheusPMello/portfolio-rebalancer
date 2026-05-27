@@ -86,13 +86,15 @@
   padding: 0.75rem 1rem;
   border-radius: 0.5rem;
   border: 1px solid #ced4da;
-  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  transition:
+    border-color 0.15s ease-in-out,
+    box-shadow 0.15s ease-in-out;
 }
 
 /* Ensure browser autofill matches the unified white background */
 .login-form-container .form-control:-webkit-autofill,
-.login-form-container .form-control:-webkit-autofill:hover, 
-.login-form-container .form-control:-webkit-autofill:focus, 
+.login-form-container .form-control:-webkit-autofill:hover,
+.login-form-container .form-control:-webkit-autofill:focus,
 .login-form-container .form-control:-webkit-autofill:active {
   -webkit-box-shadow: 0 0 0 1000px #ffffff inset !important;
   -webkit-text-fill-color: #212529 !important;
@@ -126,7 +128,9 @@
   align-items: center;
   justify-content: center;
   padding: 0.25rem;
-  transition: color 0.15s ease-in-out, transform 0.15s ease-in-out;
+  transition:
+    color 0.15s ease-in-out,
+    transform 0.15s ease-in-out;
   z-index: 10;
 }
 
