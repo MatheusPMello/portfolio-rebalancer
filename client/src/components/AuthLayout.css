@@ -31,26 +31,83 @@
 /**
  * The main card that holds the showcase and form.
  */
+@keyframes slideUpFade {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 .login-card {
   border: none;
   border-radius: 1.25rem; /* Creates the rounded corners */
   overflow: hidden; /* Ensures child elements conform to the border-radius */
   max-width: 1000px;
   width: 100%;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08) !important;
+  animation: slideUpFade 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 /* ==========================================================================
    3. Showcase Section (Right Side)
    ========================================================================== */
 .login-showcase-container {
-  background-color: #3b3bff;
-  padding: 3rem;
+  background: linear-gradient(135deg, #3b3bff 0%, #1e1b4b 100%);
+  padding: 3.5rem;
   color: white;
   height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
 }
+
+.showcase-content {
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.showcase-mockup {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  margin-top: 2rem;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
+}
+
+.mockup-header {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 1rem;
+}
+
+.mockup-header .dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.mockup-header .dot-red { background-color: #ef4444; }
+.mockup-header .dot-yellow { background-color: #eab308; }
+.mockup-header .dot-green { background-color: #22c55e; }
+
+.placeholder-line {
+  height: 8px;
+  background-color: rgba(255, 255, 255, 0.15);
+  border-radius: 4px;
+  margin-bottom: 0.75rem;
+}
+
+.placeholder-line.short { width: 40%; }
+.placeholder-line.long { width: 85%; }
+.placeholder-line.medium { width: 60%; }
 
 /* ==========================================================================
    4. Form Section (Left Side)
@@ -73,10 +130,44 @@
   margin-bottom: 0.5rem;
 }
 
-.login-form-container .btn-primary {
-  background-color: #3b3bff;
-  border-color: #3b3bff;
-  font-weight: 500;
+.password-input-wrapper {
+  position: relative;
+  display: block;
+  width: 100%;
+}
+
+.password-input-wrapper .form-control {
+  padding-right: 2.75rem;
+}
+
+.password-toggle-btn {
+  position: absolute;
+  right: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  border: none;
+  color: #8a929a;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.25rem;
+  transition: color 0.15s ease-in-out, transform 0.15s ease-in-out;
+  z-index: 10;
+}
+
+.password-toggle-btn:hover:not(:disabled) {
+  color: #212529;
+}
+
+.password-toggle-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.password-toggle-btn:focus {
+  outline: none;
 }
 
 /* ==========================================================================

@@ -5,7 +5,7 @@
  */
 
 import { Link, useNavigate } from 'react-router-dom';
-import authService from '../services/authService';
+import authService, { type RegisterData } from '../services/authService';
 import { AuthForm } from '../components/AuthForm';
 
 /**
@@ -15,9 +15,8 @@ import { AuthForm } from '../components/AuthForm';
 export function RegisterPage() {
   const navigate = useNavigate();
 
-  const handleSubmit = async (credentials: { email: string; password: string }) => {
-    const data = await authService.register(credentials);
-    localStorage.setItem('token', data.token);
+  const handleSubmit = async (credentials: RegisterData) => {
+    await authService.register(credentials);
     navigate('/');
   };
 
@@ -27,6 +26,7 @@ export function RegisterPage() {
       submitButtonText="Create Account"
       onSubmit={handleSubmit}
       errorMessagePrefix="Registration failed. Please try again."
+      isLogin={false}
       footer={
         <p className="text-center mt-4">
           Already Have An Account? <Link to="/login">Log In Now.</Link>

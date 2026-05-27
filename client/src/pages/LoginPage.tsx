@@ -5,7 +5,7 @@
  */
 
 import { Link, useNavigate } from 'react-router-dom';
-import authService from '../services/authService';
+import authService, { type LoginData } from '../services/authService';
 import { AuthForm } from '../components/AuthForm';
 
 /**
@@ -15,9 +15,8 @@ import { AuthForm } from '../components/AuthForm';
 export function LoginPage() {
   const navigate = useNavigate();
 
-  const handleSubmit = async (credentials: { email: string; password: string }) => {
-    const data = await authService.login(credentials);
-    localStorage.setItem('token', data.token);
+  const handleSubmit = async (credentials: LoginData) => {
+    await authService.login(credentials);
     navigate('/');
   };
 
@@ -27,6 +26,7 @@ export function LoginPage() {
       submitButtonText="Log In"
       onSubmit={handleSubmit}
       errorMessagePrefix="Login failed. Please try again."
+      isLogin={true}
       footer={
         <p className="text-center mt-4">
           Don't Have An Account? <Link to="/register">Register Now.</Link>
