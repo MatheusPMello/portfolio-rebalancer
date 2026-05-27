@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import userService from '../../services/userService';
 import { getErrorMessage } from '../../utils/errorHandler';
+import { Button } from '../Button';
 
 interface UpdateEmailFormProps {
   currentEmail: string;
@@ -127,9 +128,11 @@ export function UpdateEmailForm({ currentEmail, onSuccess }: Readonly<UpdateEmai
           )}
         </div>
 
-        <button
+        <Button
           type="submit"
-          className="btn btn-primary w-100"
+          variant="solid"
+          color="primary"
+          className="w-100"
           disabled={isSubmitDisabled}
           style={{ minHeight: '44px' }}
         >
@@ -141,7 +144,7 @@ export function UpdateEmailForm({ currentEmail, onSuccess }: Readonly<UpdateEmai
           ) : (
             'Update Email'
           )}
-        </button>
+        </Button>
       </form>
     </div>
   );

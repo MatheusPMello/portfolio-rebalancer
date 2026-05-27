@@ -7,6 +7,7 @@
 import React, { useState } from 'react';
 import { ServerWakeupAlert } from './ServerWakeupAlert';
 import { getErrorMessage } from '../utils/errorHandler';
+import { Button } from './Button';
 
 interface AuthFormProps {
   title: string;
@@ -86,7 +87,7 @@ export function AuthForm({
           />
         </div>
 
-        <button type="submit" className="btn btn-primary w-100 py-2 fs-5 mt-3" disabled={isLoading}>
+        <Button type="submit" variant="solid" color="primary" className="w-100 py-2 fs-5 mt-3" disabled={isLoading}>
           {isLoading ? (
             <>
               <span className="spinner-border spinner-border-sm me-2" aria-hidden="true"></span>
@@ -95,7 +96,7 @@ export function AuthForm({
           ) : (
             submitButtonText
           )}
-        </button>
+        </Button>
 
         {footer}
       </form>

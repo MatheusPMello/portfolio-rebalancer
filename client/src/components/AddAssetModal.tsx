@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import assetService, { type NewAsset, type Asset } from '../services/assetService';
 import { getErrorMessage } from '../utils/errorHandler';
 import { Modal } from './ModalLayout';
+import { Button } from './Button';
 
 interface AddAssetModalProps {
   show: boolean;
@@ -139,12 +140,12 @@ export function AddAssetModal({
         </div>
 
         <div className="d-flex justify-content-end gap-2">
-          <button type="button" className="btn btn-secondary" onClick={onClose}>
+          <Button type="button" variant="outline" color="secondary" onClick={onClose}>
             Cancel
-          </button>
-          <button type="submit" className="btn btn-primary" disabled={isSubmitting}>
+          </Button>
+          <Button type="submit" variant="solid" color="primary" disabled={isSubmitting}>
             {submitButtonText}
-          </button>
+          </Button>
         </div>
       </form>
     </Modal>

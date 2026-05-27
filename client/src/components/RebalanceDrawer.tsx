@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import rebalanceService, { type RebalanceResponse } from '../services/rebalanceService';
 import { getErrorMessage } from '../utils/errorHandler';
+import { Button } from './Button';
 
 interface RebalanceDrawerProps {
   show: boolean;
@@ -255,8 +256,11 @@ export function RebalanceDrawer({ show, onClose }: Readonly<RebalanceDrawerProps
         {/* FOOTER (Fixed actions at bottom) */}
         <div className="p-4 border-top bg-white mt-auto">
           {step === 'INPUT' ? (
-            <button
-              className="btn btn-primary btn-lg w-100 py-3 fw-bold shadow-sm d-flex align-items-center justify-content-center gap-2"
+            <Button
+              variant="solid"
+              color="primary"
+              size="lg"
+              className="w-100 py-3 fw-bold shadow-sm d-flex align-items-center justify-content-center gap-2"
               onClick={handleCalculate}
               disabled={loading || !amount || Number(amount) <= 0}
             >
@@ -271,21 +275,27 @@ export function RebalanceDrawer({ show, onClose }: Readonly<RebalanceDrawerProps
                   Calculate Action Plan{' '}
                 </>
               )}
-            </button>
+            </Button>
           ) : (
             <div className="d-flex gap-3">
-              <button
-                className="btn btn-outline-secondary btn-lg flex-grow-1 py-3"
+              <Button
+                variant="outline"
+                color="secondary"
+                size="lg"
+                className="flex-grow-1 py-3"
                 onClick={() => setStep('INPUT')}
               >
                 <i className="bi bi-arrow-left me-2"></i> Back
-              </button>
-              <button
-                className="btn btn-success btn-lg flex-grow-1 py-3 fw-bold shadow-sm"
+              </Button>
+              <Button
+                variant="solid"
+                color="success"
+                size="lg"
+                className="flex-grow-1 py-3 fw-bold shadow-sm"
                 onClick={onClose}
               >
                 <i className="bi bi-check-lg me-2"></i> Done
-              </button>
+              </Button>
             </div>
           )}
         </div>
