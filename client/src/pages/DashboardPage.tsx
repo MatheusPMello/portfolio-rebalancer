@@ -46,6 +46,13 @@ export function DashboardPage() {
     }).format(value);
   };
 
+  const formatNumberUnified = (value: number) => {
+    return new Intl.NumberFormat('en-US', {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    }).format(value);
+  };
+
   const handleEdit = (asset: Asset) => {
     setEditingAsset(asset);
     setShowAddModal(true);
@@ -108,19 +115,13 @@ export function DashboardPage() {
             <div className="d-flex align-items-center py-1 pe-3 rounded-pill bg-white border shadow-sm">
               <CurrencyBadge currency="BRL" className="me-2 fs-6 px-3" />
               <span className="fw-bold text-dark">
-                {new Intl.NumberFormat('pt-BR', {
-                  minimumFractionDigits: 2,
-                  maximumFractionDigits: 2,
-                }).format(totalBRL)}
+                {formatNumberUnified(totalBRL)}
               </span>
             </div>
             <div className="d-flex align-items-center py-1 pe-3 rounded-pill bg-white border shadow-sm">
               <CurrencyBadge currency="USD" className="me-2 fs-6 px-3" />
               <span className="fw-bold text-dark">
-                {new Intl.NumberFormat('en-US', {
-                  minimumFractionDigits: 2,
-                  maximumFractionDigits: 2,
-                }).format(totalUSD)}
+                {formatNumberUnified(totalUSD)}
               </span>
             </div>
           </div>
@@ -133,7 +134,7 @@ export function DashboardPage() {
             color="primary"
             size="lg"
             rounded="pill"
-            className="px-5 py-3 shadow-lg d-flex align-items-center gap-3 hover-scale"
+            className="px-5 py-3 shadow-none d-flex align-items-center gap-3 hover-scale"
             onClick={() => setShowRebalanceDrawer(true)}
           >
             <i className="bi bi-stars fs-3"></i> {/* Changed icon to "stars" for a "magic" feel */}
