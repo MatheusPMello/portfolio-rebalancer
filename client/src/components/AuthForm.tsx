@@ -33,7 +33,7 @@ function getEmailValidationError(email: string, touched: boolean): string | null
   if (trimmed.length === 0) {
     return 'Email is required.';
   }
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const emailRegex = /^[^\s@]+@[^\s@.]+(?:\.[^\s@.]+)+$/;
   if (!emailRegex.test(trimmed)) {
     return 'Please enter a valid email address (e.g. name@domain.com).';
   }
@@ -87,7 +87,7 @@ export function AuthForm({
   const emailValidationError = getEmailValidationError(email, emailTouched);
   const passwordValidationError = getPasswordValidationError(password, passwordTouched, isLogin);
 
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const emailRegex = /^[^\s@]+@[^\s@.]+(?:\.[^\s@.]+)+$/;
   const isEmailValid = emailRegex.test(email.trim());
   const isPasswordLongEnough = isLogin || password.length >= 6;
 
