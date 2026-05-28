@@ -1,0 +1,395 @@
+openapi: 3.0.3
+info:
+  title: Portfolio Rebalancer API
+  description: Backend HTTP API for Portfolio Rebalancer, supporting JWT authentication, asset management, currency exchange rates, and greedy-allocation rebalancing calculation.
+  version: 1.0.0
+servers:
+  - url: http://localhost:5001
+    description: Local Development Server
+paths:
+  /api/auth/register:
+    post:
+      summary: User registration
+      description: Registers a new user account with email and password.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthCredentials'
+      responses:
+        '201':
+          description: User created successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: User registered successfully
+                  user:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                      email:
+                        type: string
+                        example: user@example.com
+        '400':
+          description: Validation error or email already in use.
+
+  /api/auth/login:
+    post:
+      summary: User login
+      description: Authenticates user credentials and returns a JWT.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthCredentials'
+      responses:
+        '200':
+          description: Authentication successful. Returns JWT.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+                    example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+                  user:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                      email:
+                        type: string
+                        example: user@example.com
+        '401':
+          description: Invalid email or password.
+
+  /api/assets:
+    get:
+      summary: List user assets
+      description: Returns all assets created by the logged-in user.
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: A list of assets.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Asset'
+        '401':
+          description: Unauthorized / invalid JWT token.
+    post:
+      summary: Create portfolio asset
+      description: Adds a new asset to the logged-in user's portfolio.
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateAssetInput'
+      responses:
+        '201':
+          description: Asset created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Asset'
+        '400':
+          description: Invalid input parameters.
+        '401':
+          description: Unauthorized.
+
+  /api/assets/{id}:
+    put:
+      summary: Update portfolio asset
+      description: Updates the details of an existing asset.
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: The asset ID.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateAssetInput'
+      responses:
+        '200':
+          description: Asset updated successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Asset'
+        '400':
+          description: Invalid input or mismatch.
+        '401':
+          description: Unauthorized.
+        '404':
+          description: Asset not found.
+    delete:
+      summary: Delete portfolio asset
+      description: Removes an asset from the logged-in user's portfolio.
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: The asset ID.
+      responses:
+        '200':
+          description: Asset deleted successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Asset deleted successfully
+        '401':
+          description: Unauthorized.
+        '404':
+          description: Asset not found.
+
+  /api/rebalance:
+    post:
+      summary: Calculate portfolio rebalancing allocation
+      description: Runs the greedy buy-only rebalancing math to distribute new capital based on target weights.
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - amount
+                - mainCurrency
+              properties:
+                amount:
+                  type: number
+                  description: Total amount to put to work.
+                  example: 1000
+                mainCurrency:
+                  type: string
+                  description: Currency code of the incoming funds.
+                  example: BRL
+      responses:
+        '200':
+          description: List of purchase suggestions.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PurchaseSuggestion'
+        '401':
+          description: Unauthorized.
+
+  /api/currency/exchange-rate:
+    get:
+      summary: Get exchange rate
+      description: Fetches the live USD to BRL exchange rate.
+      responses:
+        '200':
+          description: USD/BRL rate.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  rate:
+                    type: number
+                    example: 5.42
+
+  /api/user/profile:
+    get:
+      summary: Get user profile
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: User profile details.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  user:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      email:
+                        type: string
+        '401':
+          description: Unauthorized.
+
+  /api/user/email:
+    put:
+      summary: Update email address
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+              properties:
+                email:
+                  type: string
+                  format: email
+                  example: new_email@example.com
+      responses:
+        '200':
+          description: Email updated successfully.
+        '400':
+          description: Invalid input or email already in use.
+        '401':
+          description: Unauthorized.
+
+  /api/user/password:
+    put:
+      summary: Update password
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - currentPassword
+                - newPassword
+              properties:
+                currentPassword:
+                  type: string
+                newPassword:
+                  type: string
+      responses:
+        '200':
+          description: Password updated successfully.
+        '400':
+          description: Incorrect current password or invalid new password.
+        '401':
+          description: Unauthorized.
+
+  /api/user/account:
+    delete:
+      summary: Delete user account
+      description: Deletes the user and all associated assets from the database.
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Account deleted successfully.
+        '401':
+          description: Unauthorized.
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    AuthCredentials:
+      type: object
+      required:
+        - email
+        - password
+      properties:
+        email:
+          type: string
+          format: email
+          example: user@example.com
+        password:
+          type: string
+          format: password
+          example: SuperSecure123!
+    Asset:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 12
+        user_id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: TSLA
+        target_percentage:
+          type: number
+          example: 25.0
+        current_value:
+          type: number
+          example: 1250.00
+        currency:
+          type: string
+          example: USD
+        created_at:
+          type: string
+          format: date-time
+    CreateAssetInput:
+      type: object
+      required:
+        - name
+        - target_percentage
+        - current_value
+        - currency
+      properties:
+        name:
+          type: string
+          example: BOVA11
+        target_percentage:
+          type: number
+          example: 15.0
+        current_value:
+          type: number
+          example: 850.50
+        currency:
+          type: string
+          example: BRL
+    PurchaseSuggestion:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        currency:
+          type: string
+        amountToBuy:
+          type: number
+          description: Suggested amount to purchase (in the asset's native currency).
+        amountToBuyConverted:
+          type: number
+          description: Suggested amount to purchase (converted to the rebalancing mainCurrency).

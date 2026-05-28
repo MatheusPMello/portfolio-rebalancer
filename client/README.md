@@ -1,73 +1,89 @@
-# React + TypeScript + Vite
+# 💻 Portfolio Rebalancer - Client Application
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This is the frontend Single Page Application (SPA) for **Portfolio Rebalancer**, built with React, Vite, TypeScript, and Bootstrap for styling.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🚀 Getting Started
 
-## React Compiler
+### Prerequisites
+Make sure you have Node.js v18+ installed.
 
-The React Compiler is currently not compatible with SWC. See [this issue](https://github.com/vitejs/vite-plugin-react/issues/428) for tracking the progress.
+### Setup and Running
+To run the client application in isolation:
 
-## Expanding the ESLint configuration
+1.  **Install dependencies**:
+    ```bash
+    cd client
+    npm install
+    ```
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+2.  **Start development server**:
+    ```bash
+    npm run dev
+    ```
+    This will run the application on [http://localhost:5173](http://localhost:5173).
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+3.  **Build for production**:
+    ```bash
+    npm run build
+    ```
+    The production bundle is built into the `dist/` directory.
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+4.  **Lint and Format**:
+    ```bash
+    npm run lint
+    npm run format
+    ```
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-]);
+---
+
+## 📂 Project Architecture
+
+```text
+/client/
+|-- /public/                  # Static assets (favicons, etc.)
+|-- /src/
+|   |-- /assets/              # Images, SVG resources
+|   |-- /components/          # Reusable UI layout & custom elements
+|   |   |-- /AccountSettings/ # Modal and sub-forms for user settings
+|   |   |-- AuthLayout.tsx    # Frame for login & register pages
+|   |   |-- MainLayout.tsx    # Header, main body and footer frame
+|   |   |-- RebalanceDrawer.x # Interactive drawer showing rebalance suggestions
+|   |   |-- PortfolioCharts.x # Allocation chart (Current vs. Target) using Chart.js
+|   |-- /pages/               # High-level route views
+|   |   |-- DashboardPage.tsx # Core workspace containing asset lists, charts & rebalancing
+|   |   |-- LoginPage.tsx     # Sign-in route page
+|   |   |-- RegisterPage.tsx  # Sign-up route page
+|   |-- /services/            # API Client services communicating with the Backend
+|   |   |-- api.ts            # Base Axios instance with interceptors for JWT injection
+|   |   |-- assetService.ts   # CRUD operations for managing user portfolio assets
+|   |   |-- authService.ts    # Authentication API requests (login/register)
+|   |   |-- currencyService.ts# Fetches latest BRL/USD exchange rates
+|   |   |-- rebalanceService.ts# Calls the backend calculations engine
+|   |   |-- userService.ts    # User settings and delete account API endpoints
+|   |-- /utils/               # Financial math helper functions & error handling
+|   |-- App.tsx               # Root component establishing application routes
+|   |-- main.tsx              # React mounting entry point
+|   |-- index.css             # Main styling, overrides and variables
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+---
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x';
-import reactDom from 'eslint-plugin-react-dom';
+## 🛡️ Routing and Guards
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-]);
-```
+Routes are declared using `react-router-dom` in [App.tsx](file:///c:/Users/newti/Documents/Cypress%20-%20Tests/portfolio-rebalancer/client/src/App.tsx).
+
+*   **Public Routes**:
+    *   `/login` (AuthLayout)
+    *   `/register` (AuthLayout)
+*   **Protected Routes**:
+    *   `/` (MainLayout) — Wrapped in the [ProtectedRoute](file:///c:/Users/newti/Documents/Cypress%20-%20Tests/portfolio-rebalancer/client/src/components/ProtectedRoute.tsx) guard which checks for the presence of a valid JSON Web Token (JWT) in local storage, redirecting unauthenticated users to `/login`.
+
+---
+
+## 📊 State Management & API Services
+
+*   **Local/Component State**: Managed via native React hooks (`useState`, `useContext`, `useEffect`).
+*   **Authentication & Tokens**: Token-based authentication storing the token in local storage.
+*   **Axios Client**: Centralized in [services/api.ts](file:///c:/Users/newti/Documents/Cypress%20-%20Tests/portfolio-rebalancer/client/src/services/api.ts), configured with automatic request/response interceptors to set the `Authorization: Bearer <token>` header dynamically.
