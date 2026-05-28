@@ -1,87 +1,11 @@
-/**
- * @file App.css
- * @description This file contains global styles for the application.
- * Many of these are default styles from the initial project setup (e.g., Vite/Create React App)
- * and may not be actively used by the custom components.
- *
- * @table-of-contents
- * 1. Root Container
- * 2. Logo Styles
- * 3. Keyframe Animations
- * 4. Card Styles
- * 5. Utility Styles
- */
+/* /client/src/App.css */
 
-/* ==========================================================================
-   1. Root Container
-   ========================================================================== */
-/**
- * Defines the main application container.
+/* 
+ * Global layout adjustments for the root mount element.
+ * Removes template padding and text-centering, ensuring layouts can render full-width.
  */
 #root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
-}
-
-/* ==========================================================================
-   2. Logo Styles
-   ========================================================================== */
-/**
- * Base styles for the logo, including hover effects.
- */
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
-}
-
-/* ==========================================================================
-   3. Keyframe Animations
-   ========================================================================== */
-/**
- * Defines a simple logo spinning animation.
- */
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-/**
- * Applies the spinning animation to the logo if the user has not requested
- * reduced motion.
- */
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
-}
-
-/* ==========================================================================
-   4. Card Styles
-   ========================================================================== */
-/**
- * Generic card styling. Note: This might conflict with Bootstrap's .card class.
- */
-.card {
-  padding: 2em;
-}
-
-/* ==========================================================================
-   5. Utility Styles
-   ========================================================================== */
-.read-the-docs {
-  color: #888;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }

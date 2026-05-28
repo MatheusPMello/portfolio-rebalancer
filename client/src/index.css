@@ -7,20 +7,29 @@
   line-height: 1.5;
   font-weight: 400;
 
+  /* Raw channels for primary color (#3b3bff) */
+  --brand-primary-rgb: 59, 59, 255;
+
   /* Custom variables for UI styling */
-  --brand-primary: #3b3bff;
+  --brand-primary: rgb(var(--brand-primary-rgb));
   --app-success-color: #10b981; /* Modern Emerald green */
   --app-success-bg: #ecfdf5; /* Light Emerald tint for background */
   --app-success-border: #d1fae5; /* Emerald border tint */
   --app-text-muted-dark: #495057; /* Darker gray for high-contrast labels */
   --app-text-secondary-dark: #343a40; /* Darker secondary text */
 
+  /* Override Bootstrap primary theme variables */
+  --bs-primary: var(--brand-primary);
+  --bs-primary-rgb: var(--brand-primary-rgb);
+  --bs-primary-bg-subtle: #eef2ff;
+  --bs-primary-border-subtle: #e0e7ff;
+
   /* Button Design Tokens */
   --btn-border-radius: 8px;
   --btn-font-weight: 500;
   --btn-primary-color: var(--brand-primary);
   --btn-secondary-color: #6c757d;
-  --btn-success-color: var(--app-success-color, #10b981);
+  --btn-success-color: var(--app-success-color);
   --btn-danger-color: #dc3545;
 }
 
@@ -132,6 +141,35 @@ a:hover {
   box-shadow: 0 0 0 0.25rem rgba(16, 185, 129, 0.25) !important;
 }
 
+/* Overriding Bootstrap text-primary to match brand primary */
+.text-primary {
+  color: var(--brand-primary) !important;
+}
+
+/* Overriding Bootstrap btn-primary to match brand primary */
+.btn-primary {
+  background-color: var(--brand-primary) !important;
+  border-color: var(--brand-primary) !important;
+  color: #ffffff !important;
+}
+
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:active {
+  background-color: color-mix(in srgb, var(--brand-primary) 85%, #000000 15%) !important;
+  border-color: color-mix(in srgb, var(--brand-primary) 85%, #000000 15%) !important;
+  color: #ffffff !important;
+  box-shadow: 0 0 0 0.25rem rgba(var(--brand-primary-rgb), 0.25) !important;
+}
+
+/* Overriding Bootstrap primary subtle styles to match brand primary theme */
+.bg-primary-subtle {
+  background-color: #eef2ff !important; /* Sleek modern light brand primary (Indigo-tinted) */
+}
+
+.border-primary-subtle {
+  border-color: #e0e7ff !important;
+}
 
 /* High contrast text overrides */
 .text-muted-dark {
@@ -142,19 +180,19 @@ a:hover {
   color: var(--app-text-secondary-dark) !important;
 }
 
-/* Standardized Card layout for drawer items */
-.drawer-card {
+/* Standardized Card layout for drawer items - Shared Base */
+.drawer-card,
+.drawer-card-summary {
   background-color: #ffffff;
   border: 1px solid #e9ecef;
   border-radius: 0.75rem !important;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
 }
 
+/* Modifier/Override for Summary version */
 .drawer-card-summary {
-  background-color: rgba(13, 110, 253, 0.05) !important;
-  border: 1px solid rgba(13, 110, 253, 0.12) !important;
-  border-radius: 0.75rem !important;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  background-color: rgba(var(--brand-primary-rgb), 0.05) !important;
+  border-color: rgba(var(--brand-primary-rgb), 0.12) !important;
 }
 
 /* ==========================================================================
@@ -175,8 +213,15 @@ a:hover {
   border: 1px solid transparent;
   border-radius: var(--btn-border-radius);
   cursor: pointer;
-  transition: all 0.2s ease-in-out !important;
+  transition: all 0.2s ease-in-out;
   text-decoration: none;
+}
+
+/* Accessibility Focus Indicator for keyboard navigation */
+.btn-custom:focus-visible {
+  outline: 2px solid var(--brand-primary);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px rgba(var(--brand-primary-rgb), 0.15);
 }
 
 .btn-custom:disabled {
