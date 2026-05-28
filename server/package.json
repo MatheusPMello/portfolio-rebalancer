@@ -4,9 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon src/server.js",
-    "db:setup": "node src/config/setupDatabase.js",
+    "test": "jest",
+    "start": "tsx watch src/server.ts",
+    "build": "tsc",
+    "db:setup": "tsx src/config/setupDatabase.ts",
     "lint": "eslint ."
   },
   "keywords": [],
@@ -24,9 +25,18 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.39.2",
+    "@types/bcryptjs": "^2.4.6",
+    "@types/cors": "^2.8.17",
+    "@types/express": "^5.0.0",
+    "@types/jest": "^29.5.14",
+    "@types/jsonwebtoken": "^9.0.8",
+    "@types/node": "^22.10.1",
+    "@types/pg": "^8.11.10",
     "eslint": "^9.39.2",
     "globals": "^16.5.0",
-    "jest": "^30.2.0",
-    "nodemon": "^3.1.10"
+    "jest": "^29.7.0",
+    "nodemon": "^3.1.10",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2"
   }
 }

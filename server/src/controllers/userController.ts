@@ -1,15 +1,20 @@
-const bcrypt = require('bcryptjs');
-const User = require('../models/User');
-const { z } = require('zod');
+import { type Request, type Response } from 'express';
+import bcrypt from 'bcryptjs';
+import { User } from '../models/User.js';
+import { z } from 'zod';
 
-const userController = {
+export const userController = {
   // @desc Update user email
   // @route PUT /api/users/email
   // @access Private
-  updateEmail: async (req, res) => {
+  updateEmail: async (req: Request, res: Response): Promise<any> => {
     try {
       const { email: emailInput, currentPassword } = req.body;
-      const id = req.user.id;
+      const id = req.user?.id;
+
+      if (!id) {
+        return res.status(401).json({ message: 'User not authenticated' });
+      }
 
       // 1. Validate input
       if (!emailInput || !currentPassword) {
@@ -17,11 +22,12 @@ const userController = {
       }
 
       const emailValidator = z.string().toLowerCase().trim().pipe(z.email()).safeParse(emailInput);
-      const email = emailValidator.data;
 
       if (!emailValidator.success) {
         return res.status(400).json({ message: 'Invalid email format' });
       }
+
+      const email = emailValidator.data;
 
       const user = await User.findById(id);
       if (!user) {
@@ -56,10 +62,14 @@ const userController = {
   // @desc Update user password
   // @route PUT /api/users/password
   // @access Private
-  updatePassword: async (req, res) => {
+  updatePassword: async (req: Request, res: Response): Promise<any> => {
     try {
       const { currentPassword, newPassword } = req.body;
-      const id = req.user.id;
+      const id = req.user?.id;
+
+      if (!id) {
+        return res.status(401).json({ message: 'User not authenticated' });
+      }
 
       if (!currentPassword || !newPassword) {
         return res.status(400).json({ message: 'Invalid input' });
@@ -96,10 +106,14 @@ const userController = {
   // @desc Delete user account
   // @route DELETE /api/users/account
   // @access Private
-  deleteAccount: async (req, res) => {
+  deleteAccount: async (req: Request, res: Response): Promise<any> => {
     try {
       const { password } = req.body;
-      const id = req.user.id;
+      const id = req.user?.id;
+
+      if (!id) {
+        return res.status(401).json({ message: 'User not authenticated' });
+      }
 
       if (!password) {
         return res.status(400).json({ message: 'Invalid input' });
@@ -126,9 +140,12 @@ const userController = {
   // @desc Get user profile details
   // @route GET /api/users/profile
   // @access Private
-  getProfile: async (req, res) => {
+  getProfile: async (req: Request, res: Response): Promise<any> => {
     try {
-      const id = req.user.id;
+      const id = req.user?.id;
+      if (!id) {
+        return res.status(401).json({ message: 'User not authenticated' });
+      }
       const user = await User.findById(id);
       if (!user) {
         return res.status(404).json({ message: 'User not found' });
@@ -140,5 +157,4 @@ const userController = {
     }
   },
 };
-
-module.exports = userController;
+export default userController;

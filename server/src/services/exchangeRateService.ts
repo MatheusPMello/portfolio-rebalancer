@@ -1,6 +1,4 @@
-'use strict';
-
-const axios = require('axios');
+import axios from 'axios';
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 
@@ -11,44 +9,53 @@ const DEFAULTS = {
   timeoutMs: 5_000, // 5 seconds
 };
 
+export interface ExchangeRateServiceConfig {
+  apiUrl?: string;
+  fallbackRate?: number;
+  cacheDurationMs?: number;
+  timeoutMs?: number;
+  logger?: {
+    info: (...args: any[]) => void;
+    warn: (...args: any[]) => void;
+    error: (...args: any[]) => void;
+  };
+}
+
+export interface ExchangeRateService {
+  getUsdToBrlRate: () => Promise<number>;
+  invalidateCache: () => void;
+}
+
 // ─── Factory ──────────────────────────────────────────────────────────────────
 
 /**
  * Creates an exchange rate service with caching, request coalescing,
  * layered fallback, and injectable dependencies.
- *
- * @param {object}   [opts]
- * @param {string}   [opts.apiUrl]           - External API endpoint
- * @param {number}   [opts.fallbackRate]     - Hardcoded last-resort rate
- * @param {number}   [opts.cacheDurationMs]  - How long a cached value is valid
- * @param {number}   [opts.timeoutMs]        - HTTP request timeout
- * @param {object}   [opts.logger]           - Logger with .info / .warn / .error
- * @returns {{ getUsdToBrlRate: () => Promise<number> }}
  */
-function createExchangeRateService(opts = {}) {
+export function createExchangeRateService(opts: ExchangeRateServiceConfig = {}): ExchangeRateService {
   const config = { ...DEFAULTS, ...opts };
   const logger = config.logger ?? console;
 
   // ── Private state (fully encapsulated — no module-level globals) ──────────
-  let cachedRate = null;
+  let cachedRate: number | null = null;
   let lastFetchTime = 0;
-  let inflightRequest = null; // Promise coalescing: avoids duplicate requests
+  let inflightRequest: Promise<number> | null = null; // Promise coalescing
 
   // ── Private helpers ───────────────────────────────────────────────────────
 
-  function isCacheValid(now) {
+  function isCacheValid(now: number): boolean {
     return cachedRate !== null && now - lastFetchTime < config.cacheDurationMs;
   }
 
-  async function fetchFromApi() {
-    const response = await axios.get(config.apiUrl, {
+  async function fetchFromApi(): Promise<number> {
+    const response = await axios.get<{ rates?: { BRL?: number } }>(config.apiUrl, {
       timeout: config.timeoutMs,
     });
 
-    const rate = Number.parseFloat(response.data?.rates?.BRL);
+    const rate = Number.parseFloat(response.data?.rates?.BRL?.toString() ?? '');
 
     if (Number.isNaN(rate) || rate <= 0) {
-      throw new TypeError(`Invalid rate value received: ${response.data?.USDBRL?.bid}`);
+      throw new TypeError(`Invalid rate value received: ${response.data?.rates?.BRL}`);
     }
 
     return rate;
@@ -56,21 +63,11 @@ function createExchangeRateService(opts = {}) {
 
   // ── Public API ────────────────────────────────────────────────────────────
 
-  /**
-   * Returns the current USD→BRL exchange rate.
-   * Resolution order:
-   *   1. Valid cache (within TTL)
-   *   2. Live API response (with request coalescing)
-   *   3. Stale cache (expired but available — preferred over hardcoded value)
-   *   4. Hardcoded fallback constant
-   *
-   * @returns {Promise<number>}
-   */
-  async function getUsdToBrlRate() {
+  async function getUsdToBrlRate(): Promise<number> {
     const now = Date.now();
 
     // 1. Serve from valid cache immediately — no I/O needed
-    if (isCacheValid(now)) {
+    if (isCacheValid(now) && cachedRate !== null) {
       logger.info(
         `[ExchangeRate] Serving from cache (age: ${Math.round((now - lastFetchTime) / 1000)}s): R$ ${cachedRate}`,
       );
@@ -95,7 +92,7 @@ function createExchangeRateService(opts = {}) {
 
         logger.info(`[ExchangeRate] Rate updated: R$ ${rate}`);
         return rate;
-      } catch (err) {
+      } catch (err: any) {
         // 3. API failed — prefer stale cache over hardcoded constant
         if (cachedRate !== null) {
           const staleAgeMin = Math.round((now - lastFetchTime) / 60_000);
@@ -119,11 +116,7 @@ function createExchangeRateService(opts = {}) {
     return inflightRequest;
   }
 
-  /**
-   * Invalidates the cache, forcing the next call to hit the API.
-   * Useful for testing or manual refresh triggers.
-   */
-  function invalidateCache() {
+  function invalidateCache(): void {
     cachedRate = null;
     lastFetchTime = 0;
     logger.info('[ExchangeRate] Cache manually invalidated');
@@ -134,9 +127,5 @@ function createExchangeRateService(opts = {}) {
 
 // ─── Singleton export (matches original module interface) ─────────────────────
 
-// Export a ready-to-use singleton with default config.
-// For testing or custom config, use createExchangeRateService() directly.
 const exchangeRateService = createExchangeRateService();
-
-module.exports = exchangeRateService;
-module.exports.createExchangeRateService = createExchangeRateService;
+export default exchangeRateService;

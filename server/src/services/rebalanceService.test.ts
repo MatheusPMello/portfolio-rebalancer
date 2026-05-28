@@ -1,5 +1,5 @@
-// /server/src/services/rebalanceService.test.js
-const { calculateRebalancePlan } = require('./rebalanceService');
+import { calculateRebalancePlan } from './rebalanceService.js';
+import { type AssetRecord } from '../models/Asset.js';
 
 describe('Rebalance Service Logic', () => {
   // --- SCENARIO 1: The Basics ---
@@ -9,10 +9,11 @@ describe('Rebalance Service Logic', () => {
     const rate = 1; // Simplify math for this test
     const currency = 'BRL';
 
-    const assets = [
+    const assets: AssetRecord[] = [
       // Asset A is perfect (50% target, has 5000)
       {
         id: 1,
+        user_id: 1,
         name: 'Safe Asset',
         current_value: 5000,
         target_percentage: 50,
@@ -21,6 +22,7 @@ describe('Rebalance Service Logic', () => {
       // Asset B is empty (50% target, has 0) -> It needs money!
       {
         id: 2,
+        user_id: 1,
         name: 'Risky Asset',
         current_value: 0,
         target_percentage: 50,
@@ -32,11 +34,6 @@ describe('Rebalance Service Logic', () => {
     const result = calculateRebalancePlan(contribution, assets, rate, currency);
 
     // 3. ASSERT: Check the result
-    // Logic: Total Future Wealth = 5000 + 0 + 1000 = 6000.
-    // Asset B needs 50% of 6000 = 3000.
-    // Asset B has 0. Gap is 3000.
-    // Since Asset A has no gap, Asset B should get ALL the contribution (1000).
-
     expect(result.length).toBe(1); // Should only suggest buying Asset B
     expect(result[0].name).toBe('Risky Asset');
     expect(result[0].amountToBuy).toBe(1000);
@@ -49,10 +46,11 @@ describe('Rebalance Service Logic', () => {
     const rate = 6;
     const currency = 'BRL';
 
-    const assets = [
+    const assets: AssetRecord[] = [
       // Target 100%, currently 0. It is in USD.
       {
         id: 1,
+        user_id: 1,
         name: 'Apple Stock',
         current_value: 0,
         target_percentage: 100,
@@ -78,14 +76,18 @@ describe('Rebalance Service Logic', () => {
     const rate = 1;
     const currency = 'BRL';
 
-    const assets = [
+    const assets: AssetRecord[] = [
       {
+        id: 1,
+        user_id: 1,
         name: 'Apple',
         current_value: 800,
         target_percentage: 50,
         currency: 'BRL',
       },
       {
+        id: 2,
+        user_id: 1,
         name: 'Google',
         current_value: 200,
         target_percentage: 50,
@@ -97,14 +99,12 @@ describe('Rebalance Service Logic', () => {
     const result = calculateRebalancePlan(contribution, assets, rate, currency);
 
     // ASSERT
-    // Total wealth = 11.000. 50% target = 5500.
-    // Apple needs : 5500 - 800 = 4700
-    // Google needs : 5500 - 200 = 5300
-
     const applePlan = result.find((a) => a.name === 'Apple');
     const googlePlan = result.find((a) => a.name === 'Google');
 
-    expect(applePlan.amountToBuy).toBe(4700);
-    expect(googlePlan.amountToBuy).toBe(5300);
+    expect(applePlan).toBeDefined();
+    expect(googlePlan).toBeDefined();
+    expect(applePlan!.amountToBuy).toBe(4700);
+    expect(googlePlan!.amountToBuy).toBe(5300);
   });
 });

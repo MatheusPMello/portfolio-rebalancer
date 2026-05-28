@@ -1,15 +1,19 @@
-// /server/src/models/User.js
+import { db } from '../config/db.js';
 
-const db = require('../config/db');
+export interface UserRecord {
+  id: number;
+  email: string;
+  password_hash: string;
+  created_at: Date;
+}
 
-const User = {
+export type SafeUser = Omit<UserRecord, 'password_hash'>;
+
+export const User = {
   /**
    * Creates a new user in the database.
-   * @param {string} email - The user's email.
-   * @param {string} passwordHash - The user's hashed password.
-   * @returns {Promise<object>} The new user object.
    */
-  create: async (email, passwordHash) => {
+  create: async (email: string, passwordHash: string): Promise<SafeUser> => {
     const query = `
       INSERT INTO users (email, password_hash)
       VALUES ($1, $2)
@@ -28,11 +32,8 @@ const User = {
 
   /**
    * Updates a user's email.
-   * @param {number} id - The user's ID.
-   * @param {string} email - The new email.
-   * @returns {Promise<object>} The updated user object.
    */
-  updateEmail: async (id, email) => {
+  updateEmail: async (id: number, email: string): Promise<SafeUser> => {
     const query = `
       UPDATE users
       SET email = $2
@@ -52,11 +53,8 @@ const User = {
 
   /**
    * Updates a user's password.
-   * @param {number} id - The user's ID.
-   * @param {string} passwordHash - The new password hash.
-   * @returns {Promise<object>} The updated user object.
    */
-  updatePassword: async (id, passwordHash) => {
+  updatePassword: async (id: number, passwordHash: string): Promise<SafeUser> => {
     const query = `
       UPDATE users
       SET password_hash = $2
@@ -76,10 +74,8 @@ const User = {
 
   /**
    * Deletes a user and all their associated data.
-   * @param {number} id - The user's ID.
-   * @returns {Promise<object>} The deleted user object.
    */
-  deleteAccount: async (id) => {
+  deleteAccount: async (id: number): Promise<SafeUser> => {
     const deleteAssetsQuery = 'DELETE FROM assets WHERE user_id = $1;';
     const deleteUserQuery = `
       DELETE FROM users
@@ -89,9 +85,8 @@ const User = {
     const values = [id];
 
     try {
-      // Ensure we delete assets first to prevent orphaned records or foreign key constraint errors
+      // Delete assets first to satisfy constraint checks
       await db.query(deleteAssetsQuery, values);
-
       const res = await db.query(deleteUserQuery, values);
       return res.rows[0];
     } catch (err) {
@@ -102,10 +97,8 @@ const User = {
 
   /**
    * Finds a user by their email.
-   * @param {string} email - The user's email.
-   * @returns {Promise<object|null>} The user object or null if not found.
    */
-  findByEmail: async (email) => {
+  findByEmail: async (email: string): Promise<UserRecord | null> => {
     const query = 'SELECT * FROM users WHERE email = $1;';
     const values = [email];
 
@@ -120,10 +113,8 @@ const User = {
 
   /**
    * Finds a user by their ID.
-   * @param {number} id - The user's ID.
-   * @returns {Promise<object|null>} The user object or null if not found.
    */
-  findById: async (id) => {
+  findById: async (id: number): Promise<UserRecord | null> => {
     const query = 'SELECT * FROM users WHERE id = $1;';
     const values = [id];
 
@@ -136,5 +127,3 @@ const User = {
     }
   },
 };
-
-module.exports = User;

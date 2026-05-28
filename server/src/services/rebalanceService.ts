@@ -1,10 +1,24 @@
-// /server/src/services/rebalanceService.js
+import { type AssetRecord } from '../models/Asset.js';
+
+export interface RebalanceSuggestion {
+  assetId: number;
+  name: string;
+  currency: 'USD' | 'BRL';
+  currentPercentage: string;
+  targetPercentage: number;
+  amountToBuy: number;
+}
 
 /**
  * Calculates the rebalancing plan.
  * Pure logic: Input -> Math -> Output.
  */
-const calculateRebalancePlan = (contribution, assets, usdRate, mainCurrency) => {
+export const calculateRebalancePlan = (
+  contribution: number,
+  assets: AssetRecord[],
+  usdRate: number,
+  mainCurrency: 'BRL' | 'USD',
+): RebalanceSuggestion[] => {
   // 1. Normalize all assets to the 'Main Currency'
   const normalizedAssets = assets.map((asset) => {
     const currentValue = Number(asset.current_value);
@@ -76,5 +90,3 @@ const calculateRebalancePlan = (contribution, assets, usdRate, mainCurrency) => 
 
   return suggestions.filter((s) => s.amountToBuy > 0.01);
 };
-
-module.exports = { calculateRebalancePlan };

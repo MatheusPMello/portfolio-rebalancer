@@ -1,25 +1,25 @@
-// /server/src/controllers/authController.js
-
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
-const User = require('../models/User');
+import { type Request, type Response } from 'express';
+import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
+import { User } from '../models/User.js';
 
 // Helper function to create a token
-function createToken(userId) {
-  // Put JWT "secret" in the .env file
-  // This signs the token with our private key
+function createToken(userId: number): string {
+  if (!process.env.JWT_SECRET) {
+    throw new Error('JWT_SECRET environment variable is missing');
+  }
   return jwt.sign(
     { id: userId },
     process.env.JWT_SECRET,
-    { expiresIn: '24h' }, // The token will expire in 24 hours
+    { expiresIn: '24h' },
   );
 }
 
-const authController = {
+export const authController = {
   /**
    * Register a new user
    */
-  register: async (req, res) => {
+  register: async (req: Request, res: Response): Promise<any> => {
     try {
       const { email, password } = req.body;
 
@@ -49,7 +49,7 @@ const authController = {
         token,
         user: { id: newUser.id, email: newUser.email },
       });
-    } catch (err) {
+    } catch (err: any) {
       res.status(500).json({
         message: 'Server error during registration',
         error: err.message,
@@ -60,7 +60,7 @@ const authController = {
   /**
    * Log in an existing user
    */
-  login: async (req, res) => {
+  login: async (req: Request, res: Response): Promise<any> => {
     try {
       const { email, password } = req.body;
 
@@ -72,13 +72,13 @@ const authController = {
       // 2. Find the user by email
       const user = await User.findByEmail(email);
       if (!user) {
-        return res.status(401).json({ message: 'Invalid credentials' }); // "Unauthorized"
+        return res.status(401).json({ message: 'Invalid credentials' });
       }
 
       // 3. Compare the provided password with the stored hash
       const isMatch = await bcrypt.compare(password, user.password_hash);
       if (!isMatch) {
-        return res.status(401).json({ message: 'Invalid credentials' }); // "Unauthorized"
+        return res.status(401).json({ message: 'Invalid credentials' });
       }
 
       // 4. Create a token
@@ -89,10 +89,8 @@ const authController = {
         token,
         user: { id: user.id, email: user.email },
       });
-    } catch (err) {
+    } catch (err: any) {
       res.status(500).json({ message: 'Server error during login', error: err.message });
     }
   },
 };
-
-module.exports = authController;

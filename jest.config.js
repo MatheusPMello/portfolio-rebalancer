@@ -11,4 +11,9 @@ module.exports = {
 
   // 3. Cleanup
   testPathIgnorePatterns: ['/node_modules/', '<rootDir>/client/'],
+
+  // 4. Resolve relative ESM imports (.js -> .ts)
+  moduleNameMapper: {
+    '^(\\.{1,2}/.*)\\.js$': '$1',
+  },
 };

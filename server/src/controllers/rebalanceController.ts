@@ -1,21 +1,23 @@
-// /server/src/controllers/rebalanceController.js
-const Asset = require('../models/Asset');
-const exchangeRateService = require('../services/exchangeRateService');
+import { type Request, type Response } from 'express';
+import { Asset } from '../models/Asset.js';
+import exchangeRateService from '../services/exchangeRateService.js';
+import { calculateRebalancePlan } from '../services/rebalanceService.js';
 
-// 1. IMPORT THE LOGIC (The Service)
-const { calculateRebalancePlan } = require('../services/rebalanceService');
-
-const rebalanceController = {
-  calculate: async (req, res) => {
+export const rebalanceController = {
+  calculate: async (req: Request, res: Response): Promise<any> => {
     try {
-      // 2. PREPARE DATA
+      // 1. PREPARE DATA
       const currentUsdRate = await exchangeRateService.getUsdToBrlRate();
-      const userId = req.user.id;
-      const contribution = Number(req.body.amount);
-      const mainCurrency = req.body.mainCurrency || 'BRL';
+      const userId = req.user?.id;
+      if (!userId) {
+        return res.status(401).json({ message: 'User not authenticated' });
+      }
 
-      // 3. VALIDATE
-      if (!contribution || contribution <= 0) {
+      const contribution = Number(req.body.amount);
+      const mainCurrency = (req.body.mainCurrency || 'BRL') as 'BRL' | 'USD';
+
+      // 2. VALIDATE
+      if (!contribution || contribution <= 0 || Number.isNaN(contribution)) {
         return res.status(400).json({ message: 'Please provide a valid contribution amount.' });
       }
 
@@ -25,8 +27,7 @@ const rebalanceController = {
         return res.status(400).json({ message: 'Add assets before rebalancing.' });
       }
 
-      // 4. DELEGATE TO SERVICE (The "Brain")
-      // Instead of 50 lines of math, we just call the function we tested
+      // 3. DELEGATE TO SERVICE (The "Brain")
       const finalSuggestions = calculateRebalancePlan(
         contribution,
         assets,
@@ -34,18 +35,16 @@ const rebalanceController = {
         mainCurrency,
       );
 
-      // 5. RESPOND
+      // 4. RESPOND
       res.status(200).json({
         contribution: contribution,
         mainCurrency: mainCurrency,
         rateUsed: currentUsdRate,
         suggestions: finalSuggestions,
       });
-    } catch (err) {
+    } catch (err: any) {
       console.error('Rebalance Calculation Error:', err);
       res.status(500).json({ message: 'Server error', error: err.message });
     }
   },
 };
-
-module.exports = rebalanceController;
