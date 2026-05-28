@@ -19,6 +19,49 @@ interface AuthFormProps {
 }
 
 /**
+ * Helper function to validate email inputs.
+ *
+ * @param email - The email string value.
+ * @param touched - Whether the input was focused/interacted with.
+ * @returns An error message string or null if input is valid.
+ */
+function getEmailValidationError(email: string, touched: boolean): string | null {
+  if (!touched) {
+    return null;
+  }
+  const trimmed = email.trim();
+  if (trimmed.length === 0) {
+    return 'Email is required.';
+  }
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(trimmed)) {
+    return 'Please enter a valid email address (e.g. name@domain.com).';
+  }
+  return null;
+}
+
+/**
+ * Helper function to validate password inputs.
+ *
+ * @param password - The password string value.
+ * @param touched - Whether the input was focused/interacted with.
+ * @param isLogin - True if on the login form, false if on register page.
+ * @returns An error message string or null if input is valid.
+ */
+function getPasswordValidationError(password: string, touched: boolean, isLogin: boolean): string | null {
+  if (!touched) {
+    return null;
+  }
+  if (password.trim().length === 0) {
+    return 'Password is required.';
+  }
+  if (!isLogin && password.length < 6) {
+    return 'Password must be at least 6 characters.';
+  }
+  return null;
+}
+
+/**
  * Renders a standardized login/registration form with built-in loading and error management.
  * @param {AuthFormProps} props - Component props.
  * @returns {JSX.Element} The authentication form component.
@@ -40,38 +83,30 @@ export function AuthForm({
   const [emailTouched, setEmailTouched] = useState(false);
   const [passwordTouched, setPasswordTouched] = useState(false);
 
-  // Real-time validations
+  // Validation results
+  const emailValidationError = getEmailValidationError(email, emailTouched);
+  const passwordValidationError = getPasswordValidationError(password, passwordTouched, isLogin);
+
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  const isEmailNotEmpty = email.trim().length > 0;
   const isEmailValid = emailRegex.test(email.trim());
-  const isPasswordNotEmpty = password.trim().length > 0;
   const isPasswordLongEnough = isLogin || password.length >= 6;
 
-  const emailValidationError = emailTouched
-    ? !isEmailNotEmpty
-      ? 'Email is required.'
-      : !isEmailValid
-        ? 'Please enter a valid email address (e.g. name@domain.com).'
-        : null
-    : null;
-
-  const passwordValidationError = passwordTouched
-    ? !isPasswordNotEmpty
-      ? 'Password is required.'
-      : !isPasswordLongEnough
-        ? 'Password must be at least 6 characters.'
-        : null
-    : null;
-
   const isSubmitDisabled =
-    !isEmailNotEmpty || !isEmailValid || !isPasswordNotEmpty || !isPasswordLongEnough || isLoading;
+    email.trim().length === 0 ||
+    !isEmailValid ||
+    password.trim().length === 0 ||
+    !isPasswordLongEnough ||
+    isLoading;
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     setEmailTouched(true);
     setPasswordTouched(true);
 
-    if (!isEmailNotEmpty || !isEmailValid || !isPasswordNotEmpty || !isPasswordLongEnough) {
+    const currentEmailError = getEmailValidationError(email, true);
+    const currentPasswordError = getPasswordValidationError(password, true, isLogin);
+
+    if (currentEmailError || currentPasswordError) {
       return;
     }
 

@@ -26,7 +26,7 @@ describe('api.ts Response Interceptor', () => {
       }>;
     };
     const handler = interceptor.handlers.find((h) => h && typeof h.rejected === 'function');
-    if (!handler || !handler.rejected) {
+    if (!handler?.rejected) {
       throw new Error('Axios response error interceptor handler not found');
     }
     return handler.rejected;
