@@ -4,13 +4,26 @@ import { getErrorMessage } from '../utils/errorHandler';
 import { Modal } from './ModalLayout';
 import { Button } from './Button';
 
+/**
+ * Props for the AddAssetModal component.
+ */
 interface AddAssetModalProps {
+  /** If true, the modal is displayed. */
   show: boolean;
+  /** Callback triggered when the modal is closed. */
   onClose: () => void;
+  /** Callback triggered when the asset has been successfully created or updated. */
   onAssetSaved: () => void;
+  /** Optional asset to pre-populate form for editing. */
   assetToEdit?: Asset | null;
 }
 
+/**
+ * Modal dialog that contains the form for adding a new asset or editing an existing asset.
+ *
+ * @param props - Component props containing visibility, callback hooks, and editing details.
+ * @returns React modal component overlay.
+ */
 export function AddAssetModal({
   show,
   onClose,

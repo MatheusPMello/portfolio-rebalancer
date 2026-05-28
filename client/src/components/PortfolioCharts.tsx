@@ -15,11 +15,23 @@ import { calculateDrift, calculateTotalPortfolio } from '../utils/financialMath'
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
+/**
+ * Props for the PortfolioCharts component.
+ */
 interface PortfolioChartsProps {
+  /** The list of user assets to calculate drift for. */
   assets: Asset[];
+  /** The current USD to BRL exchange rate. */
   usdRate?: number;
 }
 
+/**
+ * Renders a horizontal bar chart showing deviation (drift) percentages for each asset.
+ * Green bars represent target weight surplus, red bars represent buy-need allocation deficits.
+ *
+ * @param props - Component props containing assets list and exchange rate.
+ * @returns React component rendering the Chart.js visual canvas.
+ */
 export function PortfolioCharts({ assets, usdRate = 6 }: Readonly<PortfolioChartsProps>) {
   if (assets.length === 0) return null;
 

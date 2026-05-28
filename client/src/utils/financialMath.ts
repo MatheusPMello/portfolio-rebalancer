@@ -1,6 +1,16 @@
 // client/src/utils/financialMath.ts
 import { type Asset } from '../services/assetService';
 
+/**
+ * Calculates the deviation (drift) of an asset's current allocation compared to its target percentage.
+ *
+ * @param currentValue - The current value of the asset in its native currency.
+ * @param currency - The currency code of the asset (e.g., 'USD', 'BRL').
+ * @param totalPortfolioValue - The total value of the portfolio normalized to BRL.
+ * @param targetPercentage - The target weight percentage of this asset (e.g., 25).
+ * @param usdRate - The current USD to BRL exchange rate.
+ * @returns The difference between the current allocation percentage and the target percentage.
+ */
 export function calculateDrift(
   currentValue: number,
   currency: string,
@@ -20,6 +30,13 @@ export function calculateDrift(
   return currentAllocation - targetPercentage;
 }
 
+/**
+ * Calculates the total value of all assets in the portfolio, normalized to BRL.
+ *
+ * @param assets - An array of user assets.
+ * @param usdRate - The current USD to BRL exchange rate.
+ * @returns The total portfolio valuation in BRL.
+ */
 export function calculateTotalPortfolio(assets: Asset[], usdRate: number): number {
   return assets.reduce((sum, asset) => {
     const val = Number(asset.current_value);

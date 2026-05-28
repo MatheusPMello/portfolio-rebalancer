@@ -4,6 +4,12 @@ import userService from '../../services/userService';
 import { getErrorMessage } from '../../utils/errorHandler';
 import { Button } from '../Button';
 
+/**
+ * Renders the "Danger Zone" account deletion panel.
+ * Prompts the user to confirm their password before calling the delete endpoint.
+ *
+ * @returns React component displaying the delete account form.
+ */
 export function DeleteAccountSection() {
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);

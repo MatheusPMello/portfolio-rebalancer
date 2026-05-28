@@ -3,11 +3,22 @@ import userService from '../../services/userService';
 import { getErrorMessage } from '../../utils/errorHandler';
 import { Button } from '../Button';
 
+/**
+ * Props for the UpdateEmailForm component.
+ */
 interface UpdateEmailFormProps {
+  /** The currently registered email address. */
   currentEmail: string;
+  /** Callback triggered when email is successfully updated. */
   onSuccess: (newEmail: string) => void;
 }
 
+/**
+ * Form to update user email address, requiring current password confirmation.
+ *
+ * @param props - Component props containing currentEmail and onSuccess callback.
+ * @returns React component rendering the update email form.
+ */
 export function UpdateEmailForm({ currentEmail, onSuccess }: Readonly<UpdateEmailFormProps>) {
   const [email, setEmail] = useState('');
   const [currentPassword, setCurrentPassword] = useState('');

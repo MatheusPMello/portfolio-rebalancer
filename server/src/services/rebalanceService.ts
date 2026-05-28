@@ -10,8 +10,13 @@ export interface RebalanceSuggestion {
 }
 
 /**
- * Calculates the rebalancing plan.
- * Pure logic: Input -> Math -> Output.
+ * Calculates the rebalancing plan based on a greedy buy-only strategy.
+ *
+ * @param contribution - The total amount of new funds to invest.
+ * @param assets - An array of existing asset records from the database.
+ * @param usdRate - The current USD to BRL exchange rate.
+ * @param mainCurrency - The base currency used for calculations ('BRL' or 'USD').
+ * @returns An array of purchase suggestions to rebalance the portfolio.
  */
 export const calculateRebalancePlan = (
   contribution: number,
@@ -42,14 +47,14 @@ export const calculateRebalancePlan = (
   const totalCurrentValue = normalizedAssets.reduce((sum, a) => sum + a.normalizedValue, 0);
   const totalFutureValue = totalCurrentValue + contribution;
 
-  // 3. Calculate Gaps (How far off are we?)
+  // 3. Calculate Gaps 
   let totalGap = 0;
 
   const assetsWithGaps = normalizedAssets.map((asset) => {
     const targetValue = totalFutureValue * (asset.targetPercentage / 100);
     let difference = targetValue - asset.normalizedValue;
 
-    // "Buy Only" Logic: If negative gap, ignore it (don't sell)
+    // "Buy Only" Logic: If negative gap, ignore it
     if (difference < 0) difference = 0;
 
     totalGap += difference;

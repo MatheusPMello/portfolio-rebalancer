@@ -4,7 +4,6 @@ import { authMiddleware } from '../middlewares/authMiddleware.js';
 
 const router = express.Router();
 
-// Apply authMiddleware globally to all asset actions
 router.use(authMiddleware);
 
 router.get('/', assetController.getAllAssets);

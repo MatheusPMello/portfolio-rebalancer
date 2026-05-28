@@ -12,6 +12,10 @@ export type SafeUser = Omit<UserRecord, 'password_hash'>;
 export const User = {
   /**
    * Creates a new user in the database.
+   *
+   * @param email - User email address.
+   * @param passwordHash - Bcrypt hashed password.
+   * @returns A promise resolving to the created SafeUser record.
    */
   create: async (email: string, passwordHash: string): Promise<SafeUser> => {
     const query = `
@@ -32,6 +36,10 @@ export const User = {
 
   /**
    * Updates a user's email.
+   *
+   * @param id - The ID of the user.
+   * @param email - The new email address.
+   * @returns A promise resolving to the updated SafeUser record.
    */
   updateEmail: async (id: number, email: string): Promise<SafeUser> => {
     const query = `
@@ -53,6 +61,10 @@ export const User = {
 
   /**
    * Updates a user's password.
+   *
+   * @param id - The ID of the user.
+   * @param passwordHash - The new password hash value.
+   * @returns A promise resolving to the updated SafeUser record.
    */
   updatePassword: async (id: number, passwordHash: string): Promise<SafeUser> => {
     const query = `
@@ -74,6 +86,9 @@ export const User = {
 
   /**
    * Deletes a user and all their associated data.
+   *
+   * @param id - The ID of the user to delete.
+   * @returns A promise resolving to the deleted SafeUser record.
    */
   deleteAccount: async (id: number): Promise<SafeUser> => {
     const deleteAssetsQuery = 'DELETE FROM assets WHERE user_id = $1;';
@@ -97,6 +112,9 @@ export const User = {
 
   /**
    * Finds a user by their email.
+   *
+   * @param email - The email address to look for.
+   * @returns A promise resolving to the user record or null if not found.
    */
   findByEmail: async (email: string): Promise<UserRecord | null> => {
     const query = 'SELECT * FROM users WHERE email = $1;';
@@ -113,6 +131,9 @@ export const User = {
 
   /**
    * Finds a user by their ID.
+   *
+   * @param id - The ID of the user to look for.
+   * @returns A promise resolving to the user record or null if not found.
    */
   findById: async (id: number): Promise<UserRecord | null> => {
     const query = 'SELECT * FROM users WHERE id = $1;';

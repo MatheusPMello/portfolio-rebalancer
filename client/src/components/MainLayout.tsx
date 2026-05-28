@@ -3,6 +3,12 @@ import { Link, Outlet, useNavigate } from 'react-router-dom';
 import { AccountSettingsModal } from './AccountSettings/AccountSettingsModal';
 import { Button } from './Button';
 
+/**
+ * Layout component for authenticated pages. Provides the main header navigation,
+ * account management triggers, logout handling, and wraps child route content.
+ *
+ * @returns React component rendering the navigation bar and child route outlets.
+ */
 export function MainLayout() {
   const navigate = useNavigate();
 

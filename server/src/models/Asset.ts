@@ -20,6 +20,13 @@ export interface NewAssetInput {
 export const Asset = {
   /**
    * Creates a new asset for a user.
+   *
+   * @param userId - The ID of the owner user.
+   * @param name - The name of the asset (e.g. 'AAPL').
+   * @param targetPercentage - Desired portfolio allocation percentage weight.
+   * @param currentValue - The current monetary value of the asset.
+   * @param currency - The asset base currency code ('USD' or 'BRL').
+   * @returns A promise resolving to the created asset record.
    */
   create: async (
     userId: number,
@@ -46,6 +53,9 @@ export const Asset = {
 
   /**
    * Finds all assets for a specific user.
+   *
+   * @param userId - The ID of the user.
+   * @returns A promise resolving to an array of asset records.
    */
   findByUserId: async (userId: number): Promise<AssetRecord[]> => {
     const query = 'SELECT * FROM assets WHERE user_id = $1 ORDER BY name ASC;';
@@ -62,6 +72,11 @@ export const Asset = {
 
   /**
    * Updates an existing asset.
+   *
+   * @param assetId - The unique ID of the asset.
+   * @param userId - The owner user's ID.
+   * @param assetData - An object containing fields to update.
+   * @returns A promise resolving to the updated asset record or null if not found.
    */
   updateById: async (
     assetId: number,
@@ -88,6 +103,10 @@ export const Asset = {
 
   /**
    * Deletes an asset.
+   *
+   * @param assetId - The unique ID of the asset.
+   * @param userId - The owner user's ID.
+   * @returns A promise resolving to the deleted asset record or null if not found.
    */
   deleteById: async (assetId: number, userId: number): Promise<AssetRecord | null> => {
     const query = `

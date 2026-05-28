@@ -4,9 +4,13 @@ import { User } from '../models/User.js';
 import { z } from 'zod';
 
 export const userController = {
-  // @desc Update user email
-  // @route PUT /api/users/email
-  // @access Private
+  /**
+   * Update the email address of the authenticated user.
+   *
+   * @param req - Express request object containing new email and currentPassword in body.
+   * @param res - Express response object.
+   * @returns A promise resolving to the JSON response.
+   */
   updateEmail: async (req: Request, res: Response): Promise<any> => {
     try {
       const { email: emailInput, currentPassword } = req.body;
@@ -59,9 +63,13 @@ export const userController = {
     }
   },
 
-  // @desc Update user password
-  // @route PUT /api/users/password
-  // @access Private
+  /**
+   * Update the password of the authenticated user.
+   *
+   * @param req - Express request object containing currentPassword and newPassword in body.
+   * @param res - Express response object.
+   * @returns A promise resolving to the JSON response.
+   */
   updatePassword: async (req: Request, res: Response): Promise<any> => {
     try {
       const { currentPassword, newPassword } = req.body;
@@ -103,9 +111,13 @@ export const userController = {
     }
   },
 
-  // @desc Delete user account
-  // @route DELETE /api/users/account
-  // @access Private
+  /**
+   * Delete the authenticated user's account and associated assets.
+   *
+   * @param req - Express request object containing password confirmation in body.
+   * @param res - Express response object.
+   * @returns A promise resolving to the JSON response.
+   */
   deleteAccount: async (req: Request, res: Response): Promise<any> => {
     try {
       const { password } = req.body;
@@ -137,9 +149,13 @@ export const userController = {
     }
   },
 
-  // @desc Get user profile details
-  // @route GET /api/users/profile
-  // @access Private
+  /**
+   * Retrieves profile details for the authenticated user.
+   *
+   * @param req - Express request object.
+   * @param res - Express response object.
+   * @returns A promise resolving to the JSON response with the user profile.
+   */
   getProfile: async (req: Request, res: Response): Promise<any> => {
     try {
       const id = req.user?.id;

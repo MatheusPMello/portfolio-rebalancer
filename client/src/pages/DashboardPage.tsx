@@ -9,6 +9,13 @@ import { PortfolioCharts } from '../components/PortfolioCharts';
 import { Button } from '../components/Button';
 import { CurrencyBadge } from '../components/CurrencyBadge';
 
+/**
+ * The main dashboard page for authenticated users.
+ * Displays the estimated total portfolio value, currency breakdowns,
+ * visual allocation drift charts, and a detailed list of asset holdings with edit/delete options.
+ *
+ * @returns React page component rendering the dashboard views.
+ */
 export function DashboardPage() {
   const [assets, setAssets] = useState<Asset[]>([]);
   const [usdRate, setUsdRate] = useState<number>(6);

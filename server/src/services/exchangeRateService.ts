@@ -31,6 +31,9 @@ export interface ExchangeRateService {
 /**
  * Creates an exchange rate service with caching, request coalescing,
  * layered fallback, and injectable dependencies.
+ *
+ * @param opts - Injectable configuration options for cache, timeout, fallbacks, and logging.
+ * @returns The initialized exchange rate service instance.
  */
 export function createExchangeRateService(opts: ExchangeRateServiceConfig = {}): ExchangeRateService {
   const config = { ...DEFAULTS, ...opts };

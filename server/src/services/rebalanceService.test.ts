@@ -19,7 +19,7 @@ describe('Rebalance Service Logic', () => {
         target_percentage: 50,
         currency: 'BRL',
       },
-      // Asset B is empty (50% target, has 0) -> It needs money!
+      // Asset B is empty (50% target, has 0) -> It needs money.
       {
         id: 2,
         user_id: 1,

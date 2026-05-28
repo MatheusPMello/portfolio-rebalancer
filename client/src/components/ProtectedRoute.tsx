@@ -6,10 +6,21 @@
 
 import { Navigate } from 'react-router-dom';
 
+/**
+ * Props for the ProtectedRoute component.
+ */
 interface ProtectedRouteProps {
+  /** The child components/pages to render if authenticated. */
   children: React.ReactNode;
 }
 
+/**
+ * Route guard component that restricts access to authenticated users.
+ * Checks for a JWT token in local storage and redirects to /login if missing.
+ *
+ * @param props - Component props containing children.
+ * @returns The children component tree if authenticated, otherwise a redirect Navigate element.
+ */
 export function ProtectedRoute({ children }: Readonly<ProtectedRouteProps>) {
   const token = localStorage.getItem('token');
 

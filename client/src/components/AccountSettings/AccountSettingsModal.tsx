@@ -5,6 +5,13 @@ import { UpdateEmailForm } from './UpdateEmailForm';
 import { UpdatePasswordForm } from './UpdatePasswordForm';
 import userService from '../../services/userService';
 
+/**
+ * Modal dialog that manages user account configuration tabs (Profile/Email,
+ * Security/Password, and Danger Zone/Delete Account).
+ *
+ * @param props - Component props containing show flag and onClose callback.
+ * @returns React modal component.
+ */
 export function AccountSettingsModal({ show, onClose }: Readonly<{ show: boolean; onClose: () => void }>) {
   const [activeTab, setActiveTab] = useState<'profile' | 'security' | 'danger'>('profile');
   const [currentUserEmail, setCurrentUserEmail] = useState<string>('');

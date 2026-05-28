@@ -5,6 +5,17 @@ import configPrettier from 'eslint-config-prettier';
 import pluginJest from 'eslint-plugin-jest';
 
 export default [
+  {
+    ignores: [
+      '**/node_modules/**',
+      '**/dist/**',
+      '**/coverage/**',
+      '**/.gemini/**',
+      '**/.git/**',
+      'client/**',
+      'server/**',
+    ],
+  },
   // 1. Recommended ESLint rules
   js.configs.recommended,
 

@@ -3,6 +3,12 @@ import userService from '../../services/userService';
 import { getErrorMessage } from '../../utils/errorHandler';
 import { Button } from '../Button';
 
+/**
+ * Form to update user account password, with real-time validation checks for
+ * length, password matching, and credential verify state.
+ *
+ * @returns React component rendering the update password form.
+ */
 export function UpdatePasswordForm() {
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');

@@ -3,7 +3,11 @@ import { Asset } from '../models/Asset.js';
 
 export const assetController = {
   /**
-   * Retrieves the active portfolio assets for the authenticated user
+   * Retrieves the active portfolio assets for the authenticated user.
+   *
+   * @param req - Express request object containing authenticated user info.
+   * @param res - Express response object.
+   * @returns A promise resolving to the JSON response with the user's assets.
    */
   getAllAssets: async (req: Request, res: Response): Promise<any> => {
     try {
@@ -20,6 +24,10 @@ export const assetController = {
 
   /**
    * Create a new asset for the authenticated user.
+   *
+   * @param req - Express request object containing asset properties in the body.
+   * @param res - Express response object.
+   * @returns A promise resolving to the JSON response with the created asset.
    */
   createAsset: async (req: Request, res: Response): Promise<any> => {
     try {
@@ -48,6 +56,10 @@ export const assetController = {
 
   /**
    * Update an asset.
+   *
+   * @param req - Express request object containing asset ID in params and updates in the body.
+   * @param res - Express response object.
+   * @returns A promise resolving to the JSON response with the updated asset.
    */
   updateAsset: async (req: Request, res: Response): Promise<any> => {
     try {
@@ -75,6 +87,10 @@ export const assetController = {
 
   /**
    * Delete an asset.
+   *
+   * @param req - Express request object containing asset ID in params.
+   * @param res - Express response object.
+   * @returns A promise resolving to the JSON response indicating success or failure.
    */
   deleteAsset: async (req: Request, res: Response): Promise<any> => {
     try {

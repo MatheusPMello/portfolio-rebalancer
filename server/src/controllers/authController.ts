@@ -17,7 +17,11 @@ function createToken(userId: number): string {
 
 export const authController = {
   /**
-   * Register a new user
+   * Register a new user in the system.
+   *
+   * @param req - Express request object containing email and password in the body.
+   * @param res - Express response object.
+   * @returns A promise resolving to the JSON response with the user credentials and JWT.
    */
   register: async (req: Request, res: Response): Promise<any> => {
     try {
@@ -58,7 +62,11 @@ export const authController = {
   },
 
   /**
-   * Log in an existing user
+   * Log in an existing user and return a JWT.
+   *
+   * @param req - Express request object containing credentials.
+   * @param res - Express response object.
+   * @returns A promise resolving to the JSON response with the user credentials and JWT.
    */
   login: async (req: Request, res: Response): Promise<any> => {
     try {

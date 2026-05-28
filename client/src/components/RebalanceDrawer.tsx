@@ -4,11 +4,23 @@ import rebalanceService, { type RebalanceResponse } from '../services/rebalanceS
 import { getErrorMessage } from '../utils/errorHandler';
 import { Button } from './Button';
 
+/**
+ * Props for the RebalanceDrawer component.
+ */
 interface RebalanceDrawerProps {
+  /** If true, the rebalance sliding drawer is visible. */
   show: boolean;
+  /** Callback triggered when the drawer is closed. */
   onClose: () => void;
 }
 
+/**
+ * Sliding side drawer that guides the user through entering a contribution amount,
+ * selecting a currency, and viewing the calculated buy suggestions.
+ *
+ * @param props - Component props containing visibility show flag and onClose callback.
+ * @returns React drawer layout markup.
+ */
 export function RebalanceDrawer({ show, onClose }: Readonly<RebalanceDrawerProps>) {
   // UI State
   const [step, setStep] = useState<'INPUT' | 'RESULT'>('INPUT');

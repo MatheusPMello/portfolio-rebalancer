@@ -4,6 +4,13 @@ import exchangeRateService from '../services/exchangeRateService.js';
 import { calculateRebalancePlan } from '../services/rebalanceService.js';
 
 export const rebalanceController = {
+  /**
+   * Calculates the rebalancing allocations for new capital contribution.
+   *
+   * @param req - Express request object containing amount and mainCurrency.
+   * @param res - Express response object.
+   * @returns A promise resolving to the JSON response with the calculated purchase suggestions.
+   */
   calculate: async (req: Request, res: Response): Promise<any> => {
     try {
       // 1. PREPARE DATA

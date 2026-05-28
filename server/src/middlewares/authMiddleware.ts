@@ -6,6 +6,13 @@ interface DecodedToken extends jwt.JwtPayload {
   email?: string;
 }
 
+/**
+ * Middleware to protect routes by verifying JWT tokens in the Authorization header.
+ *
+ * @param req - Express request object. Expects "Authorization: Bearer <token>" header.
+ * @param res - Express response object.
+ * @param next - Express next function to pass execution to the next handler.
+ */
 export function authMiddleware(req: Request, res: Response, next: NextFunction) {
   // --- DEBUG LOGS START ---
   const authHeader = req.header('Authorization');

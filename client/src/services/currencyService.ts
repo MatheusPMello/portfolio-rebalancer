@@ -1,5 +1,11 @@
 import api from './api';
 
+/**
+ * Fetches the current USD to BRL exchange rate from the backend.
+ * Falls back to 6 if the network request fails or invalid rate is returned.
+ *
+ * @returns A promise resolving to the USD to BRL conversion rate.
+ */
 export const fetchExchangeRate = async (): Promise<number> => {
   try {
     const response = await api.get<{ rate: number }>('/currency/exchange-rate');
