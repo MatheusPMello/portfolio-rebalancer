@@ -1,16 +1,17 @@
 // Load environment variables from .env file
-require('dotenv').config();
+import 'dotenv/config';
 
-const express = require('express');
-const cors = require('cors');
-const db = require('./config/db');
+import express, { type Request, type Response } from 'express';
+import cors from 'cors';
+import { db } from './config/db.js';
 
 // --- Import Routes ---
-const authRoutes = require('./routes/authRoutes');
-const assetRoutes = require('./routes/assetRoutes');
-const rebalanceRoutes = require('./routes/rebalanceRoutes');
-const currencyRoutes = require('./routes/currencyRoutes');
-const userRoutes = require('./routes/userRoutes');
+import authRoutes from './routes/authRoutes.js';
+import assetRoutes from './routes/assetRoutes.js';
+import rebalanceRoutes from './routes/rebalanceRoutes.js';
+import currencyRoutes from './routes/currencyRoutes.js';
+import userRoutes from './routes/userRoutes.js';
+
 const app = express();
 app.disable('x-powered-by');
 
@@ -19,12 +20,12 @@ const allowedOrigin = process.env.CLIENT_URL || 'http://localhost:5173';
 app.use(
   cors({
     origin: allowedOrigin,
-  })
+  }),
 );
 app.use(express.json());
 
 // --- Basic Test Route ---
-app.get('/api/test', (req, res) => {
+app.get('/api/test', (req: Request, res: Response) => {
   res.json({ message: 'Hello from the server! 👋' });
 });
 
@@ -47,6 +48,7 @@ app.listen(PORT, async () => {
     console.log('DB_PORT:', process.env.DB_PORT);
     console.log('DB_NAME:', process.env.DB_NAME);
     console.log('----------------------------');
+    
     const res = await db.query('SELECT NOW()');
     console.log(`Database connected successfully at ${res.rows[0].now}`);
     console.log(`Server is running on http://localhost:${PORT}`);
@@ -54,3 +56,4 @@ app.listen(PORT, async () => {
     console.error('Database connection failed:', err);
   }
 });
+export default app;

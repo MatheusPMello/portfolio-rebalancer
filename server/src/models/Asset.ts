@@ -1,13 +1,33 @@
-// /server/src/models/Asset.js
+import { db } from '../config/db.js';
 
-const db = require('../config/db');
+export interface AssetRecord {
+  id: number;
+  user_id: number;
+  name: string;
+  target_percentage: number | string;
+  current_value: number | string;
+  currency: 'USD' | 'BRL';
+  created_at?: Date;
+}
 
-const Asset = {
+export interface NewAssetInput {
+  name: string;
+  target_percentage: number;
+  current_value: number;
+  currency: 'USD' | 'BRL';
+}
+
+export const Asset = {
   /**
    * Creates a new asset for a user.
-   * @returns {Promise<object>} The new asset object.
    */
-  create: async (userId, name, targetPercentage, currentValue, currency) => {
+  create: async (
+    userId: number,
+    name: string,
+    targetPercentage: number,
+    currentValue: number,
+    currency: 'USD' | 'BRL',
+  ): Promise<AssetRecord> => {
     const query = `
       INSERT INTO assets (user_id, name, target_percentage, current_value, currency)
       VALUES ($1, $2, $3, $4, $5)
@@ -26,10 +46,8 @@ const Asset = {
 
   /**
    * Finds all assets for a specific user.
-   * @param {number} userId - The user's ID.
-   * @returns {Promise<Array>} An array of asset objects.
    */
-  findByUserId: async (userId) => {
+  findByUserId: async (userId: number): Promise<AssetRecord[]> => {
     const query = 'SELECT * FROM assets WHERE user_id = $1 ORDER BY name ASC;';
     const values = [userId];
 
@@ -44,11 +62,12 @@ const Asset = {
 
   /**
    * Updates an existing asset.
-   * @param {number} assetId - The ID of the asset to update.
-   * @param {number} userId - The ID of the user who owns the asset.
-   * @returns {Promise<object|null>} The updated asset object or null.
    */
-  updateById: async (assetId, userId, assetData) => {
+  updateById: async (
+    assetId: number,
+    userId: number,
+    assetData: Partial<NewAssetInput>,
+  ): Promise<AssetRecord | null> => {
     const { name, target_percentage, current_value, currency } = assetData;
     const query = `
       UPDATE assets
@@ -69,11 +88,8 @@ const Asset = {
 
   /**
    * Deletes an asset.
-   * @param {number} assetId - The ID of the asset to delete.
-   * @param {number} userId - The ID of the user who owns the asset.
-   * @returns {Promise<object|null>} The deleted asset object or null.
    */
-  deleteById: async (assetId, userId) => {
+  deleteById: async (assetId: number, userId: number): Promise<AssetRecord | null> => {
     const query = `
       DELETE FROM assets
       WHERE id = $1 AND user_id = $2
@@ -90,5 +106,3 @@ const Asset = {
     }
   },
 };
-
-module.exports = Asset;

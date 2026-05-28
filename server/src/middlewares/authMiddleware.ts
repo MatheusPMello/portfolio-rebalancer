@@ -1,7 +1,12 @@
-// /server/src/middlewares/authMiddleware.js
-const jwt = require('jsonwebtoken');
+import { type Request, type Response, type NextFunction } from 'express';
+import jwt from 'jsonwebtoken';
 
-function authMiddleware(req, res, next) {
+interface DecodedToken extends jwt.JwtPayload {
+  id: number;
+  email?: string;
+}
+
+export function authMiddleware(req: Request, res: Response, next: NextFunction) {
   // --- DEBUG LOGS START ---
   const authHeader = req.header('Authorization');
   console.log('\n🔍 Bouncer (Middleware) Check:');
@@ -29,16 +34,17 @@ function authMiddleware(req, res, next) {
       throw new Error('JWT_SECRET is missing');
     }
 
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const decoded = jwt.verify(token, process.env.JWT_SECRET) as DecodedToken;
     console.log('   ✅ Result: Token verified! User ID:', decoded.id);
 
-    req.user = decoded;
+    req.user = {
+      id: decoded.id,
+      email: decoded.email,
+    };
     next();
-  } catch (err) {
+  } catch (err: any) {
     console.error('   ❌ Result: Verification Failed ->', err.message);
     res.status(401).json({ message: 'Token is not valid' });
   }
   // --- DEBUG LOGS END ---
 }
-
-module.exports = authMiddleware;

@@ -1,11 +1,5 @@
-// /server/src/config/setupDatabase.js
-const db = require('./db');
+import { db } from './db.js';
 
-// This query string will:
-// 1. Drop the 'assets' table if it exists (to start fresh).
-// 2. Drop the 'users' table if it exists (using CASCADE to also drop dependencies).
-// 3. Create the 'users' table.
-// 4. Create the 'assets' table with a foreign key to 'users'.
 const createTablesQuery = `
   DROP TABLE IF EXISTS assets;
   DROP TABLE IF EXISTS users CASCADE;
@@ -30,7 +24,7 @@ const createTablesQuery = `
   );
 `;
 
-async function setupDatabase() {
+async function setupDatabase(): Promise<void> {
   console.log('Setting up database...');
   try {
     await db.query(createTablesQuery);
@@ -40,5 +34,4 @@ async function setupDatabase() {
   }
 }
 
-// Run the setup function
 setupDatabase();
