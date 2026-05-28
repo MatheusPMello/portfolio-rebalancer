@@ -37,13 +37,49 @@ export function AuthForm({
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
+  const [emailTouched, setEmailTouched] = useState(false);
+  const [passwordTouched, setPasswordTouched] = useState(false);
+
+  // Real-time validations
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const isEmailNotEmpty = email.trim().length > 0;
+  const isEmailValid = emailRegex.test(email.trim());
+  const isPasswordNotEmpty = password.trim().length > 0;
+  const isPasswordLongEnough = isLogin || password.length >= 6;
+
+  const emailValidationError = emailTouched
+    ? !isEmailNotEmpty
+      ? 'Email is required.'
+      : !isEmailValid
+        ? 'Please enter a valid email address (e.g. name@domain.com).'
+        : null
+    : null;
+
+  const passwordValidationError = passwordTouched
+    ? !isPasswordNotEmpty
+      ? 'Password is required.'
+      : !isPasswordLongEnough
+        ? 'Password must be at least 6 characters.'
+        : null
+    : null;
+
+  const isSubmitDisabled =
+    !isEmailNotEmpty || !isEmailValid || !isPasswordNotEmpty || !isPasswordLongEnough || isLoading;
+
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
+    setEmailTouched(true);
+    setPasswordTouched(true);
+
+    if (!isEmailNotEmpty || !isEmailValid || !isPasswordNotEmpty || !isPasswordLongEnough) {
+      return;
+    }
+
     setError(null);
     setIsLoading(true);
 
     try {
-      await onSubmit({ email, password });
+      await onSubmit({ email: email.trim(), password });
     } catch (err) {
       const message = getErrorMessage(err, errorMessagePrefix);
       setError(message);
@@ -56,37 +92,50 @@ export function AuthForm({
     <>
       <h3 className="fw-bold mb-2">{title}</h3>
 
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} noValidate>
         {error && <div className="alert alert-danger">{error}</div>}
 
         <ServerWakeupAlert isLoading={isLoading} />
 
         <div className="mb-3 w-100 text-start">
-          <label htmlFor="email" className="form-label">
-            Email
+          <label htmlFor="email" className="form-label small fw-bold mb-1">
+            Email Address
           </label>
           <input
             type="email"
-            className="form-control"
+            className={`form-control ${emailValidationError ? 'is-invalid' : ''}`}
             id="email"
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={(e) => {
+              setEmail(e.target.value);
+              setEmailTouched(true);
+            }}
+            onBlur={() => setEmailTouched(true)}
             required
             disabled={isLoading}
             autoComplete="email"
           />
+          {emailValidationError && (
+            <div className="text-danger small mt-1" style={{ fontSize: '12px' }}>
+              {emailValidationError}
+            </div>
+          )}
         </div>
         <div className="mb-3 w-100 text-start">
-          <label htmlFor="password" className="form-label">
+          <label htmlFor="password" className="form-label small fw-bold mb-1">
             Password
           </label>
           <div className="password-input-wrapper">
             <input
               type={showPassword ? 'text' : 'password'}
-              className="form-control"
+              className={`form-control ${passwordValidationError ? 'is-invalid' : ''}`}
               id="password"
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={(e) => {
+                setPassword(e.target.value);
+                setPasswordTouched(true);
+              }}
+              onBlur={() => setPasswordTouched(true)}
               required
               disabled={isLoading}
               autoComplete={isLogin ? 'current-password' : 'new-password'}
@@ -127,6 +176,16 @@ export function AuthForm({
               )}
             </button>
           </div>
+          {!isLogin && (
+            <div className="text-muted small mt-1" style={{ fontSize: '12px' }}>
+              Minimum of 6 characters
+            </div>
+          )}
+          {passwordValidationError && (
+            <div className="text-danger small mt-1" style={{ fontSize: '12px' }}>
+              {passwordValidationError}
+            </div>
+          )}
         </div>
 
         <Button
@@ -134,7 +193,7 @@ export function AuthForm({
           variant="solid"
           color="primary"
           className="w-100 py-2 fs-5 mt-3"
-          disabled={isLoading}
+          disabled={isSubmitDisabled}
         >
           {isLoading ? (
             <>
