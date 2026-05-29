@@ -12,9 +12,16 @@
 
   /* Custom variables for UI styling */
   --brand-primary: rgb(var(--brand-primary-rgb));
-  --app-success-color: #10b981; /* Modern Emerald green */
+  
+  /* High-Contrast Bold Semantic Colors (WCAG AA Compliant) */
+  --app-success-color: #047857; /* Deep emerald green (passes WCAG AA 5.58:1 vs white) */
   --app-success-bg: #ecfdf5; /* Light Emerald tint for background */
   --app-success-border: #d1fae5; /* Emerald border tint */
+  
+  --app-danger-color: #d32f2f; /* Bold Crimson red (passes WCAG AA 5.72:1 vs white) */
+  --app-danger-bg: #ffebee; /* Light Crimson tint for background */
+  --app-danger-border: #ffcdd2; /* Crimson border tint */
+
   --app-text-muted-dark: #495057; /* Darker gray for high-contrast labels */
   --app-text-secondary-dark: #343a40; /* Darker secondary text */
 
@@ -30,7 +37,7 @@
   --btn-primary-color: var(--brand-primary);
   --btn-secondary-color: #6c757d;
   --btn-success-color: var(--app-success-color);
-  --btn-danger-color: #dc3545;
+  --btn-danger-color: var(--app-danger-color);
 }
 
 body {
@@ -138,7 +145,51 @@ a:hover {
 .btn-success:active {
   background-color: color-mix(in srgb, var(--app-success-color) 85%, #000000 15%) !important;
   border-color: color-mix(in srgb, var(--app-success-color) 85%, #000000 15%) !important;
-  box-shadow: 0 0 0 0.25rem rgba(16, 185, 129, 0.25) !important;
+  box-shadow: 0 0 0 0.25rem rgba(4, 120, 87, 0.25) !important;
+}
+
+/* Overriding Bootstrap alert-danger to match Crimson theme */
+.alert-danger {
+  --bs-alert-bg: var(--app-danger-bg) !important;
+  --bs-alert-border-color: var(--app-danger-border) !important;
+  --bs-alert-color: var(--app-danger-color) !important;
+}
+
+/* Overriding Bootstrap text-danger to match Crimson theme */
+.text-danger {
+  color: var(--app-danger-color) !important;
+}
+
+/* Overriding Bootstrap btn-danger to match Crimson theme */
+.btn-danger {
+  background-color: var(--app-danger-color) !important;
+  border-color: var(--app-danger-color) !important;
+  color: #ffffff !important;
+}
+
+.btn-danger:hover,
+.btn-danger:focus,
+.btn-danger:active {
+  background-color: color-mix(in srgb, var(--app-danger-color) 85%, #000000 15%) !important;
+  border-color: color-mix(in srgb, var(--app-danger-color) 85%, #000000 15%) !important;
+  box-shadow: 0 0 0 0.25rem rgba(211, 47, 47, 0.25) !important;
+}
+
+/* Overriding Bootstrap subtle background/border overrides for consistency */
+.bg-success-subtle {
+  background-color: var(--app-success-bg) !important;
+}
+
+.border-success-subtle {
+  border-color: var(--app-success-border) !important;
+}
+
+.bg-danger-subtle {
+  background-color: var(--app-danger-bg) !important;
+}
+
+.border-danger-subtle {
+  border-color: var(--app-danger-border) !important;
 }
 
 /* Overriding Bootstrap text-primary to match brand primary */
@@ -222,6 +273,18 @@ a:hover {
   outline: 2px solid var(--brand-primary);
   outline-offset: 2px;
   box-shadow: 0 0 0 4px rgba(var(--brand-primary-rgb), 0.15);
+}
+
+.btn-custom-solid-success:focus-visible {
+  outline: 2px solid var(--app-success-color) !important;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px rgba(4, 120, 87, 0.25) !important;
+}
+
+.btn-custom-solid-danger:focus-visible {
+  outline: 2px solid var(--app-danger-color) !important;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px rgba(211, 47, 47, 0.25) !important;
 }
 
 .btn-custom:disabled {

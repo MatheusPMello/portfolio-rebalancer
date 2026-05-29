@@ -49,12 +49,15 @@ export function PortfolioCharts({ assets, usdRate = 6 }: Readonly<PortfolioChart
   );
 
   const data = {
-    labels: assets.map((a) => a.name),
+    labels: assets.map((a, idx) => {
+      const val = driftValues[idx];
+      return `${a.name} ${val < 0 ? '(-)' : '(+)'}`;
+    }),
     datasets: [
       {
         label: 'Deviation %',
         data: driftValues,
-        backgroundColor: driftValues.map((val) => (val < 0 ? '#FF8080' : '#20C997')),
+        backgroundColor: driftValues.map((val) => (val < 0 ? '#d32f2f' : '#047857')),
         borderWidth: 0,
         borderRadius: 6,
         barThickness: 25,
@@ -78,7 +81,7 @@ export function PortfolioCharts({ assets, usdRate = 6 }: Readonly<PortfolioChart
           label: function (context: TooltipItem<'bar'>) {
             const val = context.parsed.x;
             if (val === null) return 'No Data';
-            const status = val < 0 ? 'Buy needed' : 'Surplus';
+            const status = val < 0 ? 'Buy needed (-)' : 'Surplus (+)';
             return ` ${status}: ${val.toFixed(2)}%`;
           },
         },
@@ -120,16 +123,15 @@ export function PortfolioCharts({ assets, usdRate = 6 }: Readonly<PortfolioChart
         <div className="card shadow-sm p-4">
           <h5 className="fw-bold mb-4">Portfolio Drift</h5>
           <p className="text-muted small mb-3">
-            <span style={{ color: 'rgba(220, 53, 69, 1)', fontWeight: 'bold' }}>Red bars</span> mean
+            <span style={{ color: 'var(--app-danger-color)', fontWeight: 'bold' }}>Red bars (-)</span> mean
             you need to buy.{' '}
             <span
               style={{
-                color: 'rgba(25, 135, 84, 1)',
+                color: 'var(--app-success-color)',
                 fontWeight: 'bold',
-                //marginLeft: '8px',
               }}
             >
-              Green bars
+              Green bars (+)
             </span>{' '}
             mean you have enough.
           </p>
