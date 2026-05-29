@@ -8,29 +8,30 @@ This document establishes the official code documentation standards for **Portfo
 
 1.  **Block Format**: Always use standard JSDoc/TSDoc block notation `/** ... */` for code elements. Do not use double slashes `//` for documenting API interfaces, modules, types, or methods.
 2.  **When to Document**:
-    *   **All Exported Utilities / Helpers**: Any general helper function (e.g., in `utils/`).
-    *   **Custom React Hooks**: Explaining their stateful inputs, outputs, and side effects.
-    *   **API Service Callers**: Client methods triggering backend HTTP calls.
-    *   **Backend Services & Controllers**: Express controllers, middleware, and query models.
-    *   **Complex Types & Interfaces**: Detailed model objects or request payloads.
+    - **All Exported Utilities / Helpers**: Any general helper function (e.g., in `utils/`).
+    - **Custom React Hooks**: Explaining their stateful inputs, outputs, and side effects.
+    - **API Service Callers**: Client methods triggering backend HTTP calls.
+    - **Backend Services & Controllers**: Express controllers, middleware, and query models.
+    - **Complex Types & Interfaces**: Detailed model objects or request payloads.
 
 ---
 
 ## 🏷️ Standard JSDoc / TSDoc Tags
 
-| Tag | Usage | Example |
-| :--- | :--- | :--- |
-| `@param` | Describes a function argument. Include name, type (optional in TS), and purpose. | `@param amount - The rebalancing contribution amount` |
-| `@returns` | Describes the return value. | `@returns {Promise<Asset[]>} The user assets` |
-| `@throws` | Explains conditions where the code throws an exception. | `@throws {ValidationError} If input percentage exceeds 100` |
-| `@template` | Documents generic type parameters in TypeScript. | `@template T - The element type of the array` |
-| `@deprecated` | Warns developers that a function/method is obsolete and should not be used. | `@deprecated Use assetService.updateAsset instead` |
+| Tag           | Usage                                                                            | Example                                                     |
+| :------------ | :------------------------------------------------------------------------------- | :---------------------------------------------------------- |
+| `@param`      | Describes a function argument. Include name, type (optional in TS), and purpose. | `@param amount - The rebalancing contribution amount`       |
+| `@returns`    | Describes the return value.                                                      | `@returns {Promise<Asset[]>} The user assets`               |
+| `@throws`     | Explains conditions where the code throws an exception.                          | `@throws {ValidationError} If input percentage exceeds 100` |
+| `@template`   | Documents generic type parameters in TypeScript.                                 | `@template T - The element type of the array`               |
+| `@deprecated` | Warns developers that a function/method is obsolete and should not be used.      | `@deprecated Use assetService.updateAsset instead`          |
 
 ---
 
 ## 📝 Code Examples
 
 ### 1. Utility Function
+
 ```typescript
 /**
  * Formats a numeric value into a localized currency string.
@@ -48,6 +49,7 @@ export function formatCurrency(value: number, currency: 'USD' | 'BRL'): string {
 ```
 
 ### 2. Custom React Hook
+
 ```typescript
 /**
  * Hook to retrieve and subscribe to active USD/BRL currency exchange rates.
@@ -64,6 +66,7 @@ export function useExchangeRate(intervalMs = 60000) {
 ```
 
 ### 3. Backend Express Controller / Service
+
 ```typescript
 /**
  * Express Controller responsible for handling user authentication requests.
@@ -86,11 +89,13 @@ export class AuthController {
 
 ## 🛠️ ESLint JSDoc Integration (Optional Advisory)
 
-For strict enforcement, we recommend adding `eslint-plugin-jsdoc` to check documentation rules dynamically. 
+For strict enforcement, we recommend adding `eslint-plugin-jsdoc` to check documentation rules dynamically.
 
 To configure locally:
+
 1.  Install the plugin: `npm i -D eslint-plugin-jsdoc`
 2.  Enable in your `eslint.config.js` / `eslint.config.mjs`:
+
     ```javascript
     import jsdoc from 'eslint-plugin-jsdoc';
 
@@ -100,7 +105,7 @@ To configure locally:
       {
         rules: {
           'jsdoc/require-jsdoc': ['warn', { publicOnly: true }],
-        }
-      }
+        },
+      },
     ];
     ```

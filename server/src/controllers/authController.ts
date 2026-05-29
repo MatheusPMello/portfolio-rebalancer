@@ -8,11 +8,7 @@ function createToken(userId: number): string {
   if (!process.env.JWT_SECRET) {
     throw new Error('JWT_SECRET environment variable is missing');
   }
-  return jwt.sign(
-    { id: userId },
-    process.env.JWT_SECRET,
-    { expiresIn: '24h' },
-  );
+  return jwt.sign({ id: userId }, process.env.JWT_SECRET, { expiresIn: '24h' });
 }
 
 export const authController = {

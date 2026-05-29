@@ -35,7 +35,9 @@ export interface ExchangeRateService {
  * @param opts - Injectable configuration options for cache, timeout, fallbacks, and logging.
  * @returns The initialized exchange rate service instance.
  */
-export function createExchangeRateService(opts: ExchangeRateServiceConfig = {}): ExchangeRateService {
+export function createExchangeRateService(
+  opts: ExchangeRateServiceConfig = {},
+): ExchangeRateService {
   const config = { ...DEFAULTS, ...opts };
   const logger = config.logger ?? console;
 

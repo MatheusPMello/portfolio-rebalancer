@@ -22,9 +22,8 @@ export function DeleteAccountSection() {
   // Real-time validations
   const isPasswordNotEmpty = password.length > 0;
 
-  const passwordValidationError = passwordTouched && password.length > 0 && !isPasswordNotEmpty
-    ? 'Password is required.'
-    : null;
+  const passwordValidationError =
+    passwordTouched && password.length > 0 && !isPasswordNotEmpty ? 'Password is required.' : null;
 
   const isSubmitDisabled = !isPasswordNotEmpty || isLoading;
 
@@ -48,7 +47,8 @@ export function DeleteAccountSection() {
     <div className="p-1">
       <h3 className="h5 mb-2 text-danger fw-bold">Danger Zone</h3>
       <p className="text-danger small fw-bold mb-4 bg-danger-subtle p-3 rounded border border-danger-subtle">
-        WARNING: This action is irreversible. Once you delete your account, all your data, portfolio, and settings will be permanently erased.
+        WARNING: This action is irreversible. Once you delete your account, all your data,
+        portfolio, and settings will be permanently erased.
       </p>
 
       {error && <div className="alert alert-danger py-2 px-3 small mb-3">{error}</div>}
@@ -78,11 +78,11 @@ export function DeleteAccountSection() {
           )}
         </div>
 
-        <Button 
-          type="submit" 
+        <Button
+          type="submit"
           variant="outline"
           color="danger"
-          className="w-100" 
+          className="w-100"
           disabled={isSubmitDisabled}
           style={{ minHeight: '44px' }}
         >

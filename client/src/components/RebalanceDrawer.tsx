@@ -188,7 +188,9 @@ export function RebalanceDrawer({ show, onClose }: Readonly<RebalanceDrawerProps
                 <i className="bi bi-check-circle-fill fs-4 me-3 flex-shrink-0"></i>
                 <div style={{ lineHeight: '1.7' }}>
                   Plan calculated for an investment of <br />
-                  <span className="fs-5 fw-bold">{formatMoney(result.contribution, result.mainCurrency)}</span>
+                  <span className="fs-5 fw-bold">
+                    {formatMoney(result.contribution, result.mainCurrency)}
+                  </span>
                 </div>
               </div>
 

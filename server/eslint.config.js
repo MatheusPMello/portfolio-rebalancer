@@ -14,7 +14,7 @@ module.exports = [
   js.configs.recommended,
 
   // 3. Recommended rules for TypeScript (scoped to src/**/*.ts)
-  ...tseslint.configs.recommended.map(config => ({
+  ...tseslint.configs.recommended.map((config) => ({
     ...config,
     files: ['src/**/*.ts'],
   })),

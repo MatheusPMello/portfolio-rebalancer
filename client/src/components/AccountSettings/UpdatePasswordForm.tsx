@@ -26,19 +26,24 @@ export function UpdatePasswordForm() {
   const isNewPasswordLongEnough = newPassword.length >= 6;
   const isConfirmPasswordMatching = newPassword === confirmPassword;
 
-  const currentPasswordValidationError = currentPasswordTouched && !isCurrentPasswordNotEmpty
-    ? 'Current password is required.'
-    : null;
+  const currentPasswordValidationError =
+    currentPasswordTouched && !isCurrentPasswordNotEmpty ? 'Current password is required.' : null;
 
-  const newPasswordValidationError = newPasswordTouched && newPassword.length > 0 && !isNewPasswordLongEnough
-    ? 'Password must be at least 6 characters.'
-    : null;
+  const newPasswordValidationError =
+    newPasswordTouched && newPassword.length > 0 && !isNewPasswordLongEnough
+      ? 'Password must be at least 6 characters.'
+      : null;
 
-  const confirmPasswordValidationError = confirmPasswordTouched && confirmPassword.length > 0 && !isConfirmPasswordMatching
-    ? 'Passwords do not match.'
-    : null;
+  const confirmPasswordValidationError =
+    confirmPasswordTouched && confirmPassword.length > 0 && !isConfirmPasswordMatching
+      ? 'Passwords do not match.'
+      : null;
 
-  const isSubmitDisabled = !isCurrentPasswordNotEmpty || !isNewPasswordLongEnough || !isConfirmPasswordMatching || isLoading;
+  const isSubmitDisabled =
+    !isCurrentPasswordNotEmpty ||
+    !isNewPasswordLongEnough ||
+    !isConfirmPasswordMatching ||
+    isLoading;
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -84,12 +89,12 @@ export function UpdatePasswordForm() {
   return (
     <div className="p-1">
       <h3 className="h5 mb-2 text-dark fw-bold">Update Password</h3>
-      <p className="text-muted small mb-4">
-        Change the password associated with your account.
-      </p>
+      <p className="text-muted small mb-4">Change the password associated with your account.</p>
 
       {error && <div className="alert alert-danger py-2 px-3 small mb-3">{error}</div>}
-      {successMessage && <div className="alert alert-success py-2 px-3 small mb-3">{successMessage}</div>}
+      {successMessage && (
+        <div className="alert alert-success py-2 px-3 small mb-3">{successMessage}</div>
+      )}
 
       <form onSubmit={handleSubmit} noValidate>
         <div className="mb-3">
@@ -167,11 +172,11 @@ export function UpdatePasswordForm() {
           )}
         </div>
 
-        <Button 
-          type="submit" 
+        <Button
+          type="submit"
           variant="solid"
           color="primary"
-          className="w-100" 
+          className="w-100"
           disabled={isSubmitDisabled}
           style={{ minHeight: '44px' }}
         >

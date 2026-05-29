@@ -48,7 +48,7 @@ app.listen(PORT, async () => {
     console.log('DB_PORT:', process.env.DB_PORT);
     console.log('DB_NAME:', process.env.DB_NAME);
     console.log('----------------------------');
-    
+
     const res = await db.query('SELECT NOW()');
     console.log(`Database connected successfully at ${res.rows[0].now}`);
     console.log(`Server is running on http://localhost:${PORT}`);

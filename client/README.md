@@ -7,27 +7,34 @@ This is the frontend Single Page Application (SPA) for **Portfolio Rebalancer**,
 ## 🚀 Getting Started
 
 ### Prerequisites
+
 Make sure you have Node.js v18+ installed.
 
 ### Setup and Running
+
 To run the client application in isolation:
 
 1.  **Install dependencies**:
+
     ```bash
     cd client
     npm install
     ```
 
 2.  **Start development server**:
+
     ```bash
     npm run dev
     ```
+
     This will run the application on [http://localhost:5173](http://localhost:5173).
 
 3.  **Build for production**:
+
     ```bash
     npm run build
     ```
+
     The production bundle is built into the `dist/` directory.
 
 4.  **Lint and Format**:
@@ -74,16 +81,16 @@ To run the client application in isolation:
 
 Routes are declared using `react-router-dom` in [App.tsx](file:///c:/Users/newti/Documents/Cypress%20-%20Tests/portfolio-rebalancer/client/src/App.tsx).
 
-*   **Public Routes**:
-    *   `/login` (AuthLayout)
-    *   `/register` (AuthLayout)
-*   **Protected Routes**:
-    *   `/` (MainLayout) — Wrapped in the [ProtectedRoute](file:///c:/Users/newti/Documents/Cypress%20-%20Tests/portfolio-rebalancer/client/src/components/ProtectedRoute.tsx) guard which checks for the presence of a valid JSON Web Token (JWT) in local storage, redirecting unauthenticated users to `/login`.
+- **Public Routes**:
+  - `/login` (AuthLayout)
+  - `/register` (AuthLayout)
+- **Protected Routes**:
+  - `/` (MainLayout) — Wrapped in the [ProtectedRoute](file:///c:/Users/newti/Documents/Cypress%20-%20Tests/portfolio-rebalancer/client/src/components/ProtectedRoute.tsx) guard which checks for the presence of a valid JSON Web Token (JWT) in local storage, redirecting unauthenticated users to `/login`.
 
 ---
 
 ## 📊 State Management & API Services
 
-*   **Local/Component State**: Managed via native React hooks (`useState`, `useContext`, `useEffect`).
-*   **Authentication & Tokens**: Token-based authentication storing the token in local storage.
-*   **Axios Client**: Centralized in [services/api.ts](file:///c:/Users/newti/Documents/Cypress%20-%20Tests/portfolio-rebalancer/client/src/services/api.ts), configured with automatic request/response interceptors to set the `Authorization: Bearer <token>` header dynamically.
+- **Local/Component State**: Managed via native React hooks (`useState`, `useContext`, `useEffect`).
+- **Authentication & Tokens**: Token-based authentication storing the token in local storage.
+- **Axios Client**: Centralized in [services/api.ts](file:///c:/Users/newti/Documents/Cypress%20-%20Tests/portfolio-rebalancer/client/src/services/api.ts), configured with automatic request/response interceptors to set the `Authorization: Bearer <token>` header dynamically.

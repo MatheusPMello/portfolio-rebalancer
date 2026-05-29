@@ -12,7 +12,10 @@ import userService from '../../services/userService';
  * @param props - Component props containing show flag and onClose callback.
  * @returns React modal component.
  */
-export function AccountSettingsModal({ show, onClose }: Readonly<{ show: boolean; onClose: () => void }>) {
+export function AccountSettingsModal({
+  show,
+  onClose,
+}: Readonly<{ show: boolean; onClose: () => void }>) {
   const [activeTab, setActiveTab] = useState<'profile' | 'security' | 'danger'>('profile');
   const [currentUserEmail, setCurrentUserEmail] = useState<string>('');
   const [isLoadingProfile, setIsLoadingProfile] = useState<boolean>(false);
@@ -61,9 +64,7 @@ export function AccountSettingsModal({ show, onClose }: Readonly<{ show: boolean
           <UpdateEmailForm currentEmail={currentUserEmail} onSuccess={handleEmailUpdated} />
         )}
         {activeTab === 'security' && <UpdatePasswordForm />}
-        {activeTab === 'danger' && (
-          <DeleteAccountSection />
-        )}
+        {activeTab === 'danger' && <DeleteAccountSection />}
       </div>
     );
   }
@@ -72,15 +73,17 @@ export function AccountSettingsModal({ show, onClose }: Readonly<{ show: boolean
     <Modal show={show} onClose={onClose} title="Account Settings" size="lg">
       <div className="d-flex gap-4" style={{ minHeight: '450px', height: '450px' }}>
         {/* Navigation Sidebar */}
-        <div 
-          className="d-flex flex-column gap-2 border-end pe-3" 
+        <div
+          className="d-flex flex-column gap-2 border-end pe-3"
           style={{ width: '220px', flexShrink: 0 }}
         >
           <button
             type="button"
             onClick={() => setActiveTab('profile')}
             className={`btn text-start w-100 px-3 d-flex align-items-center fw-medium ${
-              activeTab === 'profile' ? 'btn-custom-solid-primary' : 'btn-light text-secondary border'
+              activeTab === 'profile'
+                ? 'btn-custom-solid-primary'
+                : 'btn-light text-secondary border'
             }`}
             style={{ minHeight: '44px', borderRadius: '8px', transition: 'all 0.2s' }}
           >
@@ -90,7 +93,9 @@ export function AccountSettingsModal({ show, onClose }: Readonly<{ show: boolean
             type="button"
             onClick={() => setActiveTab('security')}
             className={`btn text-start w-100 px-3 d-flex align-items-center fw-medium ${
-              activeTab === 'security' ? 'btn-custom-solid-primary' : 'btn-light text-secondary border'
+              activeTab === 'security'
+                ? 'btn-custom-solid-primary'
+                : 'btn-light text-secondary border'
             }`}
             style={{ minHeight: '44px', borderRadius: '8px', transition: 'all 0.2s' }}
           >
@@ -100,7 +105,9 @@ export function AccountSettingsModal({ show, onClose }: Readonly<{ show: boolean
             type="button"
             onClick={() => setActiveTab('danger')}
             className={`btn text-start w-100 px-3 d-flex align-items-center fw-medium ${
-              activeTab === 'danger' ? 'btn-danger text-white' : 'btn-light text-danger border border-danger-subtle'
+              activeTab === 'danger'
+                ? 'btn-danger text-white'
+                : 'btn-light text-danger border border-danger-subtle'
             }`}
             style={{ minHeight: '44px', borderRadius: '8px', transition: 'all 0.2s' }}
           >
@@ -109,7 +116,10 @@ export function AccountSettingsModal({ show, onClose }: Readonly<{ show: boolean
         </div>
 
         {/* Content Panel */}
-        <div className="flex-grow-1 ps-2" style={{ minWidth: 0, overflowY: 'auto', height: '100%' }}>
+        <div
+          className="flex-grow-1 ps-2"
+          style={{ minWidth: 0, overflowY: 'auto', height: '100%' }}
+        >
           {content}
         </div>
       </div>

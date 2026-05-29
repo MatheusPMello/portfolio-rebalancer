@@ -7,29 +7,36 @@ This is the backend API for **Portfolio Rebalancer**, built with Node.js, Expres
 ## 🚀 Getting Started
 
 ### Prerequisites
+
 Make sure you have Node.js v18+ and a running PostgreSQL database (or Docker Desktop) installed.
 
 ### Setup and Running
+
 To run the server in isolation:
 
 1.  **Configure environment variables**:
+
     ```bash
     cd server
     cp .env.example .env
     ```
-    *(The default `.env` is configured to connect to the local Docker database instance).*
+
+    _(The default `.env` is configured to connect to the local Docker database instance)._
 
 2.  **Install dependencies**:
+
     ```bash
     npm install
     ```
 
 3.  **Initialize Database Schema**:
     Make sure PostgreSQL is running, then run:
+
     ```bash
     npm run db:setup
     ```
-    *(This runs the `src/config/setupDatabase.ts` script to drop/create tables).*
+
+    _(This runs the `src/config/setupDatabase.ts` script to drop/create tables)._
 
 4.  **Start development server**:
     ```bash
@@ -78,7 +85,8 @@ To run the server in isolation:
 ## 📊 Rebalancing Logic
 
 The rebalancing engine calculates the optimal buy-only allocation:
-*   Located in [rebalanceService.ts](file:///c:/Users/newti/Documents/Cypress%20-%20Tests/portfolio-rebalancer/server/src/services/rebalanceService.ts).
-*   Normalizes all asset values to a main target currency using exchange rates fetched via AwesomeAPI.
-*   Calculates the gap between current asset allocation percentage and the target weight.
-*   Uses a **greedy allocation algorithm** to distribute new funds step-by-step to the asset furthest below its target allocation, ensuring no sales are required to rebalance the portfolio.
+
+- Located in [rebalanceService.ts](file:///c:/Users/newti/Documents/Cypress%20-%20Tests/portfolio-rebalancer/server/src/services/rebalanceService.ts).
+- Normalizes all asset values to a main target currency using exchange rates fetched via AwesomeAPI.
+- Calculates the gap between current asset allocation percentage and the target weight.
+- Uses a **greedy allocation algorithm** to distribute new funds step-by-step to the asset furthest below its target allocation, ensuring no sales are required to rebalance the portfolio.

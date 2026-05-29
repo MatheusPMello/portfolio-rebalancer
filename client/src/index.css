@@ -7,8 +7,8 @@
   line-height: 1.5;
   font-weight: 400;
 
-  /* Raw channels for primary color (#3b3bff) */
-  --brand-primary-rgb: 59, 59, 255;
+  /* Raw channels for primary color (#4338ca) */
+  --brand-primary-rgb: 67, 56, 202;
 
   /* Custom variables for UI styling */
   --brand-primary: rgb(var(--brand-primary-rgb));
@@ -381,11 +381,13 @@ a:hover {
 
 /* Hover Scale animation for prominent UI actions */
 .hover-scale {
-  transition: transform 0.2s ease-in-out, background-color 0.2s, border-color 0.2s, color 0.2s !important;
+  transition:
+    transform 0.2s ease-in-out,
+    background-color 0.2s,
+    border-color 0.2s,
+    color 0.2s !important;
 }
 .hover-scale:hover,
 .hover-scale:focus {
   transform: scale(1.05);
 }
-
-

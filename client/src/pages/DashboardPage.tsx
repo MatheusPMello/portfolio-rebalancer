@@ -28,10 +28,7 @@ export function DashboardPage() {
 
   const loadAssets = async () => {
     try {
-      const [assetsData, rate] = await Promise.all([
-        assetService.getAll(),
-        fetchExchangeRate(),
-      ]);
+      const [assetsData, rate] = await Promise.all([assetService.getAll(), fetchExchangeRate()]);
       setAssets(assetsData);
       setUsdRate(rate);
     } catch (err) {
@@ -121,15 +118,11 @@ export function DashboardPage() {
           <div className="d-flex gap-3">
             <div className="d-flex align-items-center py-1 pe-3 rounded-pill bg-white border shadow-sm">
               <CurrencyBadge currency="BRL" className="me-2 fs-6 px-3" />
-              <span className="fw-bold text-dark">
-                {formatNumberUnified(totalBRL)}
-              </span>
+              <span className="fw-bold text-dark">{formatNumberUnified(totalBRL)}</span>
             </div>
             <div className="d-flex align-items-center py-1 pe-3 rounded-pill bg-white border shadow-sm">
               <CurrencyBadge currency="USD" className="me-2 fs-6 px-3" />
-              <span className="fw-bold text-dark">
-                {formatNumberUnified(totalUSD)}
-              </span>
+              <span className="fw-bold text-dark">{formatNumberUnified(totalUSD)}</span>
             </div>
           </div>
 
@@ -194,8 +187,7 @@ export function DashboardPage() {
             className="border-2 fw-bold d-flex align-items-center gap-2"
             onClick={handleAddNew}
           >
-            <i className="bi bi-plus-lg"></i>{' '}
-            Add Asset
+            <i className="bi bi-plus-lg"></i> Add Asset
           </Button>
         </div>
 
@@ -204,7 +196,13 @@ export function DashboardPage() {
           <div className="text-center py-5 bg-light">
             <i className="bi bi-wallet2 text-muted" style={{ fontSize: '3rem' }}></i>
             <p className="text-muted mt-3 fw-bold">No assets to display.</p>
-            <Button variant="solid" color="primary" size="sm" className="px-4" onClick={handleAddNew}>
+            <Button
+              variant="solid"
+              color="primary"
+              size="sm"
+              className="px-4"
+              onClick={handleAddNew}
+            >
               Add One Now
             </Button>
           </div>
@@ -234,15 +232,27 @@ export function DashboardPage() {
                     </td>
                     <td style={{ minWidth: '220px' }}>
                       {(() => {
-                        const assetBrlValue = asset.currency === 'USD' ? Number(asset.current_value) * usdRate : Number(asset.current_value);
-                        const currentPercentage = estimatedTotalInBRL > 0 ? (assetBrlValue / estimatedTotalInBRL) * 100 : 0;
+                        const assetBrlValue =
+                          asset.currency === 'USD'
+                            ? Number(asset.current_value) * usdRate
+                            : Number(asset.current_value);
+                        const currentPercentage =
+                          estimatedTotalInBRL > 0 ? (assetBrlValue / estimatedTotalInBRL) * 100 : 0;
                         return (
                           <div className="d-flex flex-column">
                             <div className="d-flex justify-content-between small fw-bold mb-1">
                               <span>{currentPercentage.toFixed(1)}% Current</span>
                               <span className="text-muted">{asset.target_percentage}% Target</span>
                             </div>
-                            <div className="progress position-relative" style={{ height: '12px', borderRadius: '6px', backgroundColor: '#e9ecef', overflow: 'hidden' }}>
+                            <div
+                              className="progress position-relative"
+                              style={{
+                                height: '12px',
+                                borderRadius: '6px',
+                                backgroundColor: '#e9ecef',
+                                overflow: 'hidden',
+                              }}
+                            >
                               {/* Target bar (grey) */}
                               <div
                                 className="position-absolute top-0 bottom-0 start-0 bg-secondary"
@@ -252,7 +262,7 @@ export function DashboardPage() {
                                   opacity: 0.4,
                                 }}
                               ></div>
-                              {/* Current progress bar (blue) */}
+                              {/* Current progress bar (primary color) */}
                               <div
                                 className="position-absolute top-0 bottom-0 start-0 bg-primary"
                                 style={{

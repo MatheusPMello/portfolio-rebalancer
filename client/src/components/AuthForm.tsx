@@ -48,7 +48,11 @@ function getEmailValidationError(email: string, touched: boolean): string | null
  * @param isLogin - True if on the login form, false if on register page.
  * @returns An error message string or null if input is valid.
  */
-function getPasswordValidationError(password: string, touched: boolean, isLogin: boolean): string | null {
+function getPasswordValidationError(
+  password: string,
+  touched: boolean,
+  isLogin: boolean,
+): string | null {
   if (!touched) {
     return null;
   }

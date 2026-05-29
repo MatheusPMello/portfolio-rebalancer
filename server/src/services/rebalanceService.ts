@@ -47,7 +47,7 @@ export const calculateRebalancePlan = (
   const totalCurrentValue = normalizedAssets.reduce((sum, a) => sum + a.normalizedValue, 0);
   const totalFutureValue = totalCurrentValue + contribution;
 
-  // 3. Calculate Gaps 
+  // 3. Calculate Gaps
   let totalGap = 0;
 
   const assetsWithGaps = normalizedAssets.map((asset) => {

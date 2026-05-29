@@ -3,8 +3,6 @@
  * @description A reusable alert component showing a message while waiting for the server to wake up.
  */
 
-
-
 interface ServerWakeupAlertProps {
   isLoading: boolean;
 }
