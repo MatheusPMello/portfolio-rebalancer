@@ -84,77 +84,14 @@ Stores investment assets associated with users.
 
 ---
 
-## 🧮 Core Rebalancing Algorithm
+## 🤖 Smart Rebalancing Engine
 
-The rebalancing calculation runs in `server/src/services/rebalanceService.ts` and operates in 5 clear phases:
+The portfolio calculation engine utilizes a **buy-only rebalancing strategy** to bring assets back to their target weights without initiating sales:
 
-1. **Normalization:** Converts all asset current values to the user's primary currency (e.g. converting USD asset values to BRL using live exchange rates).
-2. **Future Value Projection:** Projects the total portfolio value after the new contribution is added:
-   $$\text{Future Total} = \text{Current Total} + \text{Contribution}$$
-3. **Gap Analysis (Buy-Only constraint):** Calculates the monetary gap between the target value and current value for each asset. If an asset is overweight (current value is greater than target), its gap is locked at `0` (since we do not sell):
-   $$\text{Gap}_i = \max(0, (\text{Future Total} \times \text{Target}_i) - \text{Current Value}_i)$$
-4. **Contribution Distribution:** Distributes the contribution proportionally to each asset's weight in the total gap:
-   $$\text{Amount to Buy (Normalized)}_i = \text{Contribution} \times \frac{\text{Gap}_i}{\sum \text{Gaps}}$$
-5. **Denormalization:** Converts the allocated contribution amount back into each asset's native currency (BRL or USD) for the user to execute.
-
-```typescript
-// Core implementation snippet
-export const calculateRebalancePlan = (
-  contribution: number,
-  assets: AssetRecord[],
-  usdRate: number,
-  mainCurrency: 'BRL' | 'USD',
-): RebalanceSuggestion[] => {
-  // Normalize all assets to the 'Main Currency'
-  const normalizedAssets = assets.map((asset) => {
-    const currentValue = Number(asset.current_value);
-    const normalizedValue =
-      mainCurrency === 'BRL' && asset.currency === 'USD'
-        ? currentValue * usdRate
-        : mainCurrency === 'USD' && asset.currency === 'BRL'
-          ? currentValue / usdRate
-          : currentValue;
-    return { ...asset, normalizedValue, targetPercentage: Number(asset.target_percentage) };
-  });
-
-  const totalCurrentValue = normalizedAssets.reduce((sum, a) => sum + a.normalizedValue, 0);
-  const totalFutureValue = totalCurrentValue + contribution;
-
-  // Calculate under-allocation gaps
-  let totalGap = 0;
-  const assetsWithGaps = normalizedAssets.map((asset) => {
-    const targetValue = totalFutureValue * (asset.targetPercentage / 100);
-    const difference = Math.max(0, targetValue - asset.normalizedValue);
-    totalGap += difference;
-    return { ...asset, difference };
-  });
-
-  // Distribute contribution and convert back to native currency
-  return assetsWithGaps
-    .map((asset) => {
-      const amountToBuyNormalized = totalGap > 0 ? contribution * (asset.difference / totalGap) : 0;
-      const finalAmountNative =
-        mainCurrency === 'BRL' && asset.currency === 'USD'
-          ? amountToBuyNormalized / usdRate
-          : mainCurrency === 'USD' && asset.currency === 'BRL'
-            ? amountToBuyNormalized * usdRate
-            : amountToBuyNormalized;
-
-      return {
-        assetId: asset.id,
-        name: asset.name,
-        currency: asset.currency,
-        currentPercentage:
-          totalCurrentValue > 0
-            ? ((asset.normalizedValue / totalCurrentValue) * 100).toFixed(2)
-            : '0.00',
-        targetPercentage: asset.targetPercentage,
-        amountToBuy: Number(finalAmountNative.toFixed(2)),
-      };
-    })
-    .filter((s) => s.amountToBuy > 0.01);
-};
-```
+- **Currency Normalization:** Automatically converts BRL and USD asset valuations to a single base currency using real-time exchange rates.
+- **Target Deviation Analysis:** Identifies which assets are underweight relative to the user's defined allocation goals.
+- **Intelligent Purchase Allocation:** Distributes the incoming contribution to the underweight assets proportionally, moving the overall portfolio closer to its target weights.
+- **De-normalization:** Converts the suggested purchase amounts back to the native currency of each asset for simple execution.
 
 ---
 

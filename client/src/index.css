@@ -12,12 +12,12 @@
 
   /* Custom variables for UI styling */
   --brand-primary: rgb(var(--brand-primary-rgb));
-  
+
   /* High-Contrast Bold Semantic Colors (WCAG AA Compliant) */
   --app-success-color: #047857; /* Deep emerald green (passes WCAG AA 5.58:1 vs white) */
   --app-success-bg: #ecfdf5; /* Light Emerald tint for background */
   --app-success-border: #d1fae5; /* Emerald border tint */
-  
+
   --app-danger-color: #d32f2f; /* Bold Crimson red (passes WCAG AA 5.72:1 vs white) */
   --app-danger-bg: #ffebee; /* Light Crimson tint for background */
   --app-danger-border: #ffcdd2; /* Crimson border tint */

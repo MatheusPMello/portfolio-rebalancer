@@ -123,8 +123,10 @@ export function PortfolioCharts({ assets, usdRate = 6 }: Readonly<PortfolioChart
         <div className="card shadow-sm p-4">
           <h5 className="fw-bold mb-4">Portfolio Drift</h5>
           <p className="text-muted small mb-3">
-            <span style={{ color: 'var(--app-danger-color)', fontWeight: 'bold' }}>Red bars (-)</span> mean
-            you need to buy.{' '}
+            <span style={{ color: 'var(--app-danger-color)', fontWeight: 'bold' }}>
+              Red bars (-)
+            </span>{' '}
+            mean you need to buy.{' '}
             <span
               style={{
                 color: 'var(--app-success-color)',
