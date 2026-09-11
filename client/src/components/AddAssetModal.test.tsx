@@ -62,6 +62,14 @@ describe('AddAssetModal Component', () => {
     expect(screen.getByRole('button', { name: 'Update Asset' })).toBeInTheDocument();
   });
 
+  const submitNewAssetForm = (name: string, targetAllocation: string, currentValue: string) => {
+    render(<AddAssetModal show={true} onClose={onClose} onAssetSaved={onAssetSaved} />);
+    fireEvent.change(screen.getByLabelText('Asset Name'), { target: { value: name } });
+    fireEvent.change(screen.getByLabelText('Target Allocation (%)'), { target: { value: targetAllocation } });
+    fireEvent.change(screen.getByLabelText('Current Value'), { target: { value: currentValue } });
+    fireEvent.click(screen.getByRole('button', { name: 'Save Asset' }));
+  };
+
   it('creates a new asset when submitted in Add mode', async () => {
     vi.mocked(assetService.create).mockResolvedValueOnce({
       id: 1,
@@ -72,19 +80,7 @@ describe('AddAssetModal Component', () => {
       current_value: 3000,
     });
 
-    render(
-      <AddAssetModal
-        show={true}
-        onClose={onClose}
-        onAssetSaved={onAssetSaved}
-      />,
-    );
-
-    fireEvent.change(screen.getByLabelText('Asset Name'), { target: { value: 'Ethereum' } });
-    fireEvent.change(screen.getByLabelText('Target Allocation (%)'), { target: { value: '15' } });
-    fireEvent.change(screen.getByLabelText('Current Value'), { target: { value: '3000' } });
-
-    fireEvent.click(screen.getByRole('button', { name: 'Save Asset' }));
+    submitNewAssetForm('Ethereum', '15', '3000');
 
     await waitFor(() => {
       expect(assetService.create).toHaveBeenCalledWith({
@@ -140,19 +136,7 @@ describe('AddAssetModal Component', () => {
   it('displays error message when saving fails', async () => {
     vi.mocked(assetService.create).mockRejectedValueOnce(new Error('Network error'));
 
-    render(
-      <AddAssetModal
-        show={true}
-        onClose={onClose}
-        onAssetSaved={onAssetSaved}
-      />,
-    );
-
-    fireEvent.change(screen.getByLabelText('Asset Name'), { target: { value: 'Failed Asset' } });
-    fireEvent.change(screen.getByLabelText('Target Allocation (%)'), { target: { value: '10' } });
-    fireEvent.change(screen.getByLabelText('Current Value'), { target: { value: '100' } });
-
-    fireEvent.click(screen.getByRole('button', { name: 'Save Asset' }));
+    submitNewAssetForm('Failed Asset', '10', '100');
 
     await waitFor(() => {
       expect(screen.getByText('Failed to save asset')).toBeInTheDocument();

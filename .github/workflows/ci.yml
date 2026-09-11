@@ -26,10 +26,10 @@ jobs:
           cache-dependency-path: server/package-lock.json
 
       - name: Install Root Dependencies
-        run: npm ci
+        run: npm ci --ignore-scripts
 
       - name: Install Server Dependencies
-        run: cd server && npm ci
+        run: cd server && npm ci --ignore-scripts
 
       - name: Lint Server Code
         run: cd server && npm run lint
@@ -54,7 +54,7 @@ jobs:
           cache-dependency-path: client/package-lock.json
 
       - name: Install Client Dependencies
-        run: cd client && npm ci
+        run: cd client && npm ci --ignore-scripts
 
       - name: Lint Client Code
         run: cd client && npm run lint
@@ -85,16 +85,16 @@ jobs:
           cache-dependency-path: server/package-lock.json
 
       - name: Install Root Dependencies
-        run: npm ci
+        run: npm ci --ignore-scripts
 
       - name: Install Server Dependencies
-        run: cd server && npm ci
+        run: cd server && npm ci --ignore-scripts
 
       - name: Generate Test Coverage
         run: npm run test:coverage
 
       - name: SonarCloud Scan
-        uses: SonarSource/sonarcloud-github-action@master
+        uses: SonarSource/sonarcloud-github-action@ba3875ecf642b2129de2b589510c81a8b53dbf4e # v3.1.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}

@@ -80,7 +80,7 @@ describe('Rebalance Routes Integration Tests', () => {
     expect(response.body.contribution).toBe(1000);
     expect(response.body.mainCurrency).toBe('BRL');
     expect(response.body.rateUsed).toBe(5.0);
-    expect(response.body.suggestions.length).toBe(1);
+    expect(response.body.suggestions).toHaveLength(1);
     expect(response.body.suggestions[0].name).toBe('Asset A');
     expect(response.body.suggestions[0].amountToBuy).toBe(1000);
   });

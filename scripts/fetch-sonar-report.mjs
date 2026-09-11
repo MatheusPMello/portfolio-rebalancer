@@ -93,8 +93,8 @@ async function fetchQualityGate() {
       `/qualitygates/project_status?projectKey=${encodeURIComponent(projectKey)}`
     );
     return data.projectStatus;
-  } catch (err) {
-    console.warn(`[WARN] Could not fetch Quality Gate status: ${err.message}`);
+  } catch {
+    console.warn('[WARN] Could not fetch Quality Gate status');
     return null;
   }
 }
@@ -120,14 +120,14 @@ async function fetchMeasures() {
     );
 
     const measures = {};
-    if (data.component && data.component.measures) {
+    if (data.component?.measures) {
       for (const m of data.component.measures) {
         measures[m.metric] = m.value;
       }
     }
     return measures;
-  } catch (err) {
-    console.warn(`[WARN] Could not fetch project measures: ${err.message}`);
+  } catch {
+    console.warn('[WARN] Could not fetch project measures');
     return {};
   }
 }
@@ -137,13 +137,19 @@ function ratingToLetter(val) {
   return map[val] || val || 'N/A';
 }
 
-/**
- * Generates Markdown report
- */
-function generateMarkdownReport({ qualityGate, measures, issues, generatedAt }) {
+function getQualityGateBadge(qualityGate) {
   const qgStatus = qualityGate?.status || 'UNKNOWN';
-  const qgBadge = qgStatus === 'OK' ? 'PASSED (OK)' : qgStatus === 'ERROR' ? 'FAILED' : qgStatus;
+  if (qgStatus === 'OK') {
+    return 'PASSED (OK)';
+  }
+  if (qgStatus === 'ERROR') {
+    return 'FAILED';
+  }
+  return qgStatus;
+}
 
+function buildOverviewSection({ qualityGate, measures, generatedAt }) {
+  const qgBadge = getQualityGateBadge(qualityGate);
   const bugs = measures.bugs ?? '0';
   const vulnerabilities = measures.vulnerabilities ?? '0';
   const codeSmells = measures.code_smells ?? '0';
@@ -167,49 +173,53 @@ function generateMarkdownReport({ qualityGate, measures, issues, generatedAt }) 
   md += `| **Test Coverage** | ${coverage} | - |\n`;
   md += `| **Duplicated Lines** | ${duplicated} | - |\n\n`;
 
-  if (issues.length === 0) {
-    md += `## Open Issues\n\n`;
-    md += `🎉 **No open issues found in SonarCloud!** Your project is clean.\n`;
-    return md;
-  }
+  return md;
+}
 
-  // Group issues by Severity
+function groupIssuesBySeverity(issues) {
   const severityOrder = ['BLOCKER', 'CRITICAL', 'MAJOR', 'MINOR', 'INFO'];
-  const issuesBySeverity = {};
-  for (const sev of severityOrder) {
-    issuesBySeverity[sev] = [];
-  }
-
+  const grouped = new Map(severityOrder.map((sev) => [sev, []]));
   for (const issue of issues) {
     const sev = issue.severity || 'INFO';
-    if (!issuesBySeverity[sev]) {
-      issuesBySeverity[sev] = [];
+    const list = grouped.get(sev);
+    if (list) {
+      list.push(issue);
     }
-    issuesBySeverity[sev].push(issue);
+  }
+  return grouped;
+}
+
+function renderSeveritySection(sev, list) {
+  let md = `### ${sev} (${list.length})\n\n`;
+  md += `| Type | Component / File | Line | Message | Rule | Effort |\n`;
+  md += `| :--- | :--- | :--- | :--- | :--- | :--- |\n`;
+
+  for (const item of list) {
+    const componentPath = item.component ? item.component.replace(/^[^:]+:/, '') : 'N/A';
+    const line = item.line || (item.textRange ? item.textRange.startLine : '-');
+    const message = (item.message || '').replaceAll('|', String.raw`\|`);
+    const rule = item.rule || 'N/A';
+    const effort = item.effort || '-';
+    const type = item.type || 'CODE_SMELL';
+
+    md += `| \`${type}\` | \`${componentPath}\` | ${line} | ${message} | \`${rule}\` | ${effort} |\n`;
+  }
+  md += `\n`;
+  return md;
+}
+
+function renderIssuesSection(issues) {
+  if (issues.length === 0) {
+    return `## Open Issues\n\n🎉 **No open issues found in SonarCloud!** Your project is clean.\n`;
   }
 
-  md += `## Open Issues (${issues.length} total)\n\n`;
+  const grouped = groupIssuesBySeverity(issues);
+  let md = `## Open Issues (${issues.length} total)\n\n`;
 
-  for (const sev of severityOrder) {
-    const list = issuesBySeverity[sev];
-    if (!list || list.length === 0) continue;
-
-    md += `### ${sev} (${list.length})\n\n`;
-    md += `| Type | Component / File | Line | Message | Rule | Effort |\n`;
-    md += `| :--- | :--- | :--- | :--- | :--- | :--- |\n`;
-
-    for (const item of list) {
-      // Clean component path relative to repo root
-      const componentPath = item.component ? item.component.replace(/^[^:]+:/, '') : 'N/A';
-      const line = item.line || (item.textRange ? item.textRange.startLine : '-');
-      const message = (item.message || '').replace(/\|/g, '\\|');
-      const rule = item.rule || 'N/A';
-      const effort = item.effort || '-';
-      const type = item.type || 'CODE_SMELL';
-
-      md += `| \`${type}\` | \`${componentPath}\` | ${line} | ${message} | \`${rule}\` | ${effort} |\n`;
+  for (const [sev, list] of grouped) {
+    if (list.length > 0) {
+      md += renderSeveritySection(sev, list);
     }
-    md += `\n`;
   }
 
   md += `## Remediation Instructions for Antigravity\n\n`;
@@ -219,58 +229,61 @@ function generateMarkdownReport({ qualityGate, measures, issues, generatedAt }) 
   return md;
 }
 
-async function main() {
-  console.log(`=============================================`);
-  console.log(`Fetching SonarCloud Report`);
-  console.log(`Project Key  : ${projectKey}`);
-  console.log(`Organization : ${organization}`);
-  console.log(`Token set?   : ${sonarToken ? 'Yes' : 'No (fetching public data)'}`);
-  console.log(`=============================================`);
-
-  const reportsDir = path.join(rootDir, 'reports');
-  if (!fs.existsSync(reportsDir)) {
-    fs.mkdirSync(reportsDir, { recursive: true });
-  }
-
-  try {
-    const [qualityGate, measures, issues] = await Promise.all([
-      fetchQualityGate(),
-      fetchMeasures(),
-      fetchAllIssues(),
-    ]);
-
-    const generatedAt = new Date().toISOString();
-
-    // 1. Write JSON report
-    const jsonOutput = {
-      projectKey,
-      organization,
-      generatedAt,
-      qualityGate,
-      measures,
-      issueCount: issues.length,
-      issues,
-    };
-    const jsonPath = path.join(reportsDir, 'sonar-report.json');
-    fs.writeFileSync(jsonPath, JSON.stringify(jsonOutput, null, 2), 'utf-8');
-    console.log(`[OK] JSON report saved to: ${jsonPath}`);
-
-    // 2. Write Markdown report
-    const mdContent = generateMarkdownReport({ qualityGate, measures, issues, generatedAt });
-    const mdPath = path.join(reportsDir, 'sonar-report.md');
-    fs.writeFileSync(mdPath, mdContent, 'utf-8');
-    console.log(`[OK] Markdown report saved to: ${mdPath}`);
-
-    console.log(`\nSonarCloud fetch completed successfully.`);
-    console.log(`Total open issues found: ${issues.length}`);
-  } catch (error) {
-    console.error(`\n[ERROR] Failed to fetch SonarCloud report: ${error.message}`);
-    console.error(`\nTips:`);
-    console.error(`1. Check that the projectKey ('${projectKey}') matches your SonarCloud project key.`);
-    console.error(`2. Ensure SONAR_TOKEN environment variable is set if the project is private.`);
-    console.error(`3. Ensure that at least one scan has run on SonarCloud for this project.`);
-    process.exitCode = 1;
-  }
+/**
+ * Generates Markdown report
+ */
+function generateMarkdownReport({ qualityGate, measures, issues, generatedAt }) {
+  return buildOverviewSection({ qualityGate, measures, generatedAt }) + renderIssuesSection(issues);
 }
 
-main();
+console.log(`=============================================`);
+console.log(`Fetching SonarCloud Report`);
+console.log(`Project Key  : ${projectKey}`);
+console.log(`Organization : ${organization}`);
+console.log(`Token set?   : ${sonarToken ? 'Yes' : 'No (fetching public data)'}`);
+console.log(`=============================================`);
+
+const reportsDir = path.join(rootDir, 'reports');
+if (!fs.existsSync(reportsDir)) {
+  fs.mkdirSync(reportsDir, { recursive: true });
+}
+
+try {
+  const [qualityGate, measures, issues] = await Promise.all([
+    fetchQualityGate(),
+    fetchMeasures(),
+    fetchAllIssues(),
+  ]);
+
+  const generatedAt = new Date().toISOString();
+
+  // 1. Write JSON report
+  const jsonOutput = {
+    projectKey,
+    organization,
+    generatedAt,
+    qualityGate,
+    measures,
+    issueCount: issues.length,
+    issues,
+  };
+  const jsonPath = path.join(reportsDir, 'sonar-report.json');
+  fs.writeFileSync(jsonPath, JSON.stringify(jsonOutput, null, 2), 'utf-8');
+  console.log(`[OK] JSON report saved to: ${jsonPath}`);
+
+  // 2. Write Markdown report
+  const mdContent = generateMarkdownReport({ qualityGate, measures, issues, generatedAt });
+  const mdPath = path.join(reportsDir, 'sonar-report.md');
+  fs.writeFileSync(mdPath, mdContent, 'utf-8');
+  console.log(`[OK] Markdown report saved to: ${mdPath}`);
+
+  console.log(`\nSonarCloud fetch completed successfully.`);
+  console.log(`Total open issues found: ${issues.length}`);
+} catch {
+  console.error('\n[ERROR] Failed to fetch SonarCloud report');
+  console.error(`\nTips:`);
+  console.error(`1. Check that the projectKey ('${projectKey}') matches your SonarCloud project key.`);
+  console.error(`2. Ensure SONAR_TOKEN environment variable is set if the project is private.`);
+  console.error(`3. Ensure that at least one scan has run on SonarCloud for this project.`);
+  process.exitCode = 1;
+}

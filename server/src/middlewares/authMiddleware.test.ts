@@ -24,43 +24,34 @@ describe('authMiddleware', () => {
     process.env.JWT_SECRET = originalSecret;
   });
 
-  it('should return 401 if Authorization header is missing', () => {
-    (req.header as jest.Mock).mockReturnValue(undefined);
+  it.each([
+    {
+      description: 'Authorization header is missing',
+      header: undefined,
+      expectedMsg: 'No token, authorization denied',
+    },
+    {
+      description: 'Authorization header does not start with Bearer',
+      header: 'Basic 12345',
+      expectedMsg: 'Token is not valid (must be Bearer)',
+    },
+    {
+      description: 'token has invalid format',
+      header: 'Bearer',
+      expectedMsg: 'Token is not valid (must be Bearer)',
+    },
+    {
+      description: 'token is invalid or expired',
+      header: 'Bearer invalid.jwt.token',
+      expectedMsg: 'Token is not valid',
+    },
+  ])('should return 401 if $description', ({ header, expectedMsg }) => {
+    (req.header as jest.Mock).mockReturnValue(header);
 
     authMiddleware(req as Request, res as Response, next);
 
     expect(res.status).toHaveBeenCalledWith(401);
-    expect(res.json).toHaveBeenCalledWith({ message: 'No token, authorization denied' });
-    expect(next).not.toHaveBeenCalled();
-  });
-
-  it('should return 401 if Authorization header does not start with Bearer', () => {
-    (req.header as jest.Mock).mockReturnValue('Basic 12345');
-
-    authMiddleware(req as Request, res as Response, next);
-
-    expect(res.status).toHaveBeenCalledWith(401);
-    expect(res.json).toHaveBeenCalledWith({ message: 'Token is not valid (must be Bearer)' });
-    expect(next).not.toHaveBeenCalled();
-  });
-
-  it('should return 401 if token has invalid format', () => {
-    (req.header as jest.Mock).mockReturnValue('Bearer');
-
-    authMiddleware(req as Request, res as Response, next);
-
-    expect(res.status).toHaveBeenCalledWith(401);
-    expect(res.json).toHaveBeenCalledWith({ message: 'Token is not valid (must be Bearer)' });
-    expect(next).not.toHaveBeenCalled();
-  });
-
-  it('should return 401 if token is invalid or expired', () => {
-    (req.header as jest.Mock).mockReturnValue('Bearer invalid.jwt.token');
-
-    authMiddleware(req as Request, res as Response, next);
-
-    expect(res.status).toHaveBeenCalledWith(401);
-    expect(res.json).toHaveBeenCalledWith({ message: 'Token is not valid' });
+    expect(res.json).toHaveBeenCalledWith({ message: expectedMsg });
     expect(next).not.toHaveBeenCalled();
   });
 

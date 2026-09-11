@@ -34,7 +34,7 @@ describe('Rebalance Service Logic', () => {
     const result = calculateRebalancePlan(contribution, assets, rate, currency);
 
     // 3. ASSERT: Check the result
-    expect(result.length).toBe(1); // Should only suggest buying Asset B
+    expect(result).toHaveLength(1); // Should only suggest buying Asset B
     expect(result[0].name).toBe('Risky Asset');
     expect(result[0].amountToBuy).toBe(1000);
   });
@@ -129,7 +129,7 @@ describe('Rebalance Service Logic', () => {
     const result = calculateRebalancePlan(contribution, assets, rate, currency);
 
     // 100 USD contribution = 500 BRL to buy
-    expect(result.length).toBe(1);
+    expect(result).toHaveLength(1);
     expect(result[0].name).toBe('Petrobras');
     expect(result[0].amountToBuy).toBe(500);
     expect(result[0].currency).toBe('BRL');
@@ -162,7 +162,7 @@ describe('Rebalance Service Logic', () => {
 
     const result = calculateRebalancePlan(contribution, assets, rate, currency);
 
-    expect(result.length).toBe(1);
+    expect(result).toHaveLength(1);
     expect(result[0].name).toBe('Underweight Asset');
     expect(result[0].amountToBuy).toBe(1000);
   });
@@ -194,7 +194,7 @@ describe('Rebalance Service Logic', () => {
 
     const result = calculateRebalancePlan(contribution, assets, rate, currency);
 
-    expect(result.length).toBe(2);
+    expect(result).toHaveLength(2);
     expect(result[0].currentPercentage).toBe('0.00');
     expect(result[0].amountToBuy).toBe(600);
     expect(result[1].currentPercentage).toBe('0.00');

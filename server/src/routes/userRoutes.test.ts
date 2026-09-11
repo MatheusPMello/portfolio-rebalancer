@@ -20,6 +20,16 @@ describe('User Routes Integration Tests', () => {
     jest.clearAllMocks();
   });
 
+  const mockUserWithPasswordAuth = (passwordMatches: boolean, userOverrides: Record<string, unknown> = {}) => {
+    (User.findById as jest.Mock).mockResolvedValueOnce({
+      id: 1,
+      password_hash: 'hashed',
+      email: 'old@example.com',
+      ...userOverrides,
+    });
+    (bcrypt.compare as jest.Mock).mockResolvedValueOnce(passwordMatches);
+  };
+
   describe('GET /api/user/profile', () => {
     it('should return 401 when unauthorized', async () => {
       const res = await request(app).get('/api/user/profile');
@@ -95,12 +105,7 @@ describe('User Routes Integration Tests', () => {
     });
 
     it('should return 400 if current password is incorrect', async () => {
-      (User.findById as jest.Mock).mockResolvedValueOnce({
-        id: 1,
-        password_hash: 'hashed',
-        email: 'old@example.com',
-      });
-      (bcrypt.compare as jest.Mock).mockResolvedValueOnce(false);
+      mockUserWithPasswordAuth(false);
 
       const res = await request(app)
         .put('/api/user/email')
@@ -112,12 +117,7 @@ describe('User Routes Integration Tests', () => {
     });
 
     it('should return 400 if email is the same as current email', async () => {
-      (User.findById as jest.Mock).mockResolvedValueOnce({
-        id: 1,
-        password_hash: 'hashed',
-        email: 'same@example.com',
-      });
-      (bcrypt.compare as jest.Mock).mockResolvedValueOnce(true);
+      mockUserWithPasswordAuth(true, { email: 'same@example.com' });
 
       const res = await request(app)
         .put('/api/user/email')
@@ -129,12 +129,7 @@ describe('User Routes Integration Tests', () => {
     });
 
     it('should return 400 if new email is already in use by another user', async () => {
-      (User.findById as jest.Mock).mockResolvedValueOnce({
-        id: 1,
-        password_hash: 'hashed',
-        email: 'old@example.com',
-      });
-      (bcrypt.compare as jest.Mock).mockResolvedValueOnce(true);
+      mockUserWithPasswordAuth(true);
       (User.findByEmail as jest.Mock).mockResolvedValueOnce({ id: 2, email: 'taken@example.com' });
 
       const res = await request(app)
@@ -147,12 +142,7 @@ describe('User Routes Integration Tests', () => {
     });
 
     it('should return 200 on successful email update', async () => {
-      (User.findById as jest.Mock).mockResolvedValueOnce({
-        id: 1,
-        password_hash: 'hashed',
-        email: 'old@example.com',
-      });
-      (bcrypt.compare as jest.Mock).mockResolvedValueOnce(true);
+      mockUserWithPasswordAuth(true);
       (User.findByEmail as jest.Mock).mockResolvedValueOnce(null);
       (User.updateEmail as jest.Mock).mockResolvedValueOnce(undefined);
 
@@ -168,34 +158,30 @@ describe('User Routes Integration Tests', () => {
   });
 
   describe('PUT /api/user/password', () => {
-    it('should return 400 if inputs are missing', async () => {
+    it.each([
+      {
+        scenario: 'inputs are missing',
+        payload: {},
+        expectedMsg: 'Invalid input',
+      },
+      {
+        scenario: 'new password equals current password',
+        payload: { currentPassword: 'samepassword', newPassword: 'samepassword' },
+        expectedMsg: 'New password must differ from current password',
+      },
+      {
+        scenario: 'new password is too short (< 6 chars)',
+        payload: { currentPassword: 'currentpassword', newPassword: '123' },
+        expectedMsg: 'Password must be at least 6 characters',
+      },
+    ])('should return 400 if $scenario', async ({ payload, expectedMsg }) => {
       const res = await request(app)
         .put('/api/user/password')
         .set('Authorization', `Bearer ${token}`)
-        .send({});
+        .send(payload);
 
       expect(res.status).toBe(400);
-      expect(res.body.message).toBe('Invalid input');
-    });
-
-    it('should return 400 if new password equals current password', async () => {
-      const res = await request(app)
-        .put('/api/user/password')
-        .set('Authorization', `Bearer ${token}`)
-        .send({ currentPassword: 'samepassword', newPassword: 'samepassword' });
-
-      expect(res.status).toBe(400);
-      expect(res.body.message).toBe('New password must differ from current password');
-    });
-
-    it('should return 400 if new password is too short (< 6 chars)', async () => {
-      const res = await request(app)
-        .put('/api/user/password')
-        .set('Authorization', `Bearer ${token}`)
-        .send({ currentPassword: 'currentpassword', newPassword: '123' });
-
-      expect(res.status).toBe(400);
-      expect(res.body.message).toBe('Password must be at least 6 characters');
+      expect(res.body.message).toBe(expectedMsg);
     });
 
     it('should return 404 if user not found', async () => {
@@ -210,11 +196,7 @@ describe('User Routes Integration Tests', () => {
     });
 
     it('should return 400 if current password is incorrect', async () => {
-      (User.findById as jest.Mock).mockResolvedValueOnce({
-        id: 1,
-        password_hash: 'hashed',
-      });
-      (bcrypt.compare as jest.Mock).mockResolvedValueOnce(false);
+      mockUserWithPasswordAuth(false);
 
       const res = await request(app)
         .put('/api/user/password')
@@ -226,11 +208,7 @@ describe('User Routes Integration Tests', () => {
     });
 
     it('should return 200 on successful password update', async () => {
-      (User.findById as jest.Mock).mockResolvedValueOnce({
-        id: 1,
-        password_hash: 'hashed',
-      });
-      (bcrypt.compare as jest.Mock).mockResolvedValueOnce(true);
+      mockUserWithPasswordAuth(true);
       (bcrypt.hash as jest.Mock).mockResolvedValueOnce('new_hashed_pwd');
       (User.updatePassword as jest.Mock).mockResolvedValueOnce(undefined);
 
@@ -268,11 +246,7 @@ describe('User Routes Integration Tests', () => {
     });
 
     it('should return 400 if password does not match', async () => {
-      (User.findById as jest.Mock).mockResolvedValueOnce({
-        id: 1,
-        password_hash: 'hashed',
-      });
-      (bcrypt.compare as jest.Mock).mockResolvedValueOnce(false);
+      mockUserWithPasswordAuth(false);
 
       const res = await request(app)
         .delete('/api/user/account')
@@ -284,11 +258,7 @@ describe('User Routes Integration Tests', () => {
     });
 
     it('should return 200 on successful account deletion', async () => {
-      (User.findById as jest.Mock).mockResolvedValueOnce({
-        id: 1,
-        password_hash: 'hashed',
-      });
-      (bcrypt.compare as jest.Mock).mockResolvedValueOnce(true);
+      mockUserWithPasswordAuth(true);
       (User.deleteAccount as jest.Mock).mockResolvedValueOnce(undefined);
 
       const res = await request(app)
