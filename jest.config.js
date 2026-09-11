@@ -24,4 +24,13 @@ module.exports = {
   moduleNameMapper: {
     '^(\\.{1,2}/.*)\\.js$': '$1',
   },
+
+  // 5. Coverage collection
+  collectCoverageFrom: [
+    'server/src/**/*.ts',
+    '!server/src/config/setupDatabase.ts',
+    '!server/src/server.ts',
+    '!server/src/**/*.test.ts',
+    '!server/src/**/*.d.ts',
+  ],
 };
