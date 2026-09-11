@@ -114,4 +114,31 @@ describe('RebalanceDrawer Component', () => {
       expect(screen.getByText(/Failed to calculate/i)).toBeInTheDocument();
     });
   });
+
+  it('resets to input step when reopening drawer', async () => {
+    vi.mocked(rebalanceService.calculate).mockResolvedValueOnce({
+      contribution: 1000,
+      mainCurrency: 'BRL',
+      rateUsed: 5.0,
+      suggestions: [],
+    });
+
+    const { rerender } = render(<RebalanceDrawer show={true} onClose={onClose} />);
+
+    fireEvent.change(screen.getByPlaceholderText('0.00'), { target: { value: '1000' } });
+    fireEvent.click(screen.getByRole('button', { name: /Calculate Action Plan/i }));
+
+    await waitFor(() => {
+      expect(screen.getByText('Perfectly Balanced!')).toBeInTheDocument();
+    });
+
+    // Close drawer
+    rerender(<RebalanceDrawer show={false} onClose={onClose} />);
+
+    // Reopen drawer
+    rerender(<RebalanceDrawer show={true} onClose={onClose} />);
+
+    expect(screen.getByText('Rebalance Portfolio')).toBeInTheDocument();
+    expect(screen.getByPlaceholderText('0.00')).toHaveValue(null);
+  });
 });

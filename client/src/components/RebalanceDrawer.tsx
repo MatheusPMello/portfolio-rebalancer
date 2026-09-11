@@ -1,5 +1,5 @@
 // /client/src/components/RebalanceDrawer.tsx
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import rebalanceService, { type RebalanceResponse } from '../services/rebalanceService';
 import { getErrorMessage } from '../utils/errorHandler';
 import { Button } from './Button';
@@ -51,17 +51,17 @@ export function RebalanceDrawer({ show, onClose }: Readonly<RebalanceDrawerProps
       : 0;
   }, [result]);
 
-  // Reset state automatically whenever the drawer opens
+  const prevShowRef = useRef(show);
+
+  // Reset state automatically whenever the drawer transitions from closed to open
   useEffect(() => {
-    if (show) {
-      // Small delay to allow animation to start before resetting
-      setTimeout(() => {
-        setStep('INPUT');
-        setResult(null);
-        setAmount('');
-        setError(null);
-      }, 100);
+    if (show && !prevShowRef.current) {
+      setStep('INPUT');
+      setResult(null);
+      setAmount('');
+      setError(null);
     }
+    prevShowRef.current = show;
   }, [show]);
 
   // Helper to format money
