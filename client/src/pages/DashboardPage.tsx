@@ -8,6 +8,10 @@ import { RebalanceDrawer } from '../components/RebalanceDrawer';
 import { PortfolioCharts } from '../components/PortfolioCharts';
 import { Button } from '../components/Button';
 import { CurrencyBadge } from '../components/CurrencyBadge';
+import {
+  calculateCurrencySubtotals,
+  calculateAssetAllocation,
+} from '../utils/financialMath';
 
 /**
  * The main dashboard page for authenticated users.
@@ -79,15 +83,7 @@ export function DashboardPage() {
   };
 
   // Calculate Totals
-  const totalBRL = assets
-    .filter((a) => a.currency === 'BRL')
-    .reduce((sum, a) => sum + Number(a.current_value), 0);
-
-  const totalUSD = assets
-    .filter((a) => a.currency === 'USD')
-    .reduce((sum, a) => sum + Number(a.current_value), 0);
-
-  const estimatedTotalInBRL = totalBRL + totalUSD * usdRate;
+  const { totalBRL, totalUSD, estimatedTotalInBRL } = calculateCurrencySubtotals(assets, usdRate);
 
   if (loading)
     return (
@@ -232,12 +228,12 @@ export function DashboardPage() {
                     </td>
                     <td style={{ minWidth: '220px' }}>
                       {(() => {
-                        const assetBrlValue =
-                          asset.currency === 'USD'
-                            ? Number(asset.current_value) * usdRate
-                            : Number(asset.current_value);
-                        const currentPercentage =
-                          estimatedTotalInBRL > 0 ? (assetBrlValue / estimatedTotalInBRL) * 100 : 0;
+                        const currentPercentage = calculateAssetAllocation(
+                          Number(asset.current_value),
+                          asset.currency,
+                          estimatedTotalInBRL,
+                          usdRate,
+                        );
                         return (
                           <div className="d-flex flex-column">
                             <div className="d-flex justify-content-between small fw-bold mb-1">

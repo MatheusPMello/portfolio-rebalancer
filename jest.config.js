@@ -6,7 +6,15 @@ module.exports = {
 
   // 2. The Translator
   transform: {
-    '^.+\\.tsx?$': 'ts-jest',
+    '^.+\\.tsx?$': [
+      'ts-jest',
+      {
+        tsconfig: 'server/tsconfig.json',
+        diagnostics: {
+          ignoreCodes: [151002],
+        },
+      },
+    ],
   },
 
   // 3. Cleanup

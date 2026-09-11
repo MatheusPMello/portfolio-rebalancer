@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "jest",
+    "test:coverage": "jest --coverage",
     "test:all": "jest && npm test --prefix client -- --run",
+    "sonar:report": "node scripts/fetch-sonar-report.mjs",
     "lint": "eslint . && npm run lint --prefix client && npm run lint --prefix server",
     "lint:fix": "eslint . --fix && npm run lint --prefix client -- --fix && npm run lint --prefix server -- --fix",
     "format": "prettier --write .",
@@ -34,6 +36,7 @@
   "homepage": "https://github.com/MatheusPMello/portfolio-rebalancer#readme",
   "devDependencies": {
     "@types/jest": "^30.0.0",
+    "@types/supertest": "^7.2.1",
     "concurrently": "^9.2.1",
     "eslint": "^9.39.1",
     "eslint-config-prettier": "^10.1.8",
@@ -42,6 +45,7 @@
     "eslint-plugin-prettier": "^5.5.4",
     "jest": "^30.2.0",
     "prettier": "^3.6.2",
+    "supertest": "^7.2.2",
     "ts-jest": "^29.4.6",
     "ts-node": "^10.9.2",
     "typescript-eslint": "^8.60.0"

@@ -30,6 +30,17 @@ export default [
     },
   },
 
+  // 2b. Specific configuration for Scripts
+  {
+    files: ['scripts/**/*.{js,mjs}'],
+    languageOptions: {
+      globals: {
+        ...globals.node,
+      },
+      sourceType: 'module',
+    },
+  },
+
   // 3. Specific configuration for the FRONT-END
   {
     files: ['client/**/*.js'],

@@ -46,3 +46,57 @@ export function calculateTotalPortfolio(assets: Asset[], usdRate: number): numbe
     return sum + convertedValue;
   }, 0);
 }
+
+export interface CurrencySubtotals {
+  totalBRL: number;
+  totalUSD: number;
+  estimatedTotalInBRL: number;
+}
+
+/**
+ * Calculates currency subtotals (BRL and USD) and estimated total portfolio valuation in BRL.
+ *
+ * @param assets - An array of user assets.
+ * @param usdRate - The current USD to BRL exchange rate.
+ * @returns Object containing totalBRL, totalUSD, and estimatedTotalInBRL.
+ */
+export function calculateCurrencySubtotals(assets: Asset[], usdRate: number): CurrencySubtotals {
+  let totalBRL = 0;
+  let totalUSD = 0;
+
+  for (const asset of assets) {
+    const val = Number(asset.current_value);
+    if (!Number.isNaN(val)) {
+      if (asset.currency === 'USD') {
+        totalUSD += val;
+      } else {
+        totalBRL += val;
+      }
+    }
+  }
+
+  const estimatedTotalInBRL = totalBRL + totalUSD * usdRate;
+
+  return { totalBRL, totalUSD, estimatedTotalInBRL };
+}
+
+/**
+ * Calculates the current percentage allocation of an asset within the portfolio.
+ *
+ * @param currentValue - The current value of the asset.
+ * @param currency - The currency of the asset.
+ * @param totalPortfolioValue - Total portfolio value in BRL.
+ * @param usdRate - Current USD to BRL exchange rate.
+ * @returns Current allocation percentage.
+ */
+export function calculateAssetAllocation(
+  currentValue: number,
+  currency: string,
+  totalPortfolioValue: number,
+  usdRate: number,
+): number {
+  if (totalPortfolioValue <= 0) return 0;
+  const valInBrl = currency === 'USD' ? currentValue * usdRate : currentValue;
+  return (valInBrl / totalPortfolioValue) * 100;
+}
+

@@ -39,21 +39,23 @@ app.use('/api/user', userRoutes);
 // --- Server Startup ---
 const PORT = process.env.PORT || 5001;
 
-app.listen(PORT, async () => {
-  try {
-    console.log('--- DEBUGGING ENV VARS ---');
-    console.log('DB_USER:', process.env.DB_USER);
-    console.log('DB_PASSWORD:', process.env.DB_PASSWORD);
-    console.log('DB_HOST:', process.env.DB_HOST);
-    console.log('DB_PORT:', process.env.DB_PORT);
-    console.log('DB_NAME:', process.env.DB_NAME);
-    console.log('----------------------------');
+if (process.env.NODE_ENV !== 'test') {
+  app.listen(PORT, async () => {
+    try {
+      console.log('--- DEBUGGING ENV VARS ---');
+      console.log('DB_USER:', process.env.DB_USER);
+      console.log('DB_PASSWORD:', process.env.DB_PASSWORD);
+      console.log('DB_HOST:', process.env.DB_HOST);
+      console.log('DB_PORT:', process.env.DB_PORT);
+      console.log('DB_NAME:', process.env.DB_NAME);
+      console.log('----------------------------');
 
-    const res = await db.query('SELECT NOW()');
-    console.log(`Database connected successfully at ${res.rows[0].now}`);
-    console.log(`Server is running on http://localhost:${PORT}`);
-  } catch (err) {
-    console.error('Database connection failed:', err);
-  }
-});
+      const res = await db.query('SELECT NOW()');
+      console.log(`Database connected successfully at ${res.rows[0].now}`);
+      console.log(`Server is running on http://localhost:${PORT}`);
+    } catch (err) {
+      console.error('Database connection failed:', err);
+    }
+  });
+}
 export default app;
