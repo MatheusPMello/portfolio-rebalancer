@@ -30,7 +30,7 @@ function readSonarProperties() {
 
 const sonarProps = readSonarProperties();
 const projectKey = process.env.SONAR_PROJECT_KEY || sonarProps['sonar.projectKey'] || 'MatheusPMello_portfolio-rebalancer';
-const organization = process.env.SONAR_ORGANIZATION || sonarProps['sonar.organization'] || 'MatheusPMello';
+const organization = process.env.SONAR_ORGANIZATION || sonarProps['sonar.organization'] || 'matheuspmello';
 const sonarToken = process.env.SONAR_TOKEN || '';
 
 const SONAR_BASE_URL = 'https://sonarcloud.io/api';
